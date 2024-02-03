@@ -3,8 +3,8 @@ import Dashboard from "./components/Dashboard"
 function App() {
   return (
     <>
-      <Login />
-      {/* <Dashboard /> */}
+      {/* <Login /> */}
+      <Dashboard />
     </>
   )
 }

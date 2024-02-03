@@ -4,6 +4,8 @@ import './Dashboard.css'
 export default function Dashboard() {
     const [channels, setChannels] = React.useState([{id: 0, name: "Direct 1", type: "direct"}, {id: 1, name: "Channel 2", type: "channel"}, {id: 2, name: "Direct 3", type: "direct"}, {id: 3, name: "Channel 4", type: "channel"}]);
     const [channel, setChannel] = React.useState("");
+    const [showChannel, setShowChannel] = React.useState(true);
+    const [showDirect, setShowDirect] = React.useState(true);
     
 
     const directMenu = channels.filter(item => item.type === "direct")
@@ -33,11 +35,8 @@ export default function Dashboard() {
             
 }
 
-function chevron(e){
-    if (e.target.className==="dashboard--left") {
-        e.target.className = "dashboard--down";
-    }
-
+function chevron(set){
+    set(prev => !prev);
 }
 
     return (
@@ -74,23 +73,25 @@ function chevron(e){
             <div className="dashboard--channels">
                 <div className="channel--Header">
                     <button onClick={() => addItem("channel")}>Channels</button>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m7 10l5 5l5-5z"/></svg>
+                    <button onClick={() => chevron(setShowChannel)}>
+                        <svg className={showChannel ? "dashboard--down" : "dashboard--left"} xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m7 10l5 5l5-5z"/></svg>
+                    </button>
                 </div>
                   
                 <div className="channel-List">
-                    <div className="channel--overflow">
+                    <div className={showChannel ? "direct--overflow" : "dashboard--hidden"}>
                         {channelElems}
                     </div>
                 </div>
                 <div className="direct--Header">
                     <button onClick={() => addItem("direct")}>Direct Messages</button>
-                    <button onClick={chevron}>
-                        <svg  className="dashboard--left" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m7 10l5 5l5-5z"/></svg>
+                    <button onClick={() => chevron(setShowDirect)}>
+                        <svg  className={showDirect ? "dashboard--down" : "dashboard--left"} xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m7 10l5 5l5-5z"/></svg>
                     </button>
                 </div>
 
                 <div className="direct-List">
-                    <div className="direct--overflow">
+                    <div className={showDirect ? "direct--overflow" : "dashboard--hidden"}>
                         {directElems}
                     </div>
                 </div>

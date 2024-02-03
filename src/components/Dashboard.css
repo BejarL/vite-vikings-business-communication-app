@@ -115,14 +115,19 @@ color:white;
 
 .dashboard--left {
     transform: rotate(90deg);
+    font-size: 30px;
 }
 
 .dashboard--down {
     transform: rotate(0);
+    font-size: 30px;
+}
+
+.dashboard--hidden {
+    display: none;
 }
 
 /* CSS for text box */
 .dashboard--channels {
     display: flex;
-    
 }
