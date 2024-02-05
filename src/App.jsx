@@ -1,19 +1,17 @@
 import Login from "./components/Login"
-
-import Dashboard from "./components/Dashboard"
-function App() {
-  return (
-    <>
-      {/* <Login /> */}
-      <Dashboard />
-
 import SignUp from "./components/SignUp"
+import Dashboard from "./components/Dashboard"
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
+
 function App() {
   return (
-    <>
-      <Login />
-      <SignUp />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Login />}/>
+        <Route path='/' element={<SignUp />}/>
+        <Route path='/dashboard' element={<Dashboard />}/>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
