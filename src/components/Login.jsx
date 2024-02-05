@@ -31,7 +31,9 @@ export default function Login() {
           <div>
             <h1 className="text-white font-bold text-4xl font-sans">Welcome!</h1>
             <p className="text-white mt-1">If you do not have an account, sign up here</p>
-            <button type="submit" className="block w-28 bg-white hover:bg-purple-700 hover:text-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">Sign Up</button>
+            <Link to='/signup'>
+              <button type="submit" className="block w-28 bg-white hover:bg-purple-700 hover:text-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">Sign Up</button>
+            </Link>
           </div>
         </div>
       </div>
