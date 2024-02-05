@@ -2,45 +2,49 @@
  function SignUp() {
   return (
     <>
-  <div className="bg-gray-100 flex justify-center items-center h-screen">
-    {/* Left: Image */}
-    <div className="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
-      <h1 className="text-2xl font-semibold mb-4">Sign Up</h1>
-      <form action="#" method="POST">
-        <div className="mb-4">
-          <label htmlFor="username" className="block text-gray-600">Username</label>
-          <input type="text" id="username" name="username" className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" autoComplete="off" />
+      <div className="h-screen md:flex">
+        <div className="flex md:w-1/2 justify-center py-10 items-center bg-purple-500">
+          <form className="bg-purple-500">
+            <h1 className="text-white font-bold text-2xl mb-1">Emanate</h1>
+            <p className="text-sm font-normal text-white mb-7">Signup</p>
+            <div className="flex items-center bg-white border-2 py-2 px-3 rounded-2xl mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor">
+              </svg>
+              <input className="pl-2 outline-none border-none" type="text" name="" id="" placeholder="Username" />
+            </div>
+            <div className="flex items-center bg-white border-2 py-2 px-3 rounded-2xl mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor">
+              </svg>
+              <input className="pl-2 outline-none border-none" type="text" name="" id="" placeholder="Email" />
+            </div>
+            <div className="flex items-center bg-white border-2 py-2 px-3 rounded-2xl mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor">
+              </svg>
+              <input className="pl-2 outline-none border-none" type="text" name="" id="" placeholder="Password" />
+            </div>
+            <div className="flex items-center bg-white border-2 py-2 px-3 rounded-2xl">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
+                  fill="currentColor">
+              </svg>
+              <input className="pl-2 outline-none border-none" type="text" name="" id="" placeholder="Confirm password" />
+            </div>
+            <button type="submit" className="block w-full bg-white hover:bg-purple-700 mt-4 py-2 rounded-2xl text-indigo-800 hover:text-white font-semibold mb-2">Log in</button>
+            <span className="text-sm ml-2 text-white hover:text-blue-500 cursor-pointer">Forgot Password ?</span>
+          </form>
         </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-600">Email</label>
-          <input type="email" id="email" name="email" className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" autoComplete="off" />
+        <div
+          className="relative overflow-hidden md:flex w-1/2 bg-white i justify-around items-center hidden">
+          <div>
+            <h1 className="text-black font-bold text-4xl font-sans">Welcome back!</h1>
+            <p className="text-black mt-1">If you already have an account, log in here</p>
+            <button type="submit" className="block w-28 bg-purple-500 hover:bg-purple-700  text-white mt-4 py-2 rounded-2xl font-bold mb-2">Log in</button>
+          </div>
         </div>
-        {/* Password Input */}
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-600">Password</label>
-          <input type="password" id="password" name="password" className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" autoComplete="off" />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="confirm-password" className="block text-gray-600">Confirm Password</label>
-          <input type="confirm-password" id="confirm-password" name="confirm-password" className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" autoComplete="off" />
-        </div>
-        {/* Remember Me Checkbox */}
-        <div className="mb-4 flex items-center">
-          <input type="checkbox" id="remember" name="remember" className="text-blue-500" />
-          <label htmlFor="remember" className="text-gray-600 ml-2">Remember Me</label>
-        </div>
-        {/* Sign Up Button */}
-        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full">Sign Up</button>
-      </form>
-    </div>
-    {/* Right: Login Form */}
-    <div className="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
-      <h1 className="text-2xl font-semibold mb-4">Welcome Back!</h1>
-      <h2 className="text-1xl mb-4">If you already have an account, log in here!</h2>
-      <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full">Log in</button>
-    </div>
-  </div>
-</>
+      </div>
+    </>
   )
 }
 export default SignUp
