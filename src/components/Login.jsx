@@ -19,12 +19,10 @@ export default function Login() {
                       fill="currentColor">
                     </svg>
                     <input className="pl-2 outline-none placeholder-white bg-amber-500 border-none" type="text" name="" id="" placeholder="Password" />
-            </div>
+            </div>  
+                  <Link to='/dashboard'>
                     <button type="submit" className="block w-full bg-white hover:bg-amber-600 mt-4 py-2 rounded-2xl hover:text-white text-amber-600 font-bold mb-2">Log in</button>
                     <span className="text-sm ml-2 hover:text-blue-800 cursor-pointer">Forgot Password ?</span>
-                  <Link to='/dashboard'>
-                    <button type="submit" className="block w-full bg-purple-500 hover:bg-purple-700 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Log in</button>
-                    <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">Forgot Password ?</span>
                   </Link>
           </form>
         </div>
@@ -33,7 +31,9 @@ export default function Login() {
           <div>
             <h1 className="text-white font-bold text-4xl font-sans">Welcome!</h1>
             <p className="text-white mt-1">If you do not have an account, sign up here</p>
+            <Link to='/signup'>
             <button type="submit" className="block w-28 bg-white hover:bg-amber-600 hover:text-white text-amber-600 mt-4 py-2 rounded-2xl font-bold mb-2">Sign Up</button>
+            </Link>
           </div>
         </div>
       </div>
