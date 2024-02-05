@@ -1,15 +1,15 @@
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import Login from "./components/Login"
 import SignUp from "./components/SignUp"
 import Dashboard from "./components/Dashboard"
 
-function App() {
-  return (
-    <>
-      <Login />
-      <SignUp />
-      <Dashboard />
-    </>
-import { BrowserRouter, Route, Routes} from 'react-router-dom';
+// function App() {
+//   return (
+//     <>
+//       <Login />
+//       <SignUp />
+//       <Dashboard />
+//     </>
 
 function App() {
   return (
