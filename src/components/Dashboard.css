@@ -1,0 +1,133 @@
+.dashboard--wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+/* CSS for navbar */
+.dashboard--navbar {
+    background-color: whitesmoke;
+    width: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.dashboard--link-wrappers {
+    
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.dashboard--link {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard--link > svg {
+    font-size: 40px;
+}
+
+/* CSS for channels */
+
+.channel--Header{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:20px;
+    font-size: 21px;
+    
+}
+
+
+.direct--Header{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+padding:30px;
+font-size: 21px;
+color:white;
+}
+
+.channel-List{
+    padding-left:60px;
+    font-size: 20px;
+    color:white;
+}
+.direct-List{
+    padding-left:60px;
+    font-size:20px;
+    color:white;
+}
+
+.dashboard--channels{
+    display: flex;
+    flex-direction: column;
+    flex:0.12;
+    height: 100vh;
+    background-color:rgb(36, 34, 34);
+    color:white;
+}
+
+.channel--overflow {
+    overflow-y: auto;
+    height: 350px;
+}
+
+.direct--overflow{
+    overflow-y: auto;
+    height: 350px;
+    margin-right: 5px;
+}
+
+.channel--overflow:hover::-webkit-scrollbar-thumb{
+    background-color: #3d3d3d;
+    width: 5px;
+    border-radius: 10px;
+}
+.channel--overflow::-webkit-scrollbar {
+    color: white;
+}
+.channel--overflow:hover::-webkit-scrollbar {
+    width: 10px;
+    background-color: transparent;
+}
+
+.direct--overflow::-webkit-scrollbar {
+    color: white;
+}
+
+.direct--overflow:hover::-webkit-scrollbar-thumb{
+    background-color: #3d3d3d;
+    width: 5px;
+    border-radius: 10px;
+}
+
+.direct--overflow:hover::-webkit-scrollbar {
+    width: 10px;
+    background-color: transparent;
+}
+
+.dashboard--left {
+    transform: rotate(90deg);
+    font-size: 30px;
+}
+
+.dashboard--down {
+    transform: rotate(0);
+    font-size: 30px;
+}
+
+.dashboard--hidden {
+    display: none;
+}
+
+/* CSS for text box */
+.dashboard--channels {
+    display: flex;
+}
