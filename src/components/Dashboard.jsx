@@ -1,5 +1,6 @@
 import React from 'react'
 import './Dashboard.css'
+import NewChannel from './NewChannel';
 
 export default function Dashboard() {
     const [channels, setChannels] = React.useState([{id: 0, name: "Direct 1", type: "direct"}, {id: 1, name: "Channel 2", type: "channel"}, {id: 2, name: "Direct 3", type: "direct"}, {id: 3, name: "Channel 4", type: "channel"}]);
@@ -20,7 +21,7 @@ export default function Dashboard() {
     })
     const channelElems = channelMenu.map(item => {
         return (
-            <div key={item.id}>
+            <div  key={item.id}>
                 {item.name}
             </div>
         )
@@ -31,8 +32,7 @@ export default function Dashboard() {
              return ( 
                 [...prevChannels,  {id: prevChannels.length + 1, name: "New Channel", type: type}]
                 )
-            })
-            
+            }) 
 }
 
 function chevron(set){
@@ -59,10 +59,7 @@ function chevron(set){
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M7 14s-1 0-1-1s1-4 5-4s5 3 5 4s-1 1-1 1zm4-6a3 3 0 1 0 0-6a3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5"/></svg>                        
                         <p>Community</p>                   
                     </a>
-                    <a href="" className="dashboard--link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="0.88em" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z"/></svg>
-                        <p>New Channel</p>
-                    </a>
+                    <NewChannel />
                 </div>
                 <a href="" className="dashboard--link dashboard--logout">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/></svg>
@@ -100,6 +97,13 @@ function chevron(set){
                 
 
             </div>
+
+        
+
+
+
+
+
         </div>
     )
 }
