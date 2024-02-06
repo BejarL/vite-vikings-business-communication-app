@@ -1,5 +1,6 @@
 import React from 'react'
 import './Dashboard.css'
+import {Link} from 'react-router-dom'
 
 export default function Dashboard() {
     const [channels, setChannels] = React.useState([{id: 0, name: "Direct 1", type: "direct"}, {id: 1, name: "Channel 2", type: "channel"}, {id: 2, name: "Direct 3", type: "direct"}, {id: 3, name: "Channel 4", type: "channel"}]);
@@ -64,10 +65,12 @@ function chevron(set){
                         <p>New Channel</p>
                     </a>
                 </div>
+                <Link to='/'>
                 <a href="" className="dashboard--link dashboard--logout">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/></svg>
                     <p>Logout</p>
                 </a>
+                </Link>
             </nav>
 
             <div className="dashboard--channels">
