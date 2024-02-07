@@ -1,18 +1,15 @@
 import Login from "./components/Login"
-
-import Dashboard from "./components/Dashboard"
-function App() {
-  return (
-    <>
-      {/* <Login /> */}
-      <Dashboard />
-
 import SignUp from "./components/SignUp"
+import Dashboard from "./components/Dashboard"
+import Profile from "./components/Profile"
+
 function App() {
   return (
     <>
+      <Profile />
       <Login />
       <SignUp />
+      <Dashboard />
     </>
   )
 }

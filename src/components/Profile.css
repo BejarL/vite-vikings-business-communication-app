@@ -1,0 +1,112 @@
+.profile--wrapper {
+    height: 100vh;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d97706;
+    background-color: #fbbf24;
+    margin: 0px;
+    padding: 0px;
+}
+
+.profile--img {
+    border-radius: 50%;
+    border: solid 2px #f59e0b;
+    width: 300px;
+    height: 300px;
+    margin: 20px;
+}
+
+.profile--img-after {
+    position: relative;
+}
+
+.profile--img-after::after {
+    content: 'Change Picture';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    z-index: 2;
+    color: rgb(15, 15, 15);
+    background: radial-gradient(circle, transparent 0%, rgba(0, 0, 0, 0.459) 100%);
+    opacity: 0%;
+    transition: opacity 100ms linear;
+}
+
+.profile--img-after:hover::after {
+    opacity: 100%;
+    transition: opacity 100ms linear;
+}
+
+.profile--settings-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile--user-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 250px;
+}
+
+.profile--user-name {
+    margin: 10px 0;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    background-color: #f59e0b;
+    border-radius: 5px;
+    /* width: 180px; */
+    color: rgb(15, 15, 15);
+    text-align: center;
+    color: white;
+}
+
+.profile--edit-name-btn {
+    font-size: 4rem;
+    color: white;
+    margin-left: 10px;
+    transition: 80ms color linear;
+}
+
+.profile--edit-name-btn:hover {
+    color: #cf9c1a;
+    transition: 80ms color linear;
+}
+
+.profile--edit-password-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile--edit-password-wrapper > button {
+    color: white;
+    font-size: 1.5rem;
+    background-color: #f59e0b;
+    padding: 10px;
+    margin: 20px 0 0 0;
+    border-radius: 5px;
+    width: 210px;
+    transition: 80ms background-color linear;
+}
+
+.profile--edit-password-wrapper > button:hover {
+    background-color: #cf9c1a;
+    transition: 80ms background-color linear;
+}
+
+.profile--edit-btn:hover {
+    color: #d97706;
+}
+
+
+
+
