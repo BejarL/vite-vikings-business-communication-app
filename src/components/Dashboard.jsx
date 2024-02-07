@@ -1,11 +1,15 @@
-import React from 'react'
 import './Dashboard.css'
+import { useState } from 'react';
+
+import { signOut } from 'firebase/auth'
+import { auth } from '../../FirebaseConfig'
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
-    const [channels, setChannels] = React.useState([{id: 0, name: "Direct 1", type: "direct"}, {id: 1, name: "Channel 2", type: "channel"}, {id: 2, name: "Direct 3", type: "direct"}, {id: 3, name: "Channel 4", type: "channel"}]);
-    const [channel, setChannel] = React.useState("");
-    const [showChannel, setShowChannel] = React.useState(true);
-    const [showDirect, setShowDirect] = React.useState(true);
+    const [channels, setChannels] = useState([{id: 0, name: "Direct 1", type: "direct"}, {id: 1, name: "Channel 2", type: "channel"}, {id: 2, name: "Direct 3", type: "direct"}, {id: 3, name: "Channel 4", type: "channel"}]);
+    const [channel, setChannel] = useState("");
+    const [showChannel, setShowChannel] = useState(true);
+    const [showDirect, setShowDirect] = useState(true);
     
 
     const directMenu = channels.filter(item => item.type === "direct")
@@ -39,6 +43,15 @@ function chevron(set){
     set(prev => !prev);
 }
 
+const navigate = useNavigate()
+
+const handleLogout = async () => {
+    await signOut(auth)
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    navigate('/')
+}
+
     return (
         <div className="dashboard--wrapper">
             <nav className="dashboard--navbar">
@@ -64,9 +77,9 @@ function chevron(set){
                         <p>New Channel</p>
                     </a>
                 </div>
-                <a href="" className="dashboard--link dashboard--logout">
+                <a href="" className="dashboard--link dashboard--logout" onClick={handleLogout}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/></svg>
-                    <p>Logout</p>
+                    <p>Log Out</p>
                 </a>
             </nav>
 
