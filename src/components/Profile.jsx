@@ -14,6 +14,7 @@ export default function Profile({ userID }) {
         <div className='profile--wrapper'>
             <div>
                 <button className="profile--img-after" onClick={click}>
+                    <div className="profile--img-shadow"></div>
                     <img className="profile--img" alt="profile picture" src="https://source.unsplash.com/random"></img>
                 </button>
                 <div className="profile--settings-wrapper">
@@ -22,7 +23,7 @@ export default function Profile({ userID }) {
                         <EditUserNameModal currentName={currentName} setCurrentName={setCurrentName} />
                     </div>
                     <div className="profile--edit-password-wrapper">
-                        <button data-toggle="modal" data-target="#editpassword">Change Password</button>
+                        <button data-toggle="modal" data-target="#editpassword">Reset Password</button>
                         <button>Delete Account</button>
                     </div>
                 </div>

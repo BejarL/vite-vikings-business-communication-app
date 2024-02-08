@@ -18,6 +18,14 @@
     margin: 20px;
 }
 
+.profile--img-shadow {
+    box-shadow: 0 340px 8px rgba(0, 0, 0, 0.822);
+    height: 3px;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 70%;
+}
+
 .profile--img-after {
     position: relative;
 }
@@ -34,7 +42,8 @@
     height: 300px;
     border-radius: 50%;
     z-index: 2;
-    color: rgb(15, 15, 15);
+    color: whitesmoke;
+    text-shadow:rgba(0, 0, 0, 0.438);
     background: radial-gradient(circle, transparent 0%, rgba(0, 0, 0, 0.459) 100%);
     opacity: 0%;
     transition: opacity 100ms linear;
@@ -55,7 +64,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* min-width: 250px; */
 }
 
 .profile--user-name {
@@ -64,7 +72,6 @@
     font-size: 1.5rem;
     background-color: #f59e0b;
     border-radius: 5px;
-    /* width: 180px; */
     color: rgb(15, 15, 15);
     text-align: center;
     color: white;
@@ -111,17 +118,38 @@
     position: absolute;
     top: 0px;
     background-color: white;
-    width: 400px;
-    left: calc(50% - 200px);
+    width: 300px;
+    left: calc(50% - 150px);
     top: calc(50% - 100px);
     z-index: 10;
     padding: 10px;
     background-color: #f59e0b;
+    border-radius: 5px;
 }
 
 .profile--modal-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
+}
+
+.profile--modal-body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+}
+
+.profile--modal-body > h4 {
+    color: white;
+}
+
+.profile--modal-body > input {
+    border-radius: 5px;
+    font-size: 1.4rem;
+    padding: 5px;
+    width: 180px;
     
 }
 
@@ -129,8 +157,28 @@
     padding: 5px;
     background-color: #d97706;
     color: white;
+    border-radius: 5px;
 }
 
+.profile--modal-darken {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(0, 0, 0, 0.438);
+}
+
+.profile--invalid-username {
+    position: relative;
+}
+
+.profile--invalid-username::after {
+    content: "min of 3 characters max 12, letters and numbers only";
+    position: absolute;
+    bottom: -10px;
+    left: 0px;
+}
 
 
 
