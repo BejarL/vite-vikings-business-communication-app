@@ -173,12 +173,5 @@
     position: relative;
 }
 
-.profile--invalid-username::after {
-    content: "min of 3 characters max 12, letters and numbers only";
-    position: absolute;
-    bottom: -10px;
-    left: 0px;
-}
-
 
 
