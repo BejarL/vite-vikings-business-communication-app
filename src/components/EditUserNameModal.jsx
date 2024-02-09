@@ -5,26 +5,23 @@ import Modal from 'react-bootstrap/Modal';
 function EditUserNameModal({ currentName, setCurrentName }) {
   //used to show the modal or not
   const [show, setShow] = React.useState(false);
-  const [errorMessage,setErrorMessage] = React.useState('')
+  const [errorMessage,setErrorMessage] = React.useState(false)
   //used to control the input field in the modal
   const [username, setUsername] = React.useState(currentName);
   
   const handleUsername = (e) => {
     let value = e.target.value
     setUsername(value);
-    setErrorMessage('');
   }
   
   const toggleModal = () => {
+    setErrorMessage(false);
     setShow(prevState => {
       return !prevState
     })
   }
   
   let nameRegex = /^[a-zA-Z0-9 ]{3,15}$/
-  //when updating the name, I wanted it to check the username to make sure they meet the specifications,
-  //if not I wanted it to render an after element to the text box. only way I found to do that 
-  //was to use e.target.parentElement.parentElement.firstChild.firstChild to grab the input field
   const updateName = (e) => {
     if (nameRegex.test(username)) {
       setCurrentName(username);
