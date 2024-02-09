@@ -7,6 +7,8 @@ import Login from "./components/auth/Login"
 import SignUp from "./components/auth/SignUp"
 import Protected from "./components/auth/Protected"
 import Profile from "./components/Profile.jsx"
+import Layout from "./components/Layout.jsx"
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -16,11 +18,13 @@ import {
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<Profile />}>
+    <Route path='/' element={<App />}>
         <Route path='signup' element={<SignUp />}/>
         <Route path='login' element={<Login />}/>
         <Route path='/' element={<Protected />} >
-          <Route path='/' element={<Dashboard />}/>
+          <Route path='/' element={<Layout />}>
+            <Route path='profile' element={<Profile />}/> 
+          </Route>
         </Route>
     </Route>
   )
