@@ -1,31 +1,57 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { auth } from '../../../FirebaseConfig'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom';
 
  function Login() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
 
-    const navigate = useNavigate()
+  const [error, setError] = useState(null)
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    // Add or remove the 'fadeOut' class when the 'error' state changes
+    if (error) {
+      const errorTimeout = setTimeout(() => {
+        setError(null)
+      }, 3000)
+
+      // Cleanup the timeout to prevent memory leaks
+      return () => clearTimeout(errorTimeout)
+    }
+  }, [error])
 
   const logIn = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
+
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
-      console.log(userCredential)
       const user = userCredential.user
+      
+      console.log(userCredential)
+
       localStorage.setItem('token', user.accessToken)
       localStorage.setItem('user', JSON.stringify(user))
+
       navigate('/')
-    }
-    catch(error){
-      console.log(error)
+
+    } catch (error) {
+      console.error(error)
+      setError('Failed to sign up. Please try again.')
+      
     }
   }
   return (
     <>
+    {error && (
+        <div className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">
+          {error}
+        </div>
+      )}
       <div className="h-screen md:flex">
         <div className="flex md:w-1/2 justify-center py-10 items-center bg-amber-400">
           <form onSubmit={logIn} className="bg-amber-400">
@@ -56,7 +82,7 @@ import { useNavigate } from 'react-router-dom';
                       className="block w-full bg-white hover:bg-amber-600 mt-4 py-2 rounded-2xl hover:text-white text-amber-600 font-bold mb-2">
                         Log in
                     </button>
-                  <Link to='/resetpassword'>
+                  <Link to='/forgotpassword'>
                   <span className="text-sm ml-2 hover:text-blue-800 cursor-pointer">
                     Forgot Password?
                   </span>
