@@ -59,10 +59,10 @@ const handleLogout = async () => {
         <div className="dashboard--wrapper">
             <nav className="dashboard--navbar">
                 <div className="dashboard--link-wrappers">
-                    <a href="" className="dashboard--link">
+                    <Link to='/profile' href="" className="dashboard--link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fillRule="evenodd" d="M8 7a4 4 0 1 1 8 0a4 4 0 0 1-8 0m0 6a5 5 0 0 0-5 5a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3a5 5 0 0 0-5-5z" clipRule="evenodd"/></svg>
                         <p>Profile</p>
-                    </a>
+                    </Link>
                     <a href="" className="dashboard--link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M21 19v1H3v-1l2-2v-6c0-3.1 2.03-5.83 5-6.71V4a2 2 0 0 1 2-2a2 2 0 0 1 2 2v.29c2.97.88 5 3.61 5 6.71v6zm-7 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2"/></svg>
                         <p>Notifs</p>
