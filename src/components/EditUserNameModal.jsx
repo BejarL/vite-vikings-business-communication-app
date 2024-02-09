@@ -5,13 +5,14 @@ import Modal from 'react-bootstrap/Modal';
 function EditUserNameModal({ currentName, setCurrentName }) {
   //used to show the modal or not
   const [show, setShow] = React.useState(false);
-  
+  const [errorMessage,setErrorMessage] = React.useState('')
   //used to control the input field in the modal
   const [username, setUsername] = React.useState(currentName);
   
   const handleUsername = (e) => {
     let value = e.target.value
     setUsername(value);
+    setErrorMessage('');
   }
   
   const toggleModal = () => {
@@ -29,7 +30,7 @@ function EditUserNameModal({ currentName, setCurrentName }) {
       setCurrentName(username);
       toggleModal();
     } else {
-      e.target.parentElement.parentElement.firstChild.firstChild.className="profile--invalid-username"
+      setErrorMessage('min of 3 characters max 12, letters and numbers only')
     }
   }
 
@@ -50,7 +51,7 @@ function EditUserNameModal({ currentName, setCurrentName }) {
           <Modal.Body className="profile--modal-body">
             <h4>Enter a new username</h4>
             <input className="profile--invalid-username" value={username} placeholder="Enter a username" onChange={handleUsername}/>
-            
+            {errorMessage && <div className="profile--error-message">{errorMessage}</div>}
           </Modal.Body>
           <Modal.Footer className="profile--modal-footer">
             <Button variant="secondary" onClick={toggleModal}>
