@@ -2,7 +2,7 @@ import React  from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function Example({ currentName, setCurrentName }) {
+function EditUserNameModal({ currentName, setCurrentName }) {
   //used to show the modal or not
   const [show, setShow] = React.useState(false);
   
@@ -48,6 +48,7 @@ function Example({ currentName, setCurrentName }) {
         className="profile--modal-wrapper"
       >
           <Modal.Body className="profile--modal-body">
+            <h4>Enter a new username</h4>
             <input className="profile--invalid-username" value={username} placeholder="Enter a username" onChange={handleUsername}/>
             
           </Modal.Body>
@@ -62,4 +63,4 @@ function Example({ currentName, setCurrentName }) {
   )
 }
 
-export default Example;
+export default EditUserNameModal;
