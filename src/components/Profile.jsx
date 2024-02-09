@@ -13,9 +13,9 @@ export default function Profile({ userID }) {
     }
 
 
-
     return (
-        <div className='profile--wrapper'>
+        // style used so the profile component fills in entire right side of sidebar
+        <div className='profile--wrapper'  style={{ width: '1500%', padding: '20px' }}>
             <div>
                 <div className="profile--img-wrapper">
                     <div className="profile--img-shadow"></div>
