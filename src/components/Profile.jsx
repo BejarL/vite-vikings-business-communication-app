@@ -12,6 +12,8 @@ export default function Profile({ userID }) {
         setImg(() => URL.createObjectURL(e.target.files[0]));
     }
 
+
+
     return (
         <div className='profile--wrapper'>
             <div>

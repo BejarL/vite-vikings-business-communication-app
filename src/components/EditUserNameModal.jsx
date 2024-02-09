@@ -15,6 +15,7 @@ function EditUserNameModal({ currentName, setCurrentName }) {
   }
   
   const toggleModal = () => {
+    setUsername(currentName);
     setErrorMessage(false);
     setShow(prevState => {
       return !prevState
