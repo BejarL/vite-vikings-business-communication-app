@@ -22,7 +22,9 @@ const router = createBrowserRouter(
         <Route path='signup' element={<SignUp />}/>
         <Route path='login' element={<Login />}/>
         <Route path='/' element={<Protected />} >
+          {/* Outlet in protected.jsx will render Layout automatically bc of path of '/' */}
           <Route path='/' element={<Layout />}>
+            {/* profile will get rendered with dashboard if its clicked */}
             <Route path='profile' element={<Profile />}/> 
           </Route>
         </Route>
