@@ -100,6 +100,7 @@ function chevron(set){
             <div className= "textbox">
 
             </div>
+            </div>
         </div>
     )
 }
