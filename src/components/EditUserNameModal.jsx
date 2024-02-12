@@ -2,12 +2,11 @@ import React  from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function EditUserNameModal({ currentName, setCurrentName }) {
+function EditUserNameModal({ displayName, updateDisplayName }) {
   //used to show the modal or not
   const [show, setShow] = React.useState(false);
   const [errorMessage,setErrorMessage] = React.useState(false)
-  //used to control the input field in the modal
-  const [username, setUsername] = React.useState(currentName);
+  const [username, setUsername] = React.useState(displayName);
   
   const handleUsername = (e) => {
     let value = e.target.value
@@ -15,7 +14,7 @@ function EditUserNameModal({ currentName, setCurrentName }) {
   }
   
   const toggleModal = () => {
-    setUsername(currentName);
+    setUsername(displayName);
     setErrorMessage(false);
     setShow(prevState => {
       return !prevState
@@ -23,9 +22,9 @@ function EditUserNameModal({ currentName, setCurrentName }) {
   }
   
   let nameRegex = /^[a-zA-Z0-9 ]{3,15}$/
-  const updateName = (e) => {
+  const updateName = () => {
     if (nameRegex.test(username)) {
-      setCurrentName(username);
+      updateDisplayName(username);
       toggleModal();
     } else {
       setErrorMessage('min of 3 characters max 12, letters and numbers only')

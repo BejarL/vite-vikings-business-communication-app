@@ -2,7 +2,7 @@ import React  from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function DeleteAccountModal() {
+function DeleteAccountModal({ deleteProfile }) {
   const [show, setShow] = React.useState(false);
   const [confirm, setConfirm] = React.useState("");
   
@@ -19,9 +19,9 @@ function DeleteAccountModal() {
 
   const deleteAccount = () => {
     if (confirm.toLowerCase() === "confirm") {
-        console.log("confirmed");
+        deleteProfile()
     } else {
-        
+      console.log("confirm status: incorrect");
     }
   }
 

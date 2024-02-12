@@ -1,28 +1,30 @@
 import React from 'react';
 import EditUserNameModal from './EditUserNameModal'
 import DeleteAccountModal from './DeleteAccoutModal';
-import { onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged, deleteUser, updateProfile } from 'firebase/auth'
 import { auth, storage } from '../../FirebaseConfig.js'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { useNavigate } from "react-router-dom";
 import './Profile.css'
 
-export default function Profile({ userID }) {
-    const [currentName, setCurrentName] = React.useState("xlnvis")
+export default function Profile() {
     const [img, setImg] = React.useState("")
-    const [userId, setUserId] = React.useState("");
-
+    const [currentUser, setCurrentUser] = React.useState("");
+    
     onAuthStateChanged(auth, (currentUser) => {
-        setUserId(currentUser.uid);
+        setCurrentUser(currentUser);
     });
     
     React.useEffect(() => {
-        if (userId) {
-            const imageRef = ref(storage, `profilePicture/${userId}/profilePic`)
+        if (currentUser.uid) {
+            const imageRef = ref(storage, `profilePicture/${currentUser.uid}/profilePic`)
             const url = getDownloadURL(imageRef)
-                .then((res) => setImg(res))
-                .catch(() => console.log("initial load failed or doesnt exist"))
+                .then((res) => {
+                    setImg(res);
+                })
+                .catch((e) => setImg("https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))
         }
-    }, [userId])
+    }, [currentUser])
     
     //is used to handle any file that gets uploaded.
     // 1st - checks to see if a file has been uploaded, if its undefined then do nothing
@@ -34,7 +36,7 @@ export default function Profile({ userID }) {
         // const userId = auth.currentUser.uid
         const file = e.target.files[0];
         if (file !== undefined) {
-            const imageRef = ref(storage, `profilePicture/${userId}/profilePic`)
+            const imageRef = ref(storage, `profilePicture/${currentUser.uid}/profilePic`)
             uploadBytes(imageRef, file)
                 .then(() => {
                     const url = getDownloadURL(imageRef)
@@ -44,9 +46,26 @@ export default function Profile({ userID }) {
                 .catch(() => console.log("upload failed"));
         }
     }
+    
+    const navigate = useNavigate();
+    const deleteProfile = async () => {
+        navigate("/login")
+        localStorage.clear();
+        deleteUser(currentUser).then(() => {
+            console.log("user deleted");
+          }).catch((error) => {
+            
+          });
+    }
 
-    const deleteProfile = () => {
-        
+    const updateDisplayName = async (username) => {
+        updateProfile(auth.currentUser, {
+            displayName: username
+          }).then(() => {
+            navigate("/profile");
+          }).catch((error) => {
+            console.log(error);
+          });
     }
 
     return (
@@ -67,15 +86,15 @@ export default function Profile({ userID }) {
                 </div>
                 <div className="profile--settings-wrapper">
                     <div className="profile--user-wrapper">
-                        <p className="profile--user-name">{currentName}</p>
+                        <p className="profile--user-name">{currentUser.displayName}</p>
                         <EditUserNameModal 
-                            currentName={currentName} 
-                            setCurrentName={setCurrentName} 
+                        displayName={currentUser.displayName}
+                        updateDisplayName={updateDisplayName}
                         />
                     </div>
                     <div className="profile--edit-password-wrapper">
                         <button className="profile--modal-btn" data-toggle="modal" data-target="#editpassword">Reset Password</button>
-                        <DeleteAccountModal />
+                        <DeleteAccountModal deleteProfile={deleteProfile} />
                     </div>
                 </div>
             </div>
