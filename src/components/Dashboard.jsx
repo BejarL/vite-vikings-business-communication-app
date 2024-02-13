@@ -1,12 +1,9 @@
 import './Dashboard.css'
-
 import { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth'
 import { auth } from '../../FirebaseConfig'
 import { useNavigate } from 'react-router-dom';
-
-import {Link} from 'react-router-dom'
 
 
 export default function Dashboard() {
@@ -52,13 +49,14 @@ const handleLogout = async () => {
     await signOut(auth)
     localStorage.removeItem('token')
     localStorage.removeItem('user')
-    navigate('/')
+    navigate('/login')
 }
 
     return (
         <div className="dashboard--wrapper">
             <nav className="dashboard--navbar">
                 <div className="dashboard--link-wrappers">
+
                     <Link to='/profile' href="" className="dashboard--link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fillRule="evenodd" d="M8 7a4 4 0 1 1 8 0a4 4 0 0 1-8 0m0 6a5 5 0 0 0-5 5a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3a5 5 0 0 0-5-5z" clipRule="evenodd"/></svg>
                         <p>Profile</p>
@@ -81,11 +79,11 @@ const handleLogout = async () => {
                     </a>
                 </div>
                 <Link to='/'>
-                <a href="" className="dashboard--link dashboard--logout">
+                <a href="" className="dashboard--link dashboard--logout" onClick={handleLogout}>
+
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/></svg>
                     <p>Log Out</p>
                 </a>
-                </Link>
             </nav>
 
             <div className="dashboard--channels">
@@ -115,8 +113,6 @@ const handleLogout = async () => {
                 </div>
             </div>
             <div className="dashboard--textbox">
-                
-
             </div>
         </div>
     )

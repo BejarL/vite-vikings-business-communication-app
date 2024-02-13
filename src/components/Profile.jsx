@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import EditUserNameModal from './EditUserNameModal'
 import DeleteAccountModal from './DeleteAccoutModal';
 import { onAuthStateChanged, deleteUser, updateProfile } from 'firebase/auth'
@@ -6,12 +6,16 @@ import { auth, storage } from '../../FirebaseConfig.js'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { useNavigate } from "react-router-dom";
 import './Profile.css'
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
     const [img, setImg] = React.useState("")
     const [currentUser, setCurrentUser] = React.useState("");
     
     React.useEffect(() => {
+
+    const navigate = useNavigate()
+
 
         onAuthStateChanged(auth, (currentUser) => {
             setCurrentUser(currentUser);
@@ -68,6 +72,10 @@ export default function Profile() {
             console.log(error);
           });
     }
+    
+    function updatePassword () {
+        navigate('/updatepassword')
+    }
 
     return (
         // style used so the profile component fills in entire right side of sidebar
@@ -96,6 +104,11 @@ export default function Profile() {
                     <div className="profile--edit-password-wrapper">
                         <button className="profile--modal-btn">Reset Password</button>
                         <DeleteAccountModal deleteProfile={deleteProfile} />
+
+                        <button data-toggle="modal" data-target="#editpassword" onClick={updatePassword}>Change Password</button>
+                  
+                        <button>Delete Account</button>
+
                     </div>
                 </div>
             </div>

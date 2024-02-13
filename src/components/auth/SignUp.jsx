@@ -1,36 +1,77 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react'
-import { auth } from '../../../FirebaseConfig'
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { useState, useEffect } from 'react'
+import { auth, db } from '../../../FirebaseConfig'
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification} from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
+
+  
  function SignUp() {
+
+  const [error, setError] = useState(null)
+
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
   const navigate = useNavigate()
 
+  useEffect(() => {
+    if (error) {
+      const errorTimeout = setTimeout(() => {
+        setError(null)
+      }, 3000)
+
+      // Cleanup the timeout to prevent memory leaks
+      return () => clearTimeout(errorTimeout)
+    }
+  }, [error])
+
   const signUp = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
+
+    if (password !== passwordConfirmation) {
+      setError('Passwords do not match.')
+      return
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password, username)
       const user = userCredential.user
-      await updateProfile(auth.currentUser, { displayName: username }).catch(
-        (err) => console.log(err)
-      )
+
+      // Update the user profile
+      await updateProfile(auth.currentUser, { displayName: username })
+      // Send email verification
+      await sendEmailVerification(user)
+
+      const userDocRef = doc(db, 'users', user.uid)
+      await setDoc(userDocRef, {
+        uid: user.uid,
+        email: user.email,
+        displayName: username,
+      })
+
       console.log(userCredential)
+
+      navigate('/')
+
       localStorage.setItem('token', user.accessToken)
       localStorage.setItem('user', JSON.stringify(user))
 
-      navigate('/')
+      } catch (error) {
+      console.error(error)
+      setError('Failed to sign up. Please try again.')
+      }
     }
-    catch(error){
-      console.log(error)
-    }
-  }
-  return (
-    
+
+  return (  
     <>
+      {error && (
+        <div className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">
+          {error}
+        </div>
+      )}
       <div className="h-screen md:flex">
         <div className="flex md:w-1/2 justify-center py-10 items-center bg-amber-500">
           <form onSubmit={signUp} className="bg-amber-500">
@@ -82,7 +123,10 @@ import { useNavigate } from 'react-router-dom'
               <input 
                 className="pl-2 bg-amber-400 placeholder-white outline-none border-none" 
                 type="password" 
-                placeholder="Confirm password"/>
+                placeholder="Confirm password"
+                value={passwordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                />
             </div>
             <button 
               type="submit" 
@@ -91,7 +135,7 @@ import { useNavigate } from 'react-router-dom'
               </button>
           </form>
         </div>
-        <div className="relative overflow-hidden md:flex w-1/2 bg-amber-400 i justify-around items-center hidden">
+        <div className="relative overflow-hidden md:flex w-1/2 bg-amber-400 i justify-around items-center">
           <div>
             <h1 
               className="text-white font-bold text-4xl font-sans">
@@ -101,7 +145,7 @@ import { useNavigate } from 'react-router-dom'
               className="text-white mt-1">
                 If you already have an account, log in here
             </p>
-            <Link to='/'>
+            <Link to='/login'>
             <button 
               type="submit" 
               className="block w-28 bg-white hover:bg-amber-600 hover:text-white text-amber-600 mt-4 py-2 rounded-2xl font-bold mb-2">
@@ -111,6 +155,7 @@ import { useNavigate } from 'react-router-dom'
           </div>
         </div>
       </div>
+      
     </>
   )
 }
