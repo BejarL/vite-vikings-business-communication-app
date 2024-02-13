@@ -5,12 +5,12 @@ import { signOut } from 'firebase/auth'
 import { auth } from '../../FirebaseConfig'
 import { useNavigate } from 'react-router-dom';
 
+
 export default function Dashboard() {
     const [channels, setChannels] = useState([{id: 0, name: "Direct 1", type: "direct"}, {id: 1, name: "Channel 2", type: "channel"}, {id: 2, name: "Direct 3", type: "direct"}, {id: 3, name: "Channel 4", type: "channel"}]);
     const [channel, setChannel] = useState("");
     const [showChannel, setShowChannel] = useState(true);
     const [showDirect, setShowDirect] = useState(true);
-    
 
     const directMenu = channels.filter(item => item.type === "direct")
     const channelMenu = channels.filter(item => item.type === "channel")
@@ -56,11 +56,10 @@ const handleLogout = async () => {
         <div className="dashboard--wrapper">
             <nav className="dashboard--navbar">
                 <div className="dashboard--link-wrappers">
-                    <Link to='/profile'>
-                    <a href="" className="dashboard--link">
+
+                    <Link to='/profile' href="" className="dashboard--link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fillRule="evenodd" d="M8 7a4 4 0 1 1 8 0a4 4 0 0 1-8 0m0 6a5 5 0 0 0-5 5a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3a5 5 0 0 0-5-5z" clipRule="evenodd"/></svg>
                         <p>Profile</p>
-                    </a>
                     </Link>
                     <a href="" className="dashboard--link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M21 19v1H3v-1l2-2v-6c0-3.1 2.03-5.83 5-6.71V4a2 2 0 0 1 2-2a2 2 0 0 1 2 2v.29c2.97.88 5 3.61 5 6.71v6zm-7 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2"/></svg>
@@ -79,7 +78,9 @@ const handleLogout = async () => {
                         <p>New Channel</p>
                     </a>
                 </div>
+                <Link to='/'>
                 <a href="" className="dashboard--link dashboard--logout" onClick={handleLogout}>
+
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/></svg>
                     <p>Log Out</p>
                 </a>
