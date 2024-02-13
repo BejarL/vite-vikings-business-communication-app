@@ -7,20 +7,17 @@ import { useNavigate } from 'react-router-dom';
  function Login() {
 
   const [error, setError] = useState(null)
-
+    
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Add or remove the 'fadeOut' class when the 'error' state changes
     if (error) {
       const errorTimeout = setTimeout(() => {
         setError(null)
       }, 3000)
-
-      // Cleanup the timeout to prevent memory leaks
       return () => clearTimeout(errorTimeout)
     }
   }, [error])
@@ -41,15 +38,14 @@ import { useNavigate } from 'react-router-dom';
 
     } catch (error) {
       console.error(error)
-      setError('Failed to sign up. Please try again.')
-      
+      setError('Failed to log in. Please check your email and password.')
     }
   }
   return (
     <>
     {error && (
-        <div className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">
-          {error}
+        <div className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative transition-opacity duration-1000 ease-in-out">
+        {error}
         </div>
       )}
       <div className="h-screen md:flex">
@@ -66,7 +62,7 @@ import { useNavigate } from 'react-router-dom';
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   />
-            </div>
+                </div>
                   <div className="flex bg-amber-500 items-center  py-2 px-3 rounded-2xl">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20"fill="currentColor"></svg>
                     <input 
@@ -76,21 +72,21 @@ import { useNavigate } from 'react-router-dom';
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       />
-            </div>  
+                  </div>  
                     <button 
                       type="submit" 
                       className="block w-full bg-white hover:bg-amber-600 mt-4 py-2 rounded-2xl hover:text-white text-amber-600 font-bold mb-2">
                         Log in
                     </button>
                   <Link to='/forgotpassword'>
-                  <span className="text-sm ml-2 hover:text-blue-800 cursor-pointer">
-                    Forgot Password?
-                  </span>
+                    <span className="text-sm ml-2 hover:text-blue-800 cursor-pointer">
+                      Forgot Password?
+                    </span>
                   </Link>
-          </form>
+            </form>
         </div>
         <div
-          className="relative overflow-hidden md:flex w-1/2 bg-amber-500 i justify-around items-center hidden">
+          className="relative overflow-hidden md:flex w-1/2 bg-amber-500 i justify-around items-center">
           <div>
             <h1 className="text-white font-bold text-4xl font-sans">
               Welcome!
@@ -99,9 +95,9 @@ import { useNavigate } from 'react-router-dom';
               If you do not have an account, sign up here
             </p>
             <Link to='/signup'>
-            <button 
-              type="submit" 
-              className="block w-28 bg-white hover:bg-amber-600 hover:text-white text-amber-600 mt-4 py-2 rounded-2xl font-bold mb-2">
+              <button 
+                type="button" 
+                className="block w-28 bg-white hover:bg-amber-600 hover:text-white text-amber-600 mt-4 py-2 rounded-2xl font-bold mb-2">
                 Sign Up
               </button>
             </Link>
