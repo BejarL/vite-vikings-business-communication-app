@@ -36,7 +36,7 @@ function DeleteAccountModal({ deleteProfile }) {
         backdrop="static"
         keyboard={false}
         className="profile--modal-wrapper"
-      >
+      > 
           <Modal.Body className="profile--modal-body">
             <h4>Type Confirm to Delete</h4>
             <input className="profile--invalid-username" value={confirm} placeholder="Confirm" onChange={updateConfirm}/>

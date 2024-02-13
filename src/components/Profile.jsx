@@ -87,13 +87,13 @@ export default function Profile() {
                 <div className="profile--settings-wrapper">
                     <div className="profile--user-wrapper">
                         <p className="profile--user-name">{currentUser.displayName}</p>
-                        <EditUserNameModal 
+                        <EditUserNameModal
                         displayName={currentUser.displayName}
                         updateDisplayName={updateDisplayName}
                         />
                     </div>
                     <div className="profile--edit-password-wrapper">
-                        <button className="profile--modal-btn" data-toggle="modal" data-target="#editpassword">Reset Password</button>
+                        <button className="profile--modal-btn">Reset Password</button>
                         <DeleteAccountModal deleteProfile={deleteProfile} />
                     </div>
                 </div>

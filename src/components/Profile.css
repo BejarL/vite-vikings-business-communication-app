@@ -37,6 +37,7 @@
 }
 
 .profile--user-wrapper {
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,7 +80,7 @@
     top: 0px;
     background-color: white;
     width: 300px;
-    left: calc(50% - 150px);
+    left: calc(50% - 15px);
     top: calc(50% - 100px);
     z-index: 10;
     padding: 10px;
@@ -138,7 +139,7 @@
     font-size: 1.5rem;
     background-color: #f59e0b;
     padding: 10px;
-    margin: 20px 0 0 0;
+    margin: 10px 0 10px 0;
     border-radius: 5px;
     width: 210px;
     transition: 80ms background-color linear;
@@ -188,3 +189,4 @@
     width: 80%;
     margin-left: 50px;
 }
+
