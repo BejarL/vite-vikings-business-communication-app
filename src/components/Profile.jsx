@@ -11,11 +11,12 @@ export default function Profile() {
     const [img, setImg] = React.useState("")
     const [currentUser, setCurrentUser] = React.useState("");
     
-    onAuthStateChanged(auth, (currentUser) => {
-        setCurrentUser(currentUser);
-    });
-    
     React.useEffect(() => {
+
+        onAuthStateChanged(auth, (currentUser) => {
+            setCurrentUser(currentUser);
+        });
+        
         if (currentUser.uid) {
             const imageRef = ref(storage, `profilePicture/${currentUser.uid}/profilePic`)
             const url = getDownloadURL(imageRef)
