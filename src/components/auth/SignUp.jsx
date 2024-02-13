@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react'
-import { auth, firestoreInstance } from '../../../FirebaseConfig'
+import { auth, db } from '../../../FirebaseConfig'
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification} from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
+
   
  function SignUp() {
 
@@ -13,11 +15,9 @@ import { useNavigate } from 'react-router-dom'
   const [password, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
-
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Add or remove the 'fadeOut' class when the 'error' state changes
     if (error) {
       const errorTimeout = setTimeout(() => {
         setError(null)
@@ -40,22 +40,24 @@ import { useNavigate } from 'react-router-dom'
       const userCredential = await createUserWithEmailAndPassword(auth, email, password, username)
       const user = userCredential.user
 
+      // Update the user profile
       await updateProfile(auth.currentUser, { displayName: username })
+      // Send email verification
       await sendEmailVerification(user)
 
-      
-
-      await firestoreInstance.collection('users').doc(user.uid).set({
-        username: username,
-        email: email,
+      const userDocRef = doc(db, 'users', user.uid)
+      await setDoc(userDocRef, {
+        uid: user.uid,
+        email: user.email,
+        displayName: username,
       })
 
       console.log(userCredential)
 
+      navigate('/')
+
       localStorage.setItem('token', user.accessToken)
       localStorage.setItem('user', JSON.stringify(user))
-
-      navigate('login')
 
       } catch (error) {
       console.error(error)
@@ -133,7 +135,7 @@ import { useNavigate } from 'react-router-dom'
               </button>
           </form>
         </div>
-        <div className="relative overflow-hidden md:flex w-1/2 bg-amber-400 i justify-around items-center hidden">
+        <div className="relative overflow-hidden md:flex w-1/2 bg-amber-400 i justify-around items-center">
           <div>
             <h1 
               className="text-white font-bold text-4xl font-sans">
