@@ -1,37 +1,34 @@
-import { useState } from 'react';
-import EditUserNameModal from './EditUserNameModal'
-import DeleteAccountModal from './DeleteAccoutModal';
-import { onAuthStateChanged, deleteUser, updateProfile } from 'firebase/auth'
-import { auth, storage } from '../../FirebaseConfig.js'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { useState, useEffect } from 'react';
+import { onAuthStateChanged, deleteUser, updateProfile } from 'firebase/auth';
+import { auth, storage } from '../../FirebaseConfig.js';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from "react-router-dom";
-import './Profile.css'
-import { useNavigate } from 'react-router-dom';
+import EditUserNameModal from './EditUserNameModal';
+import DeleteAccountModal from './DeleteAccoutModal';
+import './Profile.css';
 
-export default function Profile() {
-    const [img, setImg] = React.useState("")
-    const [currentUser, setCurrentUser] = React.useState("");
-    
-    React.useEffect(() => {
+function Profile() {
+    const [img, setImg] = useState("");
+    const [currentUser, setCurrentUser] = useState("");
 
     const navigate = useNavigate()
 
+    useEffect(() => {    
+            onAuthStateChanged(auth, (currentUser) => {
+                setCurrentUser(currentUser);
+            });
+            
+            if (currentUser.uid) {
+                const imageRef = ref(storage, `profilePicture/${currentUser.uid}/profilePic`)
+                const url = getDownloadURL(imageRef)
+                    .then((res) => {
+                        setImg(res);
+                    })
+                    .catch((e) => setImg("https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))
+            }
+        }, [currentUser])
 
-        onAuthStateChanged(auth, (currentUser) => {
-            setCurrentUser(currentUser);
-        });
-        
-        if (currentUser.uid) {
-            const imageRef = ref(storage, `profilePicture/${currentUser.uid}/profilePic`)
-            const url = getDownloadURL(imageRef)
-                .then((res) => {
-                    setImg(res);
-                })
-                .catch((e) => setImg("https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))
-        }
-    }, [currentUser])
-    
-    //is used to handle any file that gets uploaded.
+     //is used to handle any file that gets uploaded.
     // 1st - checks to see if a file has been uploaded, if its undefined then do nothing
     // 2nd- creates an image ref unique to the signed in user, the img ref file path is profilePicture/${userId}/profilePic in storage
     // 3rd - once the image ref is made, then upload the file to that img ref in storage, and if it failes then console log 'upload failed'
@@ -51,15 +48,14 @@ export default function Profile() {
                 .catch(() => console.log("upload failed"));
         }
     }
-    
-    const navigate = useNavigate();
+
     const deleteProfile = async () => {
         navigate("/login")
         localStorage.clear();
         deleteUser(currentUser).then(() => {
             console.log("user deleted");
           }).catch((error) => {
-            
+            console.error("Error deleting user:", error);
           });
     }
 
@@ -72,9 +68,9 @@ export default function Profile() {
             console.log(error);
           });
     }
-    
-    function updatePassword () {
-        navigate('/updatepassword')
+
+    const updatePassword = () => {
+        navigate('/updatepassword');
     }
 
     return (
@@ -102,11 +98,8 @@ export default function Profile() {
                         />
                     </div>
                     <div className="profile--edit-password-wrapper">
-                        <button className="profile--modal-btn">Reset Password</button>
+                        <button className="profile--modal-btn" data-toggle="modal" data-target="#editpassword" onClick={updatePassword}>Change Password</button>
                         <DeleteAccountModal deleteProfile={deleteProfile} />
-
-                        <button data-toggle="modal" data-target="#editpassword" onClick={updatePassword}>Change Password</button>
-                  
                         <button>Delete Account</button>
 
                     </div>
@@ -115,3 +108,5 @@ export default function Profile() {
         </div>
     )
 }
+
+export default Profile;
