@@ -1,4 +1,7 @@
-import './Dashboard.css';
+
+import './Dashboard.css'
+import { IconContext } from 'react-icons';
+import NewChannel from './NewChannel';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
@@ -20,6 +23,29 @@ function Dashboard() {
   // Derived lists based on type
   const directMenu = channels.filter((item) => item.type === 'direct');
   const channelMenu = channels.filter((item) => item.type === 'channel');
+
+    const directElems = directMenu.map(item => {
+        return (
+            <div key={item.id}>
+                {item.name}
+            </div>
+        )
+    })
+    const channelElems = channelMenu.map(item => {
+        return (
+            <div  key={item.id}>
+                {item.name}
+            </div>
+        )
+    })
+            function addItem(type) {
+                console.log("clicked");
+                setChannels(prevChannels => {
+             return ( 
+                [...prevChannels,  {id: prevChannels.length + 1, name: "New Channel", type: type}]
+                )
+            }) 
+}
 
   // JSX elements for direct and channel menus
   const directElems = directMenu.map((item) => (
@@ -102,6 +128,18 @@ function Dashboard() {
             </svg>
           </button>
         </div>
+                <div className="direct-List">
+                    <div className={showDirect ? "direct--overflow" : "dashboard--hidden"}>
+                        {directElems}
+                    </div>
+                </div>
+            </div>
+           
+            <div className="dashboard--textbox">
+            <div className= "textbox">
+
+            </div>
+            </div>
 
         {/* Channel List */}
         <div className="channel-List">
