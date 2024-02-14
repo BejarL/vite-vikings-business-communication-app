@@ -47,23 +47,6 @@ function Dashboard() {
             }) 
 }
 
-  // JSX elements for direct and channel menus
-  const directElems = directMenu.map((item) => (
-    <div key={item.id}>{item.name}</div>
-  ));
-  const channelElems = channelMenu.map((item) => (
-    <div key={item.id}>{item.name}</div>
-  ));
-
-  // Function to add a new item to channels
-  const addItem = (type) => {
-    console.log('clicked');
-    setChannels((prevChannels) => [
-      ...prevChannels,
-      { id: prevChannels.length + 1, name: 'New Channel', type: type },
-    ]);
-  };
-
   // Function to toggle the visibility of the channel or direct menu
   const chevron = (set) => {
     set((prev) => !prev);
@@ -82,7 +65,7 @@ function Dashboard() {
 
   // JSX structure
     return (
-        <div className="dashboard--wrapper">
+      <div className="dashboard--wrapper">
         <nav className="dashboard--navbar">
           <div className="dashboard--link-wrappers">
             <Link to='/profile' className="dashboard--link">
@@ -105,14 +88,14 @@ function Dashboard() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="0.88em" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z"/></svg>
                 <p>New Channel</p>
             </a>
-        </div>
+          </div>
             <Link to="/" className="dashboard--link dashboard--logout" onClick={handleLogout}>
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/></svg>
             <p>Log Out</p>
           </Link>
-      </nav>
+        </nav>
 
-            <div className="dashboard--channels">
+        <div className="dashboard--channels">
         {/* Channel Header */}
         <div className="channel--Header">
           <button onClick={() => addItem('channel')}>Channels</button>
@@ -140,36 +123,7 @@ function Dashboard() {
 
             </div>
             </div>
-
-        {/* Channel List */}
-        <div className="channel-List">
-          <div className={showChannel ? 'direct--overflow' : 'dashboard--hidden'}>{channelElems}</div>
         </div>
-
-        {/* Direct Header */}
-        <div className="direct--Header">
-          <button onClick={() => addItem('direct')}>Direct Messages</button>
-          <button onClick={() => chevron(setShowDirect)}>
-            <svg
-              className={showDirect ? 'dashboard--down' : 'dashboard--left'}
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path fill="currentColor" d="m7 10l5 5l5-5z" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Direct List */}
-        <div className="direct-List">
-          <div className={showDirect ? 'direct--overflow' : 'dashboard--hidden'}>{directElems}</div>
-        </div>
-      </div>
-
-      <div className="dashboard--textbox"></div>
-    </div>
   );
 }
 
