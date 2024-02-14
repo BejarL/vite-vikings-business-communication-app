@@ -25,9 +25,9 @@ const router = createBrowserRouter (
       <Route path='login' element={<Login />} />
       <Route path='forgotpassword' element={<ForgotPassword />} />
       <Route path='/' element={<Protected />}>
-        <Route path='/layout' element={<Layout />}/>
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/' element={<Dashboard />} />
+        <Route path='/' element={<Layout />}>
+          <Route path='/profile' element={<Profile />} />
+        </Route>
         <Route path='updatepassword' element={<UpdatePassword />} />
       </Route>
     </Route>
