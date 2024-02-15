@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import EditUserNameModal from './EditUserNameModal'
 import './Profile.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 export default function Profile({ userID }) {
     const [currentName, setCurrentName] = useState("xlnvis")
-
     const navigate = useNavigate()
 
 
@@ -17,6 +16,7 @@ export default function Profile({ userID }) {
         navigate('/updatepassword')
     }
 
+
     return (
         <div className='profile--wrapper'>
             <div>
@@ -26,11 +26,13 @@ export default function Profile({ userID }) {
                 <div className="profile--settings-wrapper">
                     <div className="profile--user-wrapper">
                         <p className="profile--user-name">{currentName}</p>
-                        <EditUserNameModal currentName={currentName} setCurrentName={setCurrentName} />
+                        <EditUserNameModal 
+                        currentName={currentName} 
+                        setCurrentName={setCurrentName} 
+                        />
                     </div>
                     <div className="profile--edit-password-wrapper">
-                        <button data-toggle="modal" data-target="#editpassword" onClick={updatePassword}>Change Password</button>
-                  
+                       <button data-toggle="modal" data-target="#editpassword" onClick={updatePassword}>Change Password</button>                  
                         <button>Delete Account</button>
                     </div>
                 </div>

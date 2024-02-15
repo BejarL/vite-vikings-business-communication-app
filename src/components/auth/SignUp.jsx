@@ -1,32 +1,29 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { auth, db } from '../../../FirebaseConfig'
-import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification} from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore'
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth'
+import { collection, doc, setDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
-
   
  function SignUp() {
-
   const [error, setError] = useState(null)
-
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
-
+  const [signupSuccess, setSignupSuccess] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (error) {
+    if (error && signupSuccess) {
       const errorTimeout = setTimeout(() => {
         setError(null)
+        setSignupSuccess(false); // Reset signup success status
       }, 3000)
 
-      // Cleanup the timeout to prevent memory leaks
       return () => clearTimeout(errorTimeout)
     }
-  }, [error])
+  }, [error, signupSuccess])
 
   const signUp = async (e) => {
     e.preventDefault()
@@ -40,30 +37,32 @@ import { useNavigate } from 'react-router-dom'
       const userCredential = await createUserWithEmailAndPassword(auth, email, password, username)
       const user = userCredential.user
 
-      // Update the user profile
       await updateProfile(auth.currentUser, { displayName: username })
-      // Send email verification
       await sendEmailVerification(user)
 
-      const userDocRef = doc(db, 'users', user.uid)
+      const allUsersDocRef = doc(db, 'users', 'allUsers')
+      const usersCollectionRef = collection(allUsersDocRef, 'users-info')
+      const userDocRef = doc(usersCollectionRef, user.uid)
+
       await setDoc(userDocRef, {
         uid: user.uid,
         email: user.email,
         displayName: username,
       })
 
-      console.log(userCredential)
+      console.log(userCredential);
 
-      navigate('/')
+      navigate('/login')
+
+      setSignupSuccess(true) // Set signup success status
 
       localStorage.setItem('token', user.accessToken)
       localStorage.setItem('user', JSON.stringify(user))
-
-      } catch (error) {
+    } catch (error) {
       console.error(error)
       setError('Failed to sign up. Please try again.')
-      }
     }
+  }
 
   return (  
     <>

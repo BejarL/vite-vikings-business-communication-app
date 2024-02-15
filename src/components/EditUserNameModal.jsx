@@ -1,10 +1,10 @@
-import React  from 'react';
+import { useState }  from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 function Example({ currentName, setCurrentName }) {
-  const [show, setShow] = React.useState(false);
-  const [username, setUsername] = React.useState(currentName);
+  const [show, setShow] = useState(false);
+  const [username, setUsername] = useState(currentName);
   let nameRegex = /[]/
 
   const handleUsername = (e) => {
