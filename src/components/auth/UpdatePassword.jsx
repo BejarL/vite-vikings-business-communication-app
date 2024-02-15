@@ -44,11 +44,11 @@ function UpdatePassword() {
   return (
     <>
     {successMessage && (
-              <p className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">{successMessage}</p>
-            )}
-            {errorMessage && (
-              <p className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">{errorMessage}</p>
-            )}
+      <p className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">{successMessage}</p>
+      )}
+        {errorMessage && (
+      <p className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">{errorMessage}</p>
+      )}
       <div className="h-screen md:flex">
         <div className="flex md:w-full justify-center py-10 items-center bg-amber-500">
           <form className="bg-amber-500">

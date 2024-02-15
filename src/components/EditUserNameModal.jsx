@@ -1,4 +1,4 @@
-import React  from 'react';
+import { useState }  from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
@@ -7,7 +7,7 @@ function EditUserNameModal({ displayName, updateDisplayName }) {
   const [show, setShow] = React.useState(false);
   const [errorMessage,setErrorMessage] = React.useState(false)
   const [username, setUsername] = React.useState(displayName);
-  
+  let nameRegex = /[]/
   const handleUsername = (e) => {
     let value = e.target.value
     setUsername(value);

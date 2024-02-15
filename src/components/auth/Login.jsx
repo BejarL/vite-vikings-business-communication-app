@@ -31,8 +31,8 @@ import { useNavigate } from 'react-router-dom';
       
       console.log(userCredential)
 
-      localStorage.setItem('token', user.accessToken)
-      localStorage.setItem('user', JSON.stringify(user))
+      sessionStorage.setItem('token', user.accessToken)
+      sessionStorage.setItem('user', JSON.stringify(user))
 
       navigate('/')
 
