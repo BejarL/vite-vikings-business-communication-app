@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged, deleteUser, updateProfile } from 'firebase/auth';
 import { auth, storage } from '../../FirebaseConfig.js';
@@ -72,6 +73,7 @@ function Profile() {
     const updatePassword = () => {
         navigate('/updatepassword');
     }
+
 
     return (
         // style used so the profile component fills in entire right side of sidebar
