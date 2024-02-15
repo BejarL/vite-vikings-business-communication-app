@@ -25,8 +25,17 @@ import { useNavigate } from 'react-router-dom'
     }
   }, [error, signupSuccess])
 
+  const MIN_PASSWORD_LENGTH = 8
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/
+
+
   const signUp = async (e) => {
     e.preventDefault()
+
+    if (!passwordRegex.test(password) || password.length < MIN_PASSWORD_LENGTH || password !== passwordConfirmation) {
+      setError('Password must meet complexity requirements.');
+      return
+    }
 
     if (password !== passwordConfirmation) {
       setError('Passwords do not match.')
@@ -56,8 +65,8 @@ import { useNavigate } from 'react-router-dom'
 
       setSignupSuccess(true) // Set signup success status
 
-      localStorage.setItem('token', user.accessToken)
-      localStorage.setItem('user', JSON.stringify(user))
+      sessionStorage.setItem('token', user.accessToken)
+      sessionStorage.setItem('user', JSON.stringify(user))
     } catch (error) {
       console.error(error)
       setError('Failed to sign up. Please try again.')
@@ -75,7 +84,13 @@ import { useNavigate } from 'react-router-dom'
         <div className="flex md:w-1/2 justify-center py-10 items-center bg-amber-500">
           <form onSubmit={signUp} className="bg-amber-500">
             <h1 className="text-white font-bold text-2xl mb-1">Emanate</h1>
-            <p className="text-sm font-normal text-white mb-7">Create Account</p>
+            <p className="text-sm font-normal text-white mb-2">Create Account</p>
+            <p className="text-sm font-normal text-white mb-2">
+              Password:
+              <li> 8 characters long </li>
+              <li> Include uppercase, lowercase </li>
+              <li> Include numbers, and special characters</li>
+            </p>
             <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none"viewBox="0 0 24 24" stroke="currentColor"></svg>
               <input 
