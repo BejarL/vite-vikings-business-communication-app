@@ -84,7 +84,7 @@ function SignUp() {
       console.error(error);
       setError("Failed to sign up. Please try again.");
     }
-  };
+  }
 
   return (
     <>
@@ -93,11 +93,13 @@ function SignUp() {
           {error}
         </div>
       )}
-      <div className="h-screen md:flex">
-        <div className="flex md:w-1/2 justify-center py-10 items-center bg-amber-500">
-          <form onSubmit={signUp} className="bg-amber-500">
-            <h1 className="text-white font-bold text-2xl mb-1">Emanate</h1>
-            <p className="text-sm font-normal text-white mb-2">
+      <div className="h-screen flex">
+        <div className="flex md:w-1/2 justify-center py-10 items-center"
+                  style={{ backgroundImage: 'url("/src/images/chatting.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}
+                  >
+          <form onSubmit={signUp} className="bg-amber-500 md:w-96 p-8 shadow-lg backdrop-blur-md bg-opacity-50 rounded-lg">
+            <h1 className="text-white font-bold text-2xl mb-4">Emanate</h1>
+            <p className="text-sm font-normal text-white mb-4">
               Create Account
             </p>
             <p className="text-sm font-normal text-white mb-2">
@@ -171,7 +173,7 @@ function SignUp() {
             </div>
             <button
               type="submit"
-              className="block w-full bg-white hover:bg-amber-600 hover:text-white  text-amber-600 mt-4 py-2 rounded-2xl font-bold mb-2"
+              className="block w-full bg-white hover:bg-amber-600 hover:text-white text-amber-600 mt-6 py-2 rounded-2xl font-bold mb-2"
             >
               Sign up
             </button>
