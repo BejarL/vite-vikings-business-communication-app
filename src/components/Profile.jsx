@@ -100,7 +100,6 @@ function Profile() {
                     <div className="profile--edit-password-wrapper">
                         <button className="profile--modal-btn" data-toggle="modal" data-target="#editpassword" onClick={updatePassword}>Change Password</button>
                         <DeleteAccountModal deleteProfile={deleteProfile} />
-                        <button>Delete Account</button>
 
                     </div>
                 </div>
