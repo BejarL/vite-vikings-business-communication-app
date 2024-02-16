@@ -126,7 +126,6 @@ function Profile() {
               Change Password
             </button>
             <DeleteAccountModal deleteProfile={deleteProfile} />
-            {/* <button>Delete Account</button> */}
           </div>
         </div>
       </div>
