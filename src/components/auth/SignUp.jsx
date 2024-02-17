@@ -6,10 +6,18 @@ import {
   updateProfile,
   sendEmailVerification,
 } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  query,
+  getDocs,
+  where,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 function SignUp() {
+  // State variables to manage user input and error/success messages
   const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -18,6 +26,7 @@ function SignUp() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const navigate = useNavigate();
 
+  // Use useEffect to clear error and success messages after a timeout
   useEffect(() => {
     if (error && signupSuccess) {
       const errorTimeout = setTimeout(() => {
@@ -29,28 +38,40 @@ function SignUp() {
     }
   }, [error, signupSuccess]);
 
+  // Constants for password complexity requirements
   const MIN_PASSWORD_LENGTH = 8;
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
 
+  // Function to handle the signup process
   const signUp = async (e) => {
     e.preventDefault();
 
+    // Validate password complexity and match with confirmation
     if (
       !passwordRegex.test(password) ||
       password.length < MIN_PASSWORD_LENGTH ||
       password !== passwordConfirmation
     ) {
-      setError("Password must meet complexity requirements.");
+      setError("Password must meet the requirements.");
       return;
     }
 
+    // Check if passwords match
     if (password !== passwordConfirmation) {
       setError("Passwords do not match.");
       return;
     }
 
+    // Check if the username already exists
     try {
+      const usernameExists = await checkUsernameExists(username);
+      if (usernameExists) {
+        setError("Username is already taken. Please choose a different one.");
+        return;
+      }
+
+      // Create user account and update profile
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -62,6 +83,7 @@ function SignUp() {
       await updateProfile(auth.currentUser, { displayName: username });
       await sendEmailVerification(user);
 
+      // Save user information to Firestore
       const allUsersDocRef = doc(db, "users", "allUsers");
       const usersCollectionRef = collection(allUsersDocRef, "users-info");
       const userDocRef = doc(usersCollectionRef, user.uid);
@@ -74,41 +96,74 @@ function SignUp() {
 
       console.log(userCredential);
 
+      // Redirect to login page and set signup success status
       navigate("/login");
+      setSignupSuccess(true);
 
-      setSignupSuccess(true); // Set signup success status
-
+      // Store user information in session storage
       sessionStorage.setItem("token", user.accessToken);
       sessionStorage.setItem("user", JSON.stringify(user));
     } catch (error) {
       console.error(error);
       setError("Failed to sign up. Please try again.");
     }
-  }
+  };
+
+  // Function to check if the username already exists
+  const checkUsernameExists = async (username) => {
+    const usersCollectionRef = collection(
+      db,
+      "users",
+      "allUsers",
+      "users-info"
+    );
+    const querySnapshot = await getDocs(
+      query(usersCollectionRef, where("displayName", "==", username))
+    );
+    return !querySnapshot.empty;
+  };
 
   return (
     <>
+      {/* Display error message if there is any */}
       {error && (
-        <div className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">
+        <div className="error-message text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">
           {error}
         </div>
       )}
-      <div className="h-screen flex">
-        <div className="flex md:w-1/2 justify-center py-10 items-center"
-                  style={{ backgroundImage: 'url("/src/images/chatting.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}
-                  >
-          <form onSubmit={signUp} className="bg-amber-500 md:w-96 p-8 shadow-lg backdrop-blur-md bg-opacity-50 rounded-lg">
-            <h1 className="text-white font-bold text-2xl mb-4">Emanate</h1>
-            <p className="text-sm font-normal text-white mb-4">
-              Create Account
-            </p>
-            <p className="text-sm font-normal text-white mb-2">
+
+      {/* Main layout for the signup page */}
+      <div
+        className="signup-container h-screen md:flex relative"
+        style={{
+          backgroundImage: 'url("/src/images/chatting.png")',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <h1 className="text-white font-bold text-3xl text-center sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2">
+          Emanate
+        </h1>
+        <div className="signup-form flex md:w-1/2 justify-center py-10 items-center">
+          {/* Form */}
+          <form
+            onSubmit={signUp}
+            className="bg-amber-800 md:w-96 p-8 shadow-lg backdrop-blur-md bg-opacity-50 rounded-lg"
+          >
+            {/* Form header */}
+            <p className="text-lg font-bold text-white mb-2">Create Account</p>
+            {/* Password complexity requirements */}
+            <p className="text-sm font-normal text-white mb-3">
               Password:
               <li> 8 characters long </li>
-              <li> Include uppercase, lowercase </li>
-              <li> Include numbers, and special characters</li>
+              <li> Include uppercase and lowercase </li>
+              <li> Include numbers and special characters</li>
             </p>
-            <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl mb-4">
+            {/* Input fields for username, email, password, and password confirmation */}
+            <label htmlFor="username" className="text-white pl-2">
+              Username
+            </label>
+            <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -124,7 +179,11 @@ function SignUp() {
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-            <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl mb-4">
+            <label htmlFor="email" className="text-white pl-2">
+              {" "}
+              Email
+            </label>
+            <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -140,7 +199,10 @@ function SignUp() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl mb-4">
+            <label htmlFor="password" className="text-white pl-2">
+              Password
+            </label>
+            <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -156,6 +218,9 @@ function SignUp() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            <label htmlFor="password" className="text-white pl-2">
+              Confirm Password
+            </label>
             <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +244,8 @@ function SignUp() {
             </button>
           </form>
         </div>
-        <div className="relative overflow-hidden md:flex w-1/2 bg-amber-400 i justify-around items-center">
+        {/* Section for returning users */}
+        <div className="returning-users relative overflow-hidden md:flex w-1/2 i justify-around items-center">
           <div>
             <h1 className="text-white font-bold text-4xl font-sans">
               Welcome back!
@@ -187,6 +253,7 @@ function SignUp() {
             <p className="text-white mt-1">
               If you already have an account, log in here
             </p>
+            {/* Link to the login page */}
             <Link to="/login">
               <button
                 type="submit"
