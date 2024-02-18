@@ -10,6 +10,7 @@ function NewChannel() {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [recipient, setRecipient] = useState("");
+  const [recipientMsg, setRecipientMsg] = useState("")
 
 
   const toggleModal = () => {
@@ -26,7 +27,8 @@ function NewChannel() {
   }
 
   const createChannel = async () => {
-    // create a new channel document in firestore
+    // create a new channel document inside of
+    // channels collection
     const channelsRef = collection(db, "channels");
     const newChannelRef = await addDoc(channelsRef, {
       title: title,
@@ -50,6 +52,7 @@ function NewChannel() {
           role: "member",
         });
       });
+      setRecipientMsg("Recipients added successfully!")
     }
 
     // close modal after creating the channel
@@ -102,7 +105,9 @@ function NewChannel() {
               <button className="dashboard--modal-add-btn">Add</button>
               </div>
           </div>
-
+          {recipientMsg && (
+            <div className="recipient-message">{recipientMsg}</div>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <div className="dashboard--modal-footer">
