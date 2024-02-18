@@ -2,6 +2,8 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import { auth, db } from "../../FirebaseConfig";
+import {collection, addDoc} from "firebase/firestore";
 
 
 function NewChannel() {
@@ -21,6 +23,38 @@ function NewChannel() {
   }
   const updateRecipient = e => {
     setRecipient(e.target.value);
+  }
+
+  const createChannel = async () => {
+    // create a new channel document in firestore
+    const channelsRef = collection(db, "channels");
+    const newChannelRef = await addDoc(channelsRef, {
+      title: title,
+      createdBy: auth.currentUser.uid,
+      createdAt: new Date(),
+    })
+
+    // add creator as first member of the channel
+    const membersRef = collection(newChannelRef, "members");
+    await addDoc(membersRef, {
+    userId: auth.currentUser.uid,
+    role: "creator",
+    })
+
+    // add other recipients
+    if (recipient) {
+      const recipients = recipient.split(",").map((r) => r.trim());
+      recipients.forEach(async (rec) => {
+        await addDoc(membersRef, {
+          userId: rec,
+          role: "member",
+        });
+      });
+    }
+
+    // close modal after creating the channel
+    toggleModal();
+
   }
 
   
@@ -54,7 +88,7 @@ function NewChannel() {
             <input 
               type="input"
               onChange={updateTitle}
-              placeHolder="Enter Channel Name"
+              placeholder="Enter Channel Name"
               value={title}
               className="dashboard--modal-input"
               />
@@ -73,7 +107,7 @@ function NewChannel() {
         <Modal.Footer>
           <div className="dashboard--modal-footer">
             <Button variant="secondary" onClick={toggleModal}>Cancel</Button>
-            <Button variant="primary">Create</Button>
+            <Button variant="primary" onClick={createChannel}>Create</Button>
           </div>
         </Modal.Footer>
       </Modal>
