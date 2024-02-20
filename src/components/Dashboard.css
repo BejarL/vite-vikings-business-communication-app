@@ -220,3 +220,54 @@
 .reply-button:hover {
   background-color: rgb(182, 143, 85);
 }
+
+.dashboard--modal-wrapper {
+  position: absolute;
+  top: 0px;
+  background-color: white;
+  width: 500px;
+  height: 300px;
+  left: calc(50% - 250px);
+  top: calc(50% - 150px);
+  z-index: 10;
+  padding: 10px;
+  background-color: #f59e0b;
+  border-radius: 5px;
+}
+
+.dashboard--modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+.dashboard--modal-form {
+  height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dashboard--modal-input {
+  width: 400px;
+  margin-top: 10px;
+  font-size: 1.5rem;
+}
+.dashboard--modal-input-2 {
+  font-size: 1.5rem;
+  width: 340px;
+  margin-top: 10px;
+}
+
+.dashboard--modal-add-btn {
+  color: white;
+  background-color: rgb(40, 207, 40);
+  width: 50px;
+  margin-left: 10px;
+  font-size: 1.5rem;
+}
+
+.mb-3{
+  width: 500px; 
+}

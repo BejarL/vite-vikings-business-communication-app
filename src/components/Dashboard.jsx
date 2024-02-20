@@ -1,39 +1,58 @@
 // Importing necessary dependencies and styles
 import "./Dashboard.css";
 import { IconContext } from "react-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "../../FirebaseConfig";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../../FirebaseConfig";
 import { useNavigate } from "react-router-dom";
 import NewChannel from "./NewChannel";
+import { onSnapshot, collection, doc } from "firebase/firestore";
 
 // Main Dashboard component
-function Dashboard() {
+function Dashboard() {  
   // State variables
-  const [channels, setChannels] = useState([
-    { id: 0, name: "Direct 1", type: "direct" },
-    { id: 1, name: "Channel 1", type: "channel" },
-    { id: 2, name: "Direct 2", type: "direct" },
-    { id: 3, name: "Channel 2", type: "channel" },
-  ]);
-  const [channel, setChannel] = useState("");
+  const [channels, setChannels] = useState([]);
+  // const [channel, setChannel] = useState("");
   const [showChannel, setShowChannel] = useState(true);
-  const [showDirect, setShowDirect] = useState(true);
+  const [currentUser, setCurrentUser] = useState("")
+  // const [showDirect, setShowDirect] = useState(true);
+  console.log(channels)
 
+  useEffect(() => {
+      onAuthStateChanged(auth, (currentUser) => {
+        setCurrentUser(currentUser);
+      });
+
+      if (currentUser.uid) {
+        const unsubscribe= onSnapshot(doc(db, "/users/allUsers/users-info", currentUser.uid), function (doc) {
+          setChannels(doc.data().chats);
+        })
+        return unsubscribe;
+      }
+  }, [currentUser])
+  
   // Derived lists based on type
-  const directMenu = channels.filter((item) => item.type === "direct");
-  const channelMenu = channels.filter((item) => item.type === "channel");
+  // const directMenu = channels.filter((item) => item.type === "direct");
+  // const channelMenu = channels.filter((item) => item.type === "channel");
 
   // Mapping channel and direct items
-  const directElems = directMenu.map((item) => (
-    <div key={item.id}>{item.name}</div>
-  ));
+  // const directElems = directMenu.map((item) => (
+  //   <div key={item.id}>{item.name}</div>
+  // ));
 
-  const channelElems = channelMenu.map((item) => (
-    <div key={item.id}>{item.name}</div>
-  ));
+  let channelElems = []
+  if (channels) {
+    channelElems = channels.map((item) => {
+      
+      const obj = JSON.parse(item);
 
+      return (
+        <div key={obj.channelId}>{obj.channelName}</div>
+        )
+    });
+    } 
+      
   // Function to add a new channel or direct message
   function addItem(type) {
     console.log("clicked");
@@ -130,20 +149,8 @@ function Dashboard() {
             </svg>
             <p>Community</p>
           </a>
-          <a href="" className="dashboard--link">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="0.88em"
-              height="1em"
-              viewBox="0 0 448 512"
-            >
-              <path
-                fill="currentColor"
-                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z"
-              />
-            </svg>
-            <p>New Channel</p>
-          </a>
+          <div></div>
+          <NewChannel />
         </div>
         {/* Logout link */}
         <Link
@@ -192,9 +199,9 @@ function Dashboard() {
           </div>
         </div>
         {/* Direct Messages */}
-        <div className="direct--Header">
-          <button onClick={() => addItem("direct")}>Direct Messages</button>
-          <button onClick={() => chevron(setShowDirect)}>
+        {/* <div className="direct--Header">
+           <button onClick={() => addItem("direct")}>Direct Messages</button>
+          <button onClick={() => chevron(setShowDirect)}> 
             <svg
               className={showDirect ? "dashboard--down" : "dashboard--left"}
               xmlns="http://www.w3.org/2000/svg"
@@ -205,15 +212,15 @@ function Dashboard() {
               <path fill="currentColor" d="m7 10l5 5l5-5z" />
             </svg>
           </button>
-        </div>
+        </div> */}
         {/* Direct List */}
-        <div className="direct-List">
+        {/* <div className="direct-List">
           <div
             className={showDirect ? "direct--overflow" : "dashboard--hidden"}
           >
             {directElems}
           </div>
-        </div>
+        </div> */}
       </div>
       <div>
         {/* Additional components, e.g., NewChannel, textbox, etc. */}
@@ -284,7 +291,8 @@ function Dashboard() {
                   <li>Add a delete button to each message the user sends.</li>
                 </ul>
               </ul>
-              <button className="delete-button" onClick>
+              <button className="delete-button">
+
                 {" "}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
