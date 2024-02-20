@@ -2,16 +2,26 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db, storage } from '../../FirebaseConfig'
+import { ref, getDownloadURL } from "firebase/storage";
 
 function NewChannel() {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [recipient, setRecipient] = useState("");
+  const [users, setUsers] = useState([]);
+  console.log(users);
+  
 
-
+  //toggles the modal, and resets the state so the forms dont remember data when closed
   const toggleModal = () => {
     setShow((prevState) => {
+      if (prevState) {
+        setTitle("");
+        setRecipient("");
+        setUsers([]);
+      }
       return !prevState;
     });
   };
@@ -23,7 +33,57 @@ function NewChannel() {
     setRecipient(e.target.value);
   }
 
+  //validates that a user with display name exists, and return their data
+  const validateUser = async (username) => {
+    const usersCollectionRef = collection(
+      db,
+      "users",
+      "allUsers",
+      "users-info"
+    );
+    const querySnapshot = await getDocs(
+      query(usersCollectionRef, where("displayName", "==", username))
+    );
+    if (querySnapshot.empty) {
+      return "";
+    }
+    return querySnapshot;
+  };
+
+  //adds a user to the array of users to be added
+  const addRecipient = async () => {
+    //check if the user was already added 
+    for (let i in users) {
+      if (users[i].displayName === recipient) {
+        window.alert("User already added");
+        return;
+      }
+    }
+
+    const query = await validateUser(recipient);
+    //if the result from the query is not a falsey value, then add the data to the users
+    if (query) {
+      query.forEach(doc => {
+        setUsers(prev => [...prev, doc.data()]);
+      })
+
+    // if the result is falsey, need to alert the user that its invalid
+    } else {
+      window.alert("user doesnt exist")
+    }
+  }
   
+  //map through the added recipients to render
+  const defaultProfilePic = "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  const userElems = users.map(user => {
+    
+    return (
+      <div key={user.uid} className="dashboard--recipient-card">
+        <img src={user.profilepic || defaultProfilePic} className="dashboard--recipient-img"></img>
+        <p>{user.displayName}</p>
+      </div>
+    )
+  })
 
   return (
     <>
@@ -54,7 +114,7 @@ function NewChannel() {
             <input 
               type="input"
               onChange={updateTitle}
-              placeHolder="Enter Channel Name"
+              placeholder="Enter Channel Name"
               value={title}
               className="dashboard--modal-input"
               />
@@ -65,7 +125,10 @@ function NewChannel() {
                 onChange={updateRecipient}
                 className="dashboard--modal-input-2"
                 />
-              <button className="dashboard--modal-add-btn">Add</button>
+              <button className="dashboard--modal-add-btn" onClick={addRecipient}>Add</button>
+              </div>
+              <div className="dashboard--cards">
+                {userElems}
               </div>
           </div>
 

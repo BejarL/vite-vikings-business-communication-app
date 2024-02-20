@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { onAuthStateChanged, deleteUser, updateProfile } from "firebase/auth";
-import { auth, storage } from "../../FirebaseConfig.js";
+import { auth, storage, db } from "../../FirebaseConfig.js";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import EditUserNameModal from "./EditUserNameModal";
 import DeleteAccountModal from "./DeleteAccoutModal";
@@ -71,7 +72,34 @@ function Profile() {
       });
   };
 
+  //checks to see if the username is already being used or not.
+  const validateUser = async (username) => {
+    const usersCollectionRef = collection(
+      db,
+      "users",
+      "allUsers",
+      "users-info"
+    );
+    const querySnapshot = await getDocs(
+      query(usersCollectionRef, where("displayName", "==", currentUser.displayName))
+    );
+    if (querySnapshot.empty) {
+      return "";
+    }
+    return querySnapshot;
+  };
+
+  //reaches out to firebase and changes the current users display name.
+  
   const updateDisplayName = async (username) => {
+
+    const query = await validateUser();
+
+    if (query) {
+      windows.alert("username already taken");
+      return;
+    }
+
     updateProfile(auth.currentUser, {
       displayName: username,
     })
@@ -114,6 +142,7 @@ function Profile() {
             <EditUserNameModal
               displayName={currentUser.displayName}
               updateDisplayName={updateDisplayName}
+              validateUser={validateUser}
             />
           </div>
           <div className="profile--edit-password-wrapper">

@@ -17,7 +17,6 @@ function Dashboard() {
   const [showChannel, setShowChannel] = useState(true);
   const [currentUser, setCurrentUser] = useState("")
   // const [showDirect, setShowDirect] = useState(true);
-  console.log(channels)
 
   useEffect(() => {
       onAuthStateChanged(auth, (currentUser) => {
@@ -101,55 +100,7 @@ function Dashboard() {
               />
             </svg>
             <p>Profile</p>
-          </Link>
-          {/* ... (other links) ... */}
-          <a href="" className="dashboard--link">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M21 19v1H3v-1l2-2v-6c0-3.1 2.03-5.83 5-6.71V4a2 2 0 0 1 2-2a2 2 0 0 1 2 2v.29c2.97.88 5 3.61 5 6.71v6zm-7 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2"
-              />
-            </svg>
-            <p>Notifs</p>
-          </a>
-          <a href="" className="dashboard--link">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 512 512"
-            >
-              <path
-                fill="currentColor"
-                d="M271.514 95.5h-32v178.111l115.613 54.948l13.737-28.902l-97.35-46.268z"
-              />
-              <path
-                fill="currentColor"
-                d="M256 16C123.452 16 16 123.452 16 256s107.452 240 240 240s240-107.452 240-240S388.548 16 256 16m0 448c-114.875 0-208-93.125-208-208S141.125 48 256 48s208 93.125 208 208s-93.125 208-208 208"
-              />
-            </svg>
-            <p>Recents</p>
-          </a>
-          <a href="" className="dashboard--link">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill="currentColor"
-                d="M7 14s-1 0-1-1s1-4 5-4s5 3 5 4s-1 1-1 1zm4-6a3 3 0 1 0 0-6a3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5"
-              />
-            </svg>
-            <p>Community</p>
-          </a>
-          <div></div>
+          </Link>   
           <NewChannel />
         </div>
         {/* Logout link */}
