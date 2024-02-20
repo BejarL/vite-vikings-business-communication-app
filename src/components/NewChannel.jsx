@@ -2,9 +2,10 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db, storage } from '../../FirebaseConfig'
+import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
+import { db, storage, auth } from '../../FirebaseConfig'
 import { ref, getDownloadURL } from "firebase/storage";
+
 
 function NewChannel() {
   const [show, setShow] = useState(false);
@@ -13,6 +14,9 @@ function NewChannel() {
   const [users, setUsers] = useState([]);
   console.log(users);
   
+
+  const [recipientMsg, setRecipientMsg] = useState("")
+
 
   //toggles the modal, and resets the state so the forms dont remember data when closed
   const toggleModal = () => {
@@ -71,6 +75,39 @@ function NewChannel() {
     } else {
       window.alert("user doesnt exist")
     }
+  }
+  const createChannel = async () => {
+    // create a new channel document inside of
+    // channels collection
+    const channelsRef = collection(db, "channels");
+    const newChannelRef = await addDoc(channelsRef, {
+      title: title,
+      createdBy: auth.currentUser.uid,
+      createdAt: new Date(),
+    })
+
+    // add creator as first member of the channel
+    const membersRef = collection(newChannelRef, "members");
+    await addDoc(membersRef, {
+    userId: auth.currentUser.uid,
+    role: "creator",
+    })
+
+    // add other recipients
+    if (recipient) {
+      const recipients = recipient.split(",").map((r) => r.trim());
+      recipients.forEach(async (rec) => {
+        await addDoc(membersRef, {
+          userId: rec,
+          role: "member",
+        });
+      });
+      setRecipientMsg("Recipients added successfully!")
+    }
+
+    // close modal after creating the channel
+    toggleModal();
+
   }
   
   //map through the added recipients to render
@@ -131,12 +168,14 @@ function NewChannel() {
                 {userElems}
               </div>
           </div>
-
+          {recipientMsg && (
+            <div className="recipient-message">{recipientMsg}</div>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <div className="dashboard--modal-footer">
             <Button variant="secondary" onClick={toggleModal}>Cancel</Button>
-            <Button variant="primary">Create</Button>
+            <Button variant="primary" onClick={createChannel}>Create</Button>
           </div>
         </Modal.Footer>
       </Modal>
