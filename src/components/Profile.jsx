@@ -81,7 +81,10 @@ function Profile() {
       "users-info"
     );
     const querySnapshot = await getDocs(
-      query(usersCollectionRef, where("displayName", "==", currentUser.displayName))
+      query(
+        usersCollectionRef,
+        where("displayName", "==", currentUser.displayName)
+      )
     );
     if (querySnapshot.empty) {
       return "";
@@ -90,9 +93,8 @@ function Profile() {
   };
 
   //reaches out to firebase and changes the current users display name.
-  
-  const updateDisplayName = async (username) => {
 
+  const updateDisplayName = async (username) => {
     const query = await validateUser();
 
     if (query) {
@@ -109,37 +111,55 @@ function Profile() {
         console.log(error);
       });
   };
-    const updatePassword = () => {
+  const updatePassword = () => {
     navigate("/updatepassword");
   };
 
-    return (
-        // style used so the profile component fills in entire right side of sidebar
-        <div className='profile--wrapper'  style={{ width: '1500%', padding: '20px' }}>
-            <div>
-                <div className="profile--img-wrapper">
-                    <div className="profile--img-shadow"></div>
-                    <input 
-                        className="profile--file-upload" 
-                        id="fileInput" 
-                        type="file" 
-                        accept=".jpg, .jpeg, .png"
-                        onChange={handleFileUpload}
-                    />
-                    <label htmlFor="fileInput" className="custom-button">Choose a File</label>
-                    <img className="profile--img" src={img}></img>
-                </div>
-                <div className="profile--settings-wrapper">
-                    <div className="profile--user-wrapper">
-                        <p className="profile--user-name">{currentUser.displayName}</p>
-                        <EditUserNameModal
-                        displayName={currentUser.displayName}
-                        updateDisplayName={updateDisplayName}
-                        />
-                    </div>
-                    <div className="profile--edit-password-wrapper">
-                        <button className="profile--modal-btn" data-toggle="modal" data-target="#editpassword" onClick={updatePassword}>Change Password</button>
-                        <DeleteAccountModal deleteProfile={deleteProfile} />
+  return (
+    // style used so the profile component fills in entire right side of sidebar
+    <div
+      className="profile--wrapper"
+      style={{
+        width: "1500%",
+        padding: "20px",
+        backgroundImage: 'url("/src/images/emanate-bg.png")',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div>
+        <div className="profile--img-wrapper">
+          <div className="profile--img-shadow"></div>
+          <input
+            className="profile--file-upload"
+            id="fileInput"
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            onChange={handleFileUpload}
+          />
+          <label htmlFor="fileInput" className="custom-button">
+            Choose a File
+          </label>
+          <img className="profile--img" src={img}></img>
+        </div>
+        <div className="profile--settings-wrapper">
+          <div className="profile--user-wrapper">
+            <p className="profile--user-name">{currentUser.displayName}</p>
+            <EditUserNameModal
+              displayName={currentUser.displayName}
+              updateDisplayName={updateDisplayName}
+            />
+          </div>
+          <div className="profile--edit-password-wrapper">
+            <button
+              className="profile--modal-btn"
+              data-toggle="modal"
+              data-target="#editpassword"
+              onClick={updatePassword}
+            >
+              Change Password
+            </button>
+            <DeleteAccountModal deleteProfile={deleteProfile} />
           </div>
         </div>
       </div>
