@@ -76,9 +76,7 @@ function Profile() {
   const validateUser = async (username) => {
     const usersCollectionRef = collection(
       db,
-      "users",
-      "allUsers",
-      "users-info"
+      "users"
     );
     const querySnapshot = await getDocs(
       query(

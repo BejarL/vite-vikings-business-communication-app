@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
+import { collection, doc, getDocs, query, where, addDoc, updateDoc, arrayUnion, } from "firebase/firestore";
 import { db, storage, auth } from '../../FirebaseConfig'
 import { ref, getDownloadURL } from "firebase/storage";
 
@@ -37,9 +37,7 @@ function NewChannel() {
   const validateUser = async (username) => {
     const usersCollectionRef = collection(
       db,
-      "users",
-      "allUsers",
-      "users-info"
+      "users"
     );
     const querySnapshot = await getDocs(
       query(usersCollectionRef, where("displayName", "==", username))
@@ -65,8 +63,8 @@ function NewChannel() {
     if (query) {
       query.forEach(doc => {
         setUsers(prev => [...prev, doc.data()]);
+        
       })
-
     // if the result is falsey, need to alert the user that its invalid
     } else {
       window.alert("user doesnt exist")
@@ -109,10 +107,31 @@ function NewChannel() {
       });
     }
 
+    // call the function to add the channels to each user array
+    addChannelsToUsers(newChannelRef.id);
+
     // close modal after creating the channel
     toggleModal();
 
   }// end createChannel
+
+  const addChannelsToUsers = (channelId) => {
+    const channelObj = {channelId: channelId, channelName: title};
+
+    const allUsers = users;
+    allUsers.push(auth.currentUser);
+
+    allUsers.forEach(async user => {
+        //create a reference to the doc
+        const userDoc = doc(db, "users", user.uid);
+
+        //update the doc
+        await updateDoc(userDoc, {
+          chat: arrayUnion(JSON.stringify(channelObj))
+        })
+
+    })
+  }
   
   //map through the added recipients to render
   const defaultProfilePic = "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";

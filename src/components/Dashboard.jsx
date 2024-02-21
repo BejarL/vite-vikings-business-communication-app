@@ -16,7 +16,7 @@ function Dashboard() {
   // const [channel, setChannel] = useState("");
   const [showChannel, setShowChannel] = useState(true);
   const [currentUser, setCurrentUser] = useState("")
-  // const [showDirect, setShowDirect] = useState(true);
+  console.log(currentUser.uid);
 
   useEffect(() => {
       onAuthStateChanged(auth, (currentUser) => {
@@ -24,8 +24,8 @@ function Dashboard() {
       });
 
       if (currentUser.uid) {
-        const unsubscribe= onSnapshot(doc(db, "/users/allUsers/users-info", currentUser.uid), function (doc) {
-          setChannels(doc.data().chats);
+        const unsubscribe= onSnapshot(doc(db, "users", currentUser.uid), function (doc) {
+          setChannels(doc.data().chat);
         })
         return unsubscribe;
       }
@@ -45,6 +45,7 @@ function Dashboard() {
     channelElems = channels.map((item) => {
       
       const obj = JSON.parse(item);
+      console.log(obj);
 
       return (
         <div key={obj.channelId}>{obj.channelName}</div>
@@ -109,20 +110,20 @@ function Dashboard() {
 			<span className="ml-2 text-sm font-medium">Log Out</span>
 		</Link>
     <div className="flex flex-col items-center w-full mt-3 border-t border-blue-900">
-      
+        
     </div>
 	</div>
       </nav>
 
 
         {/* Channel List kept but not sure if needed */}
-        <div className="channel-List">
+        {/* <div className="channel-List">
           <div
             className={showChannel ? "direct--overflow" : "dashboard--hidden"}
           >
             {channelElems}
           </div>
-        </div>
+        </div> */}
         {/* Direct Messages */}
         {/* <div className="direct--Header">
            <button onClick={() => addItem("direct")}>Direct Messages</button>
