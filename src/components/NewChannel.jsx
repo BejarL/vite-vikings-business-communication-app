@@ -13,10 +13,6 @@ function NewChannel() {
   const [recipient, setRecipient] = useState("");
   const [users, setUsers] = useState([]);
   console.log(users);
-  
-
-  const [recipientMsg, setRecipientMsg] = useState("")
-
 
   //toggles the modal, and resets the state so the forms dont remember data when closed
   const toggleModal = () => {
@@ -76,10 +72,11 @@ function NewChannel() {
       window.alert("user doesnt exist")
     }
   }
+
   const createChannel = async () => {
     // create a new channel document inside of
     // channels collection
-    const channelsRef = collection(db, "channels");
+    const channelsRef = collection(db, "Chats");
     const newChannelRef = await addDoc(channelsRef, {
       title: title,
       createdBy: auth.currentUser.uid,
@@ -89,26 +86,33 @@ function NewChannel() {
     // add creator as first member of the channel
     const membersRef = collection(newChannelRef, "members");
     await addDoc(membersRef, {
-    userId: auth.currentUser.uid,
-    role: "creator",
+      userId: auth.currentUser.uid,
+      role: "creator",
+    })
+
+    // add messages collection to channel
+    const messagesRef = collection(newChannelRef, "messages");
+    await addDoc(messagesRef, {
+      userId: "System",
+      body: "This is the start of the Channel!",
+      createdAt: new Date(),
+      authorProfilePic: ""
     })
 
     // add other recipients
-    if (recipient) {
-      const recipients = recipient.split(",").map((r) => r.trim());
-      recipients.forEach(async (rec) => {
+    if (users) {
+      users.forEach(async (rec) => {
         await addDoc(membersRef, {
-          userId: rec,
+          userId: rec.uid,
           role: "member",
         });
       });
-      setRecipientMsg("Recipients added successfully!")
     }
 
     // close modal after creating the channel
     toggleModal();
 
-  }
+  }// end createChannel
   
   //map through the added recipients to render
   const defaultProfilePic = "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
@@ -165,9 +169,6 @@ function NewChannel() {
                 {userElems}
               </div>
           </div>
-          {recipientMsg && (
-            <div className="recipient-message">{recipientMsg}</div>
-          )}
         </Modal.Body>
         <Modal.Footer>
           <div className="dashboard--modal-footer">

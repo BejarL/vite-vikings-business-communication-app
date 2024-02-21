@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { auth, db } from "../../../FirebaseConfig";
 import {
@@ -8,13 +8,12 @@ import {
 } from "firebase/auth";
 import {
   collection,
-  doc,
-  setDoc,
   query,
   getDocs,
   where,
+  doc,
+  setDoc,
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   // State variables to manage user input and error/success messages
@@ -26,9 +25,14 @@ function SignUp() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const navigate = useNavigate();
 
+  // Constants for password complexity requirements
+  const MIN_PASSWORD_LENGTH = 8;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
+
   // Use useEffect to clear error and success messages after a timeout
   useEffect(() => {
-    if (error && signupSuccess) {
+    if (error || signupSuccess) {
       const errorTimeout = setTimeout(() => {
         setError(null);
         setSignupSuccess(false); // Reset signup success status
@@ -38,10 +42,13 @@ function SignUp() {
     }
   }, [error, signupSuccess]);
 
-  // Constants for password complexity requirements
-  const MIN_PASSWORD_LENGTH = 8;
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
+  // Function to check if the username already exists
+  const checkUsernameExists = async (username) => {
+    const usersCollectionRef = collection(db, "users");
+    const q = query(usersCollectionRef, where("displayName", "==", username));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  };
 
   // Function to handle the signup process
   const signUp = async (e) => {
@@ -57,13 +64,6 @@ function SignUp() {
       return;
     }
 
-    // Check if passwords match
-    if (password !== passwordConfirmation) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    // Check if the username already exists
     try {
       const usernameExists = await checkUsernameExists(username);
       if (usernameExists) {
@@ -75,26 +75,19 @@ function SignUp() {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
-        password,
-        username
+        password
       );
       const user = userCredential.user;
-
-      await updateProfile(auth.currentUser, { displayName: username });
+      await updateProfile(user, { displayName: username });
       await sendEmailVerification(user);
 
-      // Save user information to Firestore
-      const allUsersDocRef = doc(db, "users", "allUsers");
-      const usersCollectionRef = collection(allUsersDocRef, "users-info");
-      const userDocRef = doc(usersCollectionRef, user.uid);
-
-      await setDoc(userDocRef, {
+      // Save user information to Firestore "users" collection
+      await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         email: user.email,
         displayName: username,
+        chat: [],
       });
-
-      console.log(userCredential);
 
       // Redirect to login page and set signup success status
       navigate("/login");
@@ -104,23 +97,9 @@ function SignUp() {
       sessionStorage.setItem("token", user.accessToken);
       sessionStorage.setItem("user", JSON.stringify(user));
     } catch (error) {
-      console.error(error);
+      console.error("Error during signup:", error);
       setError("Failed to sign up. Please try again.");
     }
-  };
-
-  // Function to check if the username already exists
-  const checkUsernameExists = async (username) => {
-    const usersCollectionRef = collection(
-      db,
-      "users",
-      "allUsers",
-      "users-info"
-    );
-    const querySnapshot = await getDocs(
-      query(usersCollectionRef, where("displayName", "==", username))
-    );
-    return !querySnapshot.empty;
   };
 
   return (
