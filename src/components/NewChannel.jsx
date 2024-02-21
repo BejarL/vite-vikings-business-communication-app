@@ -124,11 +124,8 @@ function NewChannel() {
 
   return (
     <>
-      <button onClick={toggleModal} className="dashboard--link">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="0.88em"
-          height="1em"
+      <button onClick={toggleModal} className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" className="w-6 h-6 stroke-current pe-1"
           viewBox="0 0 448 512"
         >
           <path
@@ -136,7 +133,7 @@ function NewChannel() {
             d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z"
           />
         </svg>
-        <p>New Channel</p>
+        <span className="ml-2 text-sm font-medium">New Channel</span>
       </button>
 
       <Modal
