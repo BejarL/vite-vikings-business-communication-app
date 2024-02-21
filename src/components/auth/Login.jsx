@@ -49,7 +49,7 @@ function Login() {
   };
   return (
     <>
-    {/* Display error message if there is any */}
+      {/* Display error message if there is any */}
       {error && (
         <div className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative transition-opacity duration-1000 ease-in-out">
           {error}
@@ -61,7 +61,7 @@ function Login() {
         style={{
           backgroundImage: 'url("/src/images/chatting.png")',
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center"
         }}
       >
         <h1 className="text-white font-bold text-3xl absolute left-1/2 transform -translate-x-1/2">
@@ -78,7 +78,10 @@ function Login() {
               Log In to your Account
             </p>
             {/* Input fields for email and password */}
-            <label htmlFor="email" className="text-white pl-2"> Email</label>
+            <label htmlFor="email" className="text-white pl-2">
+              {" "}
+              Email
+            </label>
             <div className="flex bg-amber-400 items-center py-2 px-3 rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +98,10 @@ function Login() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <label htmlFor="password" className="text-white pl-2"> Password</label>
+            <label htmlFor="password" className="text-white pl-2">
+              {" "}
+              Password
+            </label>
 
             <div className="flex bg-amber-400 items-center py-2 px-3 rounded-2xl">
               <svg

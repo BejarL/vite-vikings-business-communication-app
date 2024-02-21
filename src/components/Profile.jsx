@@ -81,7 +81,10 @@ function Profile() {
       "users-info"
     );
     const querySnapshot = await getDocs(
-      query(usersCollectionRef, where("displayName", "==", currentUser.displayName))
+      query(
+        usersCollectionRef,
+        where("displayName", "==", currentUser.displayName)
+      )
     );
     if (querySnapshot.empty) {
       return "";
@@ -90,16 +93,14 @@ function Profile() {
   };
 
   //reaches out to firebase and changes the current users display name.
-  
-  const updateDisplayName = async (username) => {
 
+  const updateDisplayName = async (username) => {
     const query = await validateUser();
 
     if (query) {
       windows.alert("username already taken");
       return;
     }
-
     updateProfile(auth.currentUser, {
       displayName: username,
     })
@@ -110,7 +111,6 @@ function Profile() {
         console.log(error);
       });
   };
-
   const updatePassword = () => {
     navigate("/updatepassword");
   };
@@ -119,7 +119,13 @@ function Profile() {
     // style used so the profile component fills in entire right side of sidebar
     <div
       className="profile--wrapper"
-      style={{ width: "1500%", padding: "20px" }}
+      style={{
+        width: "1500%",
+        padding: "20px",
+        backgroundImage: 'url("/src/images/emanate-bg.png")',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
       <div>
         <div className="profile--img-wrapper">
@@ -142,7 +148,6 @@ function Profile() {
             <EditUserNameModal
               displayName={currentUser.displayName}
               updateDisplayName={updateDisplayName}
-              validateUser={validateUser}
             />
           </div>
           <div className="profile--edit-password-wrapper">
