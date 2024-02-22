@@ -2,51 +2,48 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { auth } from "../../../FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import useFirebaseImage  from "../utils/useFirebaseImage"
 import { useNavigate } from "react-router-dom";
+import Footer from "../Footer";
 
+// Define the Login functional component
 function Login() {
-  // State variables to manage user input and error messages
-  const [error, setError] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  // State hooks for managing user inputs and error messages
+  const [error, setError] = useState(null); // To store error messages
+  const [email, setEmail] = useState(""); // To store the user's email
+  const [password, setPassword] = useState(""); // To store the user's password
+  const navigate = useNavigate(); // Hook for programmatically navigating
 
-  // Use useEffect to clear error messages after a timeout
+  // Fetch background image URL from Firebase Storage
+  const backgroundImageUrl = useFirebaseImage('bg-images/chatting.png');
+
+  // useEffect hook to clear error message after 3 seconds
   useEffect(() => {
     if (error) {
-      const errorTimeout = setTimeout(() => {
-        setError(null);
-      }, 3000);
-      return () => clearTimeout(errorTimeout);
+      const errorTimeout = setTimeout(() => setError(null), 3000);
+      return () => clearTimeout(errorTimeout); // Cleanup to prevent memory leak
     }
   }, [error]);
 
-  // Function to handle the login process
+  // Async function to handle the login process
   const logIn = async (e) => {
-    e.preventDefault();
-
-    // Sign in user with email and password
+    e.preventDefault(); // Prevent default form submission behavior
     try {
+      // Attempt to sign in with email and password
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-      const user = userCredential.user;
-
-      console.log(userCredential);
-
-      // Store user information in session storage
-      sessionStorage.setItem("token", user.accessToken);
-      sessionStorage.setItem("user", JSON.stringify(user));
-
-      // Redirect to the home page
-      navigate("/");
+      // On success, store user info in session storage
+      sessionStorage.setItem("token", userCredential.user.accessToken);
+      sessionStorage.setItem("user", JSON.stringify(userCredential.user));
+      navigate("/"); // Navigate to the homepage upon successful login
     } catch (error) {
-      console.error(error);
-      setError("Failed to log in. Please check your email and password.");
+      setError("Login failed. Please check your credentials."); // Set error message on failure
     }
   };
+
   return (
     <>
       {/* Display error message if there is any */}
@@ -57,11 +54,11 @@ function Login() {
       )}
       {/* Main layout for the login page */}
       <div
-        className="h-screen md:flex"
+        className="h-screen md:flex "
         style={{
-          backgroundImage: 'url("/src/images/chatting.png")',
+          backgroundImage: `url(${backgroundImageUrl})`,
           backgroundSize: "cover",
-          backgroundPosition: "center"
+          backgroundPosition: "center",
         }}
       >
         <h1 className="text-white font-bold text-3xl absolute left-1/2 transform -translate-x-1/2">
@@ -153,6 +150,7 @@ function Login() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
