@@ -10,70 +10,35 @@ import NewChannel from "./NewChannel";
 import { onSnapshot, collection, doc } from "firebase/firestore";
 
 // Main Dashboard component
-function Dashboard() {  
+function Dashboard() {
   // State variables
   const [channels, setChannels] = useState([]);
-  // const [channel, setChannel] = useState("");
-  const [showChannel, setShowChannel] = useState(true);
   const [currentUser, setCurrentUser] = useState("")
-  console.log(currentUser.uid);
+  // Navigation hook
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-      onAuthStateChanged(auth, (currentUser) => {
-        setCurrentUser(currentUser);
-      });
-
-      if (currentUser.uid) {
-        const unsubscribe= onSnapshot(doc(db, "users", currentUser.uid), function (doc) {
-          setChannels(doc.data().chat);
-        })
-        return unsubscribe;
-      }
-  }, [currentUser])
-  
-  // Derived lists based on type
-  // const directMenu = channels.filter((item) => item.type === "direct");
-  // const channelMenu = channels.filter((item) => item.type === "channel");
-
-  // Mapping channel and direct items
-  // const directElems = directMenu.map((item) => (
-  //   <div key={item.id}>{item.name}</div>
-  // ));
-
-  let channelElems = []
-  if (channels) {
-    channelElems = channels.map((item) => {
-      
-      const obj = JSON.parse(item);
-      console.log(obj);
-
-      return (
-        <div key={obj.channelId} className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300">{obj.channelName}</div>
-        )
+    onAuthStateChanged(auth, (currentUser) => {
+      setCurrentUser(currentUser);
     });
-    } 
-      
-  // Function to add a new channel or direct message
-  function addItem(type) {
-    console.log("clicked");
-    setChannels((prevChannels) => [
-      ...prevChannels,
-      { id: prevChannels.length + 1, name: "New Channel", type: type },
-    ]);
-  }
 
-  // Function to route back to home for an authenticated user 
-  function home() {
-    navigate("/");
-  }
+    if (currentUser.uid) {
+      const unsubscribe = onSnapshot(
+        doc(db, "users", currentUser.uid),
+        function (doc) {
+          setChannels(doc.data().chat);
+        }
+      );
+      return unsubscribe;
+    }
+  }, [currentUser]);
+
   // Function to toggle the visibility of the channel or direct menu
   const chevron = (set) => {
     set((prev) => !prev);
   };
-
-  // Navigation hook
-  const navigate = useNavigate();
-
+  
   // Function to handle user logout
   const handleLogout = async () => {
     await signOut(auth);
@@ -81,6 +46,21 @@ function Dashboard() {
     sessionStorage.removeItem("user");
     navigate("/login");
   };
+
+  //removes the channel from the users array of channels in firebase
+  const removeChannel = () => {
+
+  }
+
+  let channelElems = [];
+  if (channels) {
+    channelElems = channels.map((item) => {
+      const obj = JSON.parse(item);
+      return (
+        <div key={obj.channelId}>{obj.channelName}</div>
+        )
+    });
+    } 
 
   // JSX structure
   return (
@@ -117,17 +97,16 @@ function Dashboard() {
 	</div>
       </nav>
 
-
-        {/* Channel List kept but not sure if needed */}
-        {/* <div className="channel-List">
+      {/* Channel List kept but not sure if needed */}
+      {/* <div className="channel-List">
           <div
             className={showChannel ? "direct--overflow" : "dashboard--hidden"}
           >
             {channelElems}
           </div>
         </div> */}
-        {/* Direct Messages */}
-        {/* <div className="direct--Header">
+      {/* Direct Messages */}
+      {/* <div className="direct--Header">
            <button onClick={() => addItem("direct")}>Direct Messages</button>
           <button onClick={() => chevron(setShowDirect)}> 
             <svg
@@ -141,15 +120,15 @@ function Dashboard() {
             </svg>
           </button>
         </div> */}
-        {/* Direct List */}
-        {/* <div className="direct-List">
+      {/* Direct List */}
+      {/* <div className="direct-List">
           <div
             className={showDirect ? "direct--overflow" : "dashboard--hidden"}
           >
             {directElems}
           </div>
         </div> */}
-      
+
       <div>
         {/* Additional components, e.g., NewChannel, textbox, etc. */}
         <div className="dashboard--textbox"></div>
@@ -220,7 +199,6 @@ function Dashboard() {
                 </ul>
               </ul>
               <button className="delete-button">
-
                 {" "}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
