@@ -13,9 +13,9 @@ import { onSnapshot, collection, doc } from "firebase/firestore";
 function Dashboard() {
   // State variables
   const [channels, setChannels] = useState([]);
-  // const [channel, setChannel] = useState("");
-  const [showChannel, setShowChannel] = useState(true);
   const [currentUser, setCurrentUser] = useState("")
+  // Navigation hook
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -34,14 +34,23 @@ function Dashboard() {
     }
   }, [currentUser]);
 
-  // Derived lists based on type
-  // const directMenu = channels.filter((item) => item.type === "direct");
-  // const channelMenu = channels.filter((item) => item.type === "channel");
+  // Function to toggle the visibility of the channel or direct menu
+  const chevron = (set) => {
+    set((prev) => !prev);
+  };
+  
+  // Function to handle user logout
+  const handleLogout = async () => {
+    await signOut(auth);
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    navigate("/login");
+  };
 
-  // Mapping channel and direct items
-  // const directElems = directMenu.map((item) => (
-  //   <div key={item.id}>{item.name}</div>
-  // ));
+  //removes the channel from the users array of channels in firebase
+  const removeChannel = () => {
+
+  }
 
   let channelElems = [];
   if (channels) {
@@ -52,27 +61,6 @@ function Dashboard() {
         )
     });
     } 
-      
-
-  // Function to route back to home for an authenticated user
-  function home() {
-    navigate("/");
-  }
-  // Function to toggle the visibility of the channel or direct menu
-  const chevron = (set) => {
-    set((prev) => !prev);
-  };
-
-  // Navigation hook
-  const navigate = useNavigate();
-
-  // Function to handle user logout
-  const handleLogout = async () => {
-    await signOut(auth);
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
-    navigate("/login");
-  };
 
   // JSX structure
   return (
@@ -86,7 +74,7 @@ function Dashboard() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              onClick={home}
+              onClick={() => navigate("/")}
             >
               <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
             </svg>
