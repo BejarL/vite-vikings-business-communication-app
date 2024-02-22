@@ -11,11 +11,13 @@ import "./Profile.css";
 function Profile() {
   const [img, setImg] = useState("");
   const [currentUser, setCurrentUser] = useState("");
-
+  console.log("rendered")
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("in use effect");
     onAuthStateChanged(auth, (currentUser) => {
+      console.log("in auth state changed");
       setCurrentUser(currentUser);
     });
 
@@ -62,28 +64,25 @@ function Profile() {
 
   // deletes the user from authentication
   // then delete the users doc from the database
-  const deleteProfile = () => {
-    
+  const deleteProfile = async () => {
     localStorage.clear();
+    await deleteDoc(doc(db, "users", currentUser.uid))
     deleteUser(currentUser)
-    .then(async () => {
-      await deleteDoc(doc(db, "users", currentUser.uid))
-      console.log("user deleted");
+    .then(() => {
       navigate("/login");
-      })
-      .catch((error) => {
-        console.error("Error deleting user:", error);
-      });
+    })
+    .catch((error) => {
+      console.error("Error deleting user:", error);
+    });
   };
 
   //checks to see if the username is already being used or not.
   const validateUser = async (username) => {
     const usersCollectionRef = collection(db,"users");
-
     const querySnapshot = await getDocs(
-      query(usersCollectionRef, where("displayName", "==", currentUser.displayName))
+      query(usersCollectionRef, where("displayName", "==", username))
     );
-    
+
     return querySnapshot.empty;
   };
 
@@ -92,7 +91,7 @@ function Profile() {
   // update their displayName in authentication
   // then update their displayName in their user doc
   const updateDisplayName = async (username) => {
-    const query = await validateUser();
+    const query = await validateUser(username);
     if (query) {
       window.alert("username already taken");
       return;
@@ -142,9 +141,9 @@ function Profile() {
         </div>
         <div className="profile--settings-wrapper">
           <div className="profile--user-wrapper">
-            <p className="profile--user-name">{currentUser.displayName}</p>
+            <p className="profile--user-name">{currentUser.displayName !== null ? currentUser.displayName : ""}</p>
             <EditUserNameModal
-              displayName={currentUser.displayName}
+              displayName={currentUser.displayName !== null ? currentUser.displayName : ""}
               updateDisplayName={updateDisplayName}
             />
           </div>
