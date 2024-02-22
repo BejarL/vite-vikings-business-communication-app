@@ -7,10 +7,14 @@ import { useNavigate } from "react-router-dom";
 import EditUserNameModal from "./EditUserNameModal";
 import DeleteAccountModal from "./DeleteAccoutModal";
 import "./Profile.css";
+import useFirebaseImage from "./utils/useFirebaseImage.js";
 
 function Profile() {
   const [img, setImg] = useState("");
   const [currentUser, setCurrentUser] = useState("");
+
+   // Fetch background image URL from Firebase Storage
+   const backgroundImageUrl = useFirebaseImage('bg-images/emanate-bg.png');
 
   const navigate = useNavigate();
 
@@ -120,7 +124,7 @@ function Profile() {
       style={{
         width: "1500%",
         padding: "20px",
-        backgroundImage: 'url("/src/images/emanate-bg.png")',
+        backgroundImage: `url(${backgroundImageUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
