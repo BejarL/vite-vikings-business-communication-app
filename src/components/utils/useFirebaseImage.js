@@ -7,11 +7,18 @@ const useFirebaseImage = (imagePath) => {
 
   useEffect(() => {
     const fetchImageUrl = async () => {
+      const cachedUrl = sessionStorage.getItem(imagePath);
+      if (cachedUrl) {
+        setUrl(cachedUrl);
+        return;
+      }
+
       const storage = getStorage();
       const imageRef = ref(storage, imagePath);
 
       try {
         const imageUrl = await getDownloadURL(imageRef);
+        sessionStorage.setItem(imagePath, imageUrl); 
         setUrl(imageUrl);
       } catch (error) {
         console.error("Failed to load image from Firebase Storage", error);
