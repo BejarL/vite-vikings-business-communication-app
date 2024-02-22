@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-function EditUserNameModal({ displayName, updateDisplayName, validateUser }) {
+function EditUserNameModal({ displayName, updateDisplayName }) {
   //used to show the modal or not
   const [show, setShow] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -23,12 +23,6 @@ function EditUserNameModal({ displayName, updateDisplayName, validateUser }) {
 
   let nameRegex = /^[a-zA-Z0-9 ]{3,15}$/;
   const updateName = async () => {
-    const check = await validateUser(username);
-
-    if (check.empty) {
-      window.alert("Name already taken");
-      return;
-    }
 
     if (nameRegex.test(username)) {
       updateDisplayName(username);

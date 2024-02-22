@@ -15,8 +15,8 @@ function Dashboard() {
   const [channels, setChannels] = useState([]);
   // const [channel, setChannel] = useState("");
   const [showChannel, setShowChannel] = useState(true);
-  const [currentUser, setCurrentUser] = useState("");
-  console.log(currentUser.uid);
+  const [currentUser, setCurrentUser] = useState("")
+
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -47,20 +47,12 @@ function Dashboard() {
   if (channels) {
     channelElems = channels.map((item) => {
       const obj = JSON.parse(item);
-      console.log(obj);
-
-      return <div key={obj.channelId}>{obj.channelName}</div>;
+      return (
+        <div key={obj.channelId}>{obj.channelName}</div>
+        )
     });
-  }
-
-  // Function to add a new channel or direct message
-  function addItem(type) {
-    console.log("clicked");
-    setChannels((prevChannels) => [
-      ...prevChannels,
-      { id: prevChannels.length + 1, name: "New Channel", type: type },
-    ]);
-  }
+    } 
+      
 
   // Function to route back to home for an authenticated user
   function home() {

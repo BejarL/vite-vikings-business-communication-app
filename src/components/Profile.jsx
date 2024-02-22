@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { onAuthStateChanged, deleteUser, updateProfile } from "firebase/auth";
 import { auth, storage, db } from "../../FirebaseConfig.js";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, deleteDoc, updateDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import EditUserNameModal from "./EditUserNameModal";
 import DeleteAccountModal from "./DeleteAccoutModal";
@@ -12,6 +12,7 @@ import useFirebaseImage from "./utils/useFirebaseImage.js";
 function Profile() {
   const [img, setImg] = useState("");
   const [currentUser, setCurrentUser] = useState("");
+  console.log("rendered")
 
    // Fetch background image URL from Firebase Storage
    const backgroundImageUrl = useFirebaseImage('bg-images/emanate-bg.png');
@@ -19,7 +20,9 @@ function Profile() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("in use effect");
     onAuthStateChanged(auth, (currentUser) => {
+      console.log("in auth state changed");
       setCurrentUser(currentUser);
     });
 
@@ -64,55 +67,52 @@ function Profile() {
     }
   };
 
+  // deletes the user from authentication
+  // then delete the users doc from the database
   const deleteProfile = async () => {
-    navigate("/login");
     localStorage.clear();
+    await deleteDoc(doc(db, "users", currentUser.uid))
     deleteUser(currentUser)
-      .then(() => {
-        console.log("user deleted");
-      })
-      .catch((error) => {
-        console.error("Error deleting user:", error);
-      });
+    .then(() => {
+      navigate("/login");
+    })
+    .catch((error) => {
+      console.error("Error deleting user:", error);
+    });
   };
 
   //checks to see if the username is already being used or not.
   const validateUser = async (username) => {
-    const usersCollectionRef = collection(
-      db,
-      "users"
-    );
+    const usersCollectionRef = collection(db,"users");
     const querySnapshot = await getDocs(
-      query(
-        usersCollectionRef,
-        where("displayName", "==", currentUser.displayName)
-      )
+      query(usersCollectionRef, where("displayName", "==", username))
     );
-    if (querySnapshot.empty) {
-      return "";
-    }
-    return querySnapshot;
+
+    return querySnapshot.empty;
   };
 
-  //reaches out to firebase and changes the current users display name.
-
+  
+  // check if no one else has the username
+  // update their displayName in authentication
+  // then update their displayName in their user doc
   const updateDisplayName = async (username) => {
-    const query = await validateUser();
-
+    const query = await validateUser(username);
     if (query) {
-      windows.alert("username already taken");
+      window.alert("username already taken");
       return;
     }
-    updateProfile(auth.currentUser, {
-      displayName: username,
-    })
-      .then(() => {
+
+    updateProfile(auth.currentUser, { displayName: username })
+      .then(async () => {
+        const userDoc = doc(db, "users", currentUser.uid);
+        await updateDoc(userDoc, { displayName: username })
         navigate("/profile");
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   const updatePassword = () => {
     navigate("/updatepassword");
   };
@@ -146,9 +146,9 @@ function Profile() {
         </div>
         <div className="profile--settings-wrapper">
           <div className="profile--user-wrapper">
-            <p className="profile--user-name">{currentUser.displayName}</p>
+            <p className="profile--user-name">{currentUser.displayName !== null ? currentUser.displayName : ""}</p>
             <EditUserNameModal
-              displayName={currentUser.displayName}
+              displayName={currentUser.displayName !== null ? currentUser.displayName : ""}
               updateDisplayName={updateDisplayName}
             />
           </div>
