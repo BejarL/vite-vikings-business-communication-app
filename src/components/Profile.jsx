@@ -5,14 +5,13 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, getDocs, query, where, deleteDoc, updateDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import EditUserNameModal from "./EditUserNameModal";
-import DeleteAccountModal from "./DeleteAccoutModal";
+import DeleteAccountModal from "./DeleteAccountModal";
 import "./Profile.css";
 import useFirebaseImage from "./utils/useFirebaseImage.js";
 
 function Profile() {
   const [img, setImg] = useState("");
   const [currentUser, setCurrentUser] = useState("");
-  console.log("rendered")
 
    // Fetch background image URL from Firebase Storage
    const backgroundImageUrl = useFirebaseImage('bg-images/emanate-bg.png');
@@ -20,9 +19,7 @@ function Profile() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("in use effect");
     onAuthStateChanged(auth, (currentUser) => {
-      console.log("in auth state changed");
       setCurrentUser(currentUser);
     });
 
@@ -46,7 +43,7 @@ function Profile() {
   //is used to handle any file that gets uploaded.
   // 1st - checks to see if a file has been uploaded, if its undefined then do nothing
   // 2nd- creates an image ref unique to the signed in user, the img ref file path is profilePicture/${userId}/profilePic in storage
-  // 3rd - once the image ref is made, then upload the file to that img ref in storage, and if it failes then console log 'upload failed'
+  // 3rd - once the image ref is made, then upload the file to that img ref in storage, and if it fails then console log 'upload failed'
   // 4th - if the upload is successfull, then try to get the URL of the img in storage, otherwise log an error about getting the url
   // 5th - when it successfully gets the img url, then set state to update what the user sees
   const handleFileUpload = (e) => {
@@ -97,7 +94,7 @@ function Profile() {
   // then update their displayName in their user doc
   const updateDisplayName = async (username) => {
     const query = await validateUser(username);
-    if (query) {
+    if (!query) {
       window.alert("username already taken");
       return;
     }
@@ -146,7 +143,7 @@ function Profile() {
         </div>
         <div className="profile--settings-wrapper">
           <div className="profile--user-wrapper">
-            <p className="profile--user-name">{currentUser.displayName !== null ? currentUser.displayName : ""}</p>
+            <p className="profile--user-name bg-amber-500">{currentUser.displayName !== null ? currentUser.displayName : ""}</p>
             <EditUserNameModal
               displayName={currentUser.displayName !== null ? currentUser.displayName : ""}
               updateDisplayName={updateDisplayName}
@@ -154,14 +151,16 @@ function Profile() {
           </div>
           <div className="profile--edit-password-wrapper">
             <button
-              className="profile--modal-btn"
+              className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-amber-500 text-white hover:bg-amber-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" data-hs-overlay="#hs-focus-management-modal"
               data-toggle="modal"
               data-target="#editpassword"
               onClick={updatePassword}
             >
               Change Password
             </button>
-            <DeleteAccountModal deleteProfile={deleteProfile} />
+            <div>
+              <DeleteAccountModal deleteProfile={deleteProfile} />
+            </div>
           </div>
         </div>
       </div>
