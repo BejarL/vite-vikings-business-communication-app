@@ -7,7 +7,7 @@ import { db, storage, auth } from '../../FirebaseConfig'
 import { ref, getDownloadURL } from "firebase/storage";
 
 
-function NewChannel() {
+function NewChannel({ currentUser }) {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [recipient, setRecipient] = useState("");
@@ -50,6 +50,12 @@ function NewChannel() {
 
   //adds a user to the array of users to be added
   const addRecipient = async () => {
+    //check if the recipient is the current user
+    if (recipient == currentUser) {
+      window.alert("You are already added by default");
+      return;
+    }
+
     //check if the user was already added 
     for (let i in users) {
       if (users[i].displayName === recipient) {
@@ -116,16 +122,16 @@ function NewChannel() {
   }// end createChannel
 
   const addChannelsToUsers = (channelId) => {
+    //create the channel obj to save
     const channelObj = {channelId: channelId, channelName: title};
 
+    //add the current user into the array of users being save in state
     const allUsers = users;
     allUsers.push(auth.currentUser);
 
+    //iterate through each user and add the new channelObj to their chat array
     allUsers.forEach(async user => {
-        //create a reference to the doc
         const userDoc = doc(db, "users", user.uid);
-
-        //update the doc
         await updateDoc(userDoc, {
           chat: arrayUnion(JSON.stringify(channelObj))
         })
@@ -136,7 +142,6 @@ function NewChannel() {
   //map through the added recipients to render
   const defaultProfilePic = "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   const userElems = users.map(user => {
-    
     return (
       <div key={user.uid} className="dashboard--recipient-card">
         <img src={user.profilepic || defaultProfilePic} className="dashboard--recipient-img"></img>

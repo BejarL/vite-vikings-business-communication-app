@@ -3,13 +3,16 @@ import { useState } from "react";
 import { auth } from "../../../FirebaseConfig";
 import { sendPasswordResetEmail } from "firebase/auth";
 
+// Define the ForgotPassword component
 function ForgotPassword() {
   const [email, setEmail] = useState("");
 
+  // Asynchronous function to handle sending the password reset email
   const resetEmail = async () => {
     await sendPasswordResetEmail(auth, email);
     console.log("Password reset email sent");
   };
+
   return (
     <>
       <div className="h-screen md:flex">
@@ -32,15 +35,11 @@ function ForgotPassword() {
               Please enter the email address you would like your password reset
               information sent to
             </p>
-            <label htmlFor="email" className="text-white pl-2"> Email</label>
+            <label htmlFor="email" className="text-white pl-2">
+              {" "}
+              Email
+            </label>
             <div className="flex items-center bg-amber-500 py-2 px-3 rounded-2xl mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              ></svg>
               <input
                 className="pl-2 bg-amber-500 placeholder-white outline-none border-none"
                 type="email"
@@ -52,7 +51,7 @@ function ForgotPassword() {
             <button
               onClick={resetEmail}
               type="submit"
-              className="block w-full bg-white hover:bg-amber-700 hover:text-white  text-amber-600 mt-4 py-2 rounded-2xl font-bold mb-2"
+              className="block w-full bg-white hover:bg-amber-700 hover:text-white text-amber-600 mt-4 py-2 rounded-2xl font-bold mb-2"
             >
               Request reset link
             </button>

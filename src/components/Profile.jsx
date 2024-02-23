@@ -94,6 +94,7 @@ function Profile() {
   // then update their displayName in their user doc
   const updateDisplayName = async (username) => {
     const query = await validateUser(username);
+
     if (!query) {
       window.alert("username already taken");
       return;

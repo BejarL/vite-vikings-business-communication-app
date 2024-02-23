@@ -23,7 +23,6 @@ function EditUserNameModal({ displayName, updateDisplayName }) {
 
   let nameRegex = /^[a-zA-Z0-9 ]{3,15}$/;
   const updateName = async () => {
-
     if (nameRegex.test(username)) {
       updateDisplayName(username);
       toggleModal();
