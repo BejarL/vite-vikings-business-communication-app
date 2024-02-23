@@ -1,10 +1,13 @@
+
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 import { getAuth } from 'firebase/auth'
 import { getDatabase } from 'firebase/database'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, collection } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage'
 
-const firebaseConfig = {
+
+export const firebaseConfig = {
   apiKey: "AIzaSyBPqZ24MX5WzGq3RCadi7BGnkk2tLC-xbw",
   authDomain: "emanate-demo.firebaseapp.com",
   databaseURL: "https://emanate-demo-default-rtdb.firebaseio.com",
@@ -25,3 +28,7 @@ export const analytics = getAnalytics(app)
 export const db = getFirestore(app)
 export const auth = getAuth(app)
 export const database = getDatabase(app)
+export const storage = getStorage(app);
+
+export const chatsCollection = collection(db, "Chats");
+
