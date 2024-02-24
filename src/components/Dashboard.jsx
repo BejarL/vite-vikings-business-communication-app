@@ -7,16 +7,17 @@ import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../FirebaseConfig";
 import { useNavigate } from "react-router-dom";
 import NewChannel from "./NewChannel";
-import { onSnapshot, updateDoc, deleteDoc, doc, arrayRemove } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
-// Main Dashboard component
+import DeleteChannelModal from "./DeleteChannelModal"
+import { Modal } from 'flowbite-react';
+
+
 function Dashboard() {
-  // State variables
   const [channels, setChannels] = useState([]);
   const [currentUser, setCurrentUser] = useState("")
-  // Navigation hook
   const navigate = useNavigate();
-
+  
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -52,37 +53,7 @@ function Dashboard() {
   // first checking if the current user is the creator
   // if they arent, just delete the channel from their chats and remove them from the members list of the chat
   // if they are, need to remove the channel from their chat and every other member in the chat, then delete the channel
-
-  const removeChannel = async (channelObj) => {
-    const membersRef = doc(db, `Chats/${channelObj.channelId}`, "members")
-    const querySnap = await getDocs(
-      query(membersRef, where("userId", "==", currentUser.uid))
-    );
-
-    if (querySnap[0].role === "creator") {
-      //need to iterate through the members and remove it from their chats
-      const allMembers = await getDocs(collection(db, `Chats/${channelObj.channelId}`));
-      allMembers.forEach(async member => {
-        //create a reference, then delete the 
-        const userRef = doc(db, "users", member.userId);
-        await updateDoc(userRef, {
-          chat: arrayRemove(JSON.stringify(channelObj))
-        });
-      })
-
-      //then delete the chat entirely
-      await deleteDoc(doc(db, "Chats", channelObj.channelId));
-
-    } else {
-      //remove the chat from just the current users array
-      const userRef = doc(db, "users", currentUser.uid);
-        await updateDoc(userRef, {
-          chat: arrayRemove(JSON.stringify(channelObj))
-      });
-      //then remove them from the member collection
-      await deleteDoc(doc(db, "Chats", channelObj.channelId));
-    }
-}
+  
 
   const click = (obj) => {
     console.log("clicked")
@@ -94,7 +65,9 @@ function Dashboard() {
     channelElems = channels.map((item) => {
       const obj = JSON.parse(item);
       return (
-        <div key={obj.channelId} className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" onClick={() => click(obj)}>{obj.channelName}</div>
+        
+        <DeleteChannelModal channel={obj} key={obj.channelId} currentUser={currentUser}/>
+        // <div key={obj.channelId} className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" onClick={() => click(obj)}  >{obj.channelName}<DeleteChannelModal /></div>
         )
     });
     } 
@@ -135,37 +108,6 @@ function Dashboard() {
 	</div>
       </nav>
 
-      {/* Channel List kept but not sure if needed */}
-      {/* <div className="channel-List">
-          <div
-            className={showChannel ? "direct--overflow" : "dashboard--hidden"}
-          >
-            {channelElems}
-          </div>
-        </div> */}
-      {/* Direct Messages */}
-      {/* <div className="direct--Header">
-           <button onClick={() => addItem("direct")}>Direct Messages</button>
-          <button onClick={() => chevron(setShowDirect)}> 
-            <svg
-              className={showDirect ? "dashboard--down" : "dashboard--left"}
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path fill="currentColor" d="m7 10l5 5l5-5z" />
-            </svg>
-          </button>
-        </div> */}
-      {/* Direct List */}
-      {/* <div className="direct-List">
-          <div
-            className={showDirect ? "direct--overflow" : "dashboard--hidden"}
-          >
-            {directElems}
-          </div>
-        </div> */}
 
       <div>
         {/* Additional components, e.g., NewChannel, textbox, etc. */}
