@@ -12,7 +12,6 @@ function NewChannel({ currentUser }) {
   const [title, setTitle] = useState("");
   const [recipient, setRecipient] = useState("");
   const [users, setUsers] = useState([]);
-  console.log(users);
 
   //toggles the modal, and resets the state so the forms dont remember data when closed
   const toggleModal = () => {
@@ -100,7 +99,8 @@ function NewChannel({ currentUser }) {
       userId: "System",
       body: "This is the start of the Channel!",
       createdAt: new Date(),
-      authorProfilePic: ""
+      authorProfilePic: "",
+      messageId: "System"
     })
 
     // add other recipients
