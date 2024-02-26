@@ -1,5 +1,5 @@
-import { Button, Modal } from 'flowbite-react';
-import { useState } from 'react';
+import { Modal } from "flowbite-react";
+import { useState } from "react";
 
 export default function DeleteAccountModal({ deleteProfile }) {
   const [openModal, setOpenModal] = useState(false);
@@ -9,27 +9,36 @@ export default function DeleteAccountModal({ deleteProfile }) {
   };
 
   const deleteAccount = () => {
-      setOpenModal(false)
-      deleteProfile();
+    setOpenModal(false);
+    deleteProfile();
   };
 
   return (
-    <div>
-      <Button onClick={() => setOpenModal(true)} className="bg-slate-900 hover:bg-gray-100" >Delete Account</Button>
-      <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup className="md:ps-[280px]">        
-        <Modal.Header />
-        <Modal.Body >
-          <div className="text-center">
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+    <div className="m-2 abs">
+      <button onClick={() => setOpenModal(true)} 
+      className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-700 text-white hover:bg-red-800 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+        Delete Account
+      </button>
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+        className="md:ps-[280px]"
+      >
+        <Modal.Header className="bg-amber-500"/>
+        <Modal.Body className="bg-amber-500 ">
+          <div className="text-center ">
+            <h3 className="mb-5 text-lg font-normal text-white dark:text-gray-400">
               Are you sure you want to delete your Account?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => deleteAccount}>
+              <button className="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded" onClick={() => deleteAccount}>
                 {"Yes, I'm sure"}
-              </Button>
-              <Button color="gray" onClick={() => setOpenModal(false)}>
+              </button>
+              <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded" onClick={() => setOpenModal(false)}>
                 No, cancel
-              </Button>
+              </button>
             </div>
           </div>
         </Modal.Body>

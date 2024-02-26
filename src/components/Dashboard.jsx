@@ -1,6 +1,5 @@
 // Importing necessary dependencies and styles
 import "./Dashboard.css";
-import { IconContext } from "react-icons";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { signOut, onAuthStateChanged } from "firebase/auth";
@@ -9,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 import NewChannel from "./NewChannel";
 import { doc, onSnapshot } from "firebase/firestore";
 import DeleteChannelModal from "./DeleteChannelModal";
-import { Modal } from "flowbite-react";
-import { updateDoc, deleteDoc, arrayRemove } from "firebase/firestore";
+// import { updateDoc, deleteDoc, arrayRemove } from "firebase/firestore";
 import TextArea from "./TextArea";
 
 function Dashboard() {
@@ -140,7 +138,7 @@ function Dashboard() {
           </Link>
         </div>
       </nav>
-          <TextArea channel={currentChannel} />
+      {<TextArea channel={currentChannel} />}
     </div>
   );
 }
