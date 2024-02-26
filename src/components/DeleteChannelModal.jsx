@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../FirebaseConfig";
 
-function DeleteChannelModal({ channel, currentUser }) {
+function DeleteChannelModal({ channel, currentUser, goToChannel }) {
   const [openModal, setOpenModal] = useState(false);
 
   // const updateConfirm = (e) => {
