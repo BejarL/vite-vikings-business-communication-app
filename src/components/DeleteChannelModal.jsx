@@ -12,8 +12,17 @@ import {
 } from "firebase/firestore";
 import { db } from "../../FirebaseConfig";
 
-export default function DeleteChannelModal({ channel, currentUser, goToChannel }) {
+function DeleteChannelModal({ channel, currentUser }) {
   const [openModal, setOpenModal] = useState(false);
+
+  // const updateConfirm = (e) => {
+  //   setConfirm(e.target.value);
+  // };
+
+  //   const removeChannel = () => {
+  //     setOpenModal(false)
+  //     removeChannel();
+  // };
 
   const removeChannel = async (channelObj) => {
     const membersRef = collection(db, `Chats/${channelObj.channelId}/members`);
@@ -88,3 +97,5 @@ export default function DeleteChannelModal({ channel, currentUser, goToChannel }
     </div>
   );
 }
+
+export default DeleteChannelModal;
