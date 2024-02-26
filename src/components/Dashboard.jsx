@@ -68,6 +68,8 @@ import Profile from "./Profile";
   };
   const goToChannel = (channel) => {
     setCurrentChannel(channel);
+    setIsProfileShown(false);
+    setIsChannelShown(true);
   };
 
   let channelElems = channels.map(item => {
