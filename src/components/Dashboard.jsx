@@ -10,9 +10,9 @@ import { doc, onSnapshot } from "firebase/firestore";
 import DeleteChannelModal from "./DeleteChannelModal";
 // import { updateDoc, deleteDoc, arrayRemove } from "firebase/firestore";
 import TextArea from "./TextArea";
-import exp from "constants";
+ import exp from "constants";
 
-function Dashboard() {
+ function Dashboard() {
   const [channels, setChannels] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
   const [currentChannel, setCurrentChannel] = useState("");
@@ -22,7 +22,6 @@ function Dashboard() {
     onAuthStateChanged(auth, (currentUser) => {
       setCurrentUser(currentUser);
     });
-
     if (currentUser.uid) {
       const unsubscribe = onSnapshot(
         doc(db, "users", currentUser.uid),
@@ -34,11 +33,6 @@ function Dashboard() {
     }
   }, [currentUser]);
 
-  // Function to toggle the visibility of the channel or direct menu
-  const chevron = (set) => {
-    set((prev) => !prev);
-  };
-
   // Function to handle user logout
   const handleLogout = async () => {
     await signOut(auth);
@@ -47,28 +41,19 @@ function Dashboard() {
     navigate("/login");
   };
 
-  //removes the channel from the users array of channels in firebase
-
-  // first checking if the current user is the creator
-  // if they arent, just delete the channel from their chats and remove them from the members list of the chat
-  // if they are, need to remove the channel from their chat and every other member in the chat, then delete the channel
-
-  const click = (obj) => {
-    console.log("clicked");
-    removeChannel(obj);
-  };
   const goToChannel = (channel) => {
     setCurrentChannel(channel);
   };
 
-  let channelElems = channels.map((item, index) => {
+  let channelElems = channels.map(item => {
     // Ensured correct mapping and key usage
     const channel = JSON.parse(item);
     return (
       <DeleteChannelModal
-        key={index} // Ideally, use a unique id from the channel object if available
+        key={channel.channelId} 
         channel={channel}
         currentUser={currentUser}
+        goToChannel = { goToChannel }
       />
     );
   });

@@ -104,8 +104,8 @@ function NewChannel({ currentUser }) {
       body: "This is the start of the Channel!",
       createdAt: new Date(),
       authorProfilePic: "",
-      messageId: "System",
-    });
+      messageId: crypto.randomUUID()
+    })
 
     // add other recipients
     if (users) {
