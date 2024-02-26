@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../FirebaseConfig";
 
-export default function DeleteChannelModal({ channel, currentUser }) {
+function DeleteChannelModal({ channel, currentUser, goToChannel }) {
   const [openModal, setOpenModal] = useState(false);
 
   // const updateConfirm = (e) => {
@@ -34,6 +34,7 @@ export default function DeleteChannelModal({ channel, currentUser }) {
       const allMembers = await getDocs(
         collection(db, `Chats/${channelObj.channelId}/members`)
       );
+
       allMembers.forEach(async (member) => {
         //create a reference, then delete the
         const userRef = doc(db, "users", member.userId);
@@ -55,10 +56,16 @@ export default function DeleteChannelModal({ channel, currentUser }) {
     }
   };
 
+  
+
   return (
     <div>
       <button
-        onContextMenu={() => setOpenModal(true)}
+        onClick={() => goToChannel(channel)}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setOpenModal(true);
+        }}
         className="flex flex-col items-center w-40 h-full overflow-hidden text-amber-700 bg-orange-300 mb-5 hover:bg-gray-300"
       >
         {channel.channelName}
@@ -90,3 +97,5 @@ export default function DeleteChannelModal({ channel, currentUser }) {
     </div>
   );
 }
+
+export default DeleteChannelModal;

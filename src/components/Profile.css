@@ -1,14 +1,14 @@
 .profile--wrapper {
-  
+  flex-direction: column;
   height: 100vh;
   width: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #d97706;
-  background-color: #fbbf24;
   margin: 0px;
   padding: 0px;
+  position: relative;
 }
 
 .profile--img {
