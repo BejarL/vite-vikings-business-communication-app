@@ -14,7 +14,7 @@ import TextArea from "./TextArea";
 import exp from "constants";
 import Profile from "./Profile";
 
-function Dashboard() {
+ function Dashboard() {
   const [channels, setChannels] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
   const [currentChannel, setCurrentChannel] = useState("");
@@ -26,7 +26,6 @@ function Dashboard() {
     onAuthStateChanged(auth, (currentUser) => {
       setCurrentUser(currentUser);
     });
-
     if (currentUser.uid) {
       const unsubscribe = onSnapshot(
         doc(db, "users", currentUser.uid),
@@ -37,11 +36,6 @@ function Dashboard() {
       return unsubscribe;
     }
   }, [currentUser]);
-
-  // Function to toggle the visibility of the channel or direct menu
-  const chevron = (set) => {
-    set((prev) => !prev);
-  };
 
   // Function to handle user logout
   const handleLogout = async () => {
@@ -76,14 +70,15 @@ function Dashboard() {
     setCurrentChannel(channel);
   };
 
-  let channelElems = channels.map((item, index) => {
+  let channelElems = channels.map(item => {
     // Ensured correct mapping and key usage
     const channel = JSON.parse(item);
     return (
       <DeleteChannelModal
-        key={index} // Ideally, use a unique id from the channel object if available
+        key={channel.channelId} 
         channel={channel}
         currentUser={currentUser}
+        goToChannel = { goToChannel }
       />
     );
   });
