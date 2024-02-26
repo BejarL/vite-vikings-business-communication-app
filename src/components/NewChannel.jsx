@@ -2,17 +2,16 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
+import { collection, doc, getDocs, query, where, addDoc, updateDoc, arrayUnion, } from "firebase/firestore";
 import { db, storage, auth } from '../../FirebaseConfig'
 import { ref, getDownloadURL } from "firebase/storage";
 
 
-function NewChannel() {
+function NewChannel({ currentUser }) {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [recipient, setRecipient] = useState("");
   const [users, setUsers] = useState([]);
-  console.log(users);
 
   //toggles the modal, and resets the state so the forms dont remember data when closed
   const toggleModal = () => {
@@ -37,9 +36,7 @@ function NewChannel() {
   const validateUser = async (username) => {
     const usersCollectionRef = collection(
       db,
-      "users",
-      "allUsers",
-      "users-info"
+      "users"
     );
     const querySnapshot = await getDocs(
       query(usersCollectionRef, where("displayName", "==", username))
@@ -52,6 +49,12 @@ function NewChannel() {
 
   //adds a user to the array of users to be added
   const addRecipient = async () => {
+    //check if the recipient is the current user
+    if (recipient == currentUser) {
+      window.alert("You are already added by default");
+      return;
+    }
+
     //check if the user was already added 
     for (let i in users) {
       if (users[i].displayName === recipient) {
@@ -65,8 +68,8 @@ function NewChannel() {
     if (query) {
       query.forEach(doc => {
         setUsers(prev => [...prev, doc.data()]);
+        
       })
-
     // if the result is falsey, need to alert the user that its invalid
     } else {
       window.alert("user doesnt exist")
@@ -96,7 +99,8 @@ function NewChannel() {
       userId: "System",
       body: "This is the start of the Channel!",
       createdAt: new Date(),
-      authorProfilePic: ""
+      authorProfilePic: "",
+      messageId: "System"
     })
 
     // add other recipients
@@ -109,15 +113,35 @@ function NewChannel() {
       });
     }
 
+    // call the function to add the channels to each user array
+    addChannelsToUsers(newChannelRef.id);
+
     // close modal after creating the channel
     toggleModal();
 
   }// end createChannel
+
+  const addChannelsToUsers = (channelId) => {
+    //create the channel obj to save
+    const channelObj = {channelId: channelId, channelName: title};
+
+    //add the current user into the array of users being save in state
+    const allUsers = users;
+    allUsers.push(auth.currentUser);
+
+    //iterate through each user and add the new channelObj to their chat array
+    allUsers.forEach(async user => {
+        const userDoc = doc(db, "users", user.uid);
+        await updateDoc(userDoc, {
+          chat: arrayUnion(JSON.stringify(channelObj))
+        })
+
+    })
+  }
   
   //map through the added recipients to render
   const defaultProfilePic = "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   const userElems = users.map(user => {
-    
     return (
       <div key={user.uid} className="dashboard--recipient-card">
         <img src={user.profilepic || defaultProfilePic} className="dashboard--recipient-img"></img>
@@ -128,11 +152,8 @@ function NewChannel() {
 
   return (
     <>
-      <button onClick={toggleModal} className="dashboard--link">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="0.88em"
-          height="1em"
+      <button onClick={toggleModal} className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" className="w-6 h-6 stroke-current pe-1"
           viewBox="0 0 448 512"
         >
           <path
@@ -140,7 +161,7 @@ function NewChannel() {
             d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z"
           />
         </svg>
-        <p>New Channel</p>
+        <span className="ml-2 text-sm font-medium">New Channel</span>
       </button>
 
       <Modal

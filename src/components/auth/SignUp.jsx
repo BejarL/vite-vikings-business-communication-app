@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { auth, db } from "../../../FirebaseConfig";
+import useFirebaseImage  from "../utils/useFirebaseImage"
 import {
   createUserWithEmailAndPassword,
   updateProfile,
@@ -14,6 +15,7 @@ import {
   doc,
   setDoc,
 } from "firebase/firestore";
+import Footer from "../Footer";
 
 function SignUp() {
   // State variables to manage user input and error/success messages
@@ -24,6 +26,9 @@ function SignUp() {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
   const navigate = useNavigate();
+
+    // Fetch background image URL from Firebase Storage
+    const backgroundImageUrl = useFirebaseImage('bg-images/chatting.png');
 
   // Constants for password complexity requirements
   const MIN_PASSWORD_LENGTH = 8;
@@ -115,7 +120,7 @@ function SignUp() {
       <div
         className="signup-container h-screen md:flex relative"
         style={{
-          backgroundImage: 'url("/src/images/chatting.png")',
+          backgroundImage: `url(${backgroundImageUrl})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -244,6 +249,7 @@ function SignUp() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

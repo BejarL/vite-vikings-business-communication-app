@@ -1,4 +1,5 @@
 .profile--wrapper {
+  
   height: 100vh;
   width: auto;
   display: flex;
@@ -47,7 +48,6 @@
   margin: 10px 0 15px 0;
   padding: 10px 20px;
   font-size: 1.5rem;
-  background-color: #f59e0b;
   border-radius: 5px;
   text-align: center;
   color: white;
@@ -82,7 +82,7 @@
   width: 300px;
   left: calc(50% - 15px);
   top: calc(50% - 100px);
-  z-index: 10;
+  /* z-index: 10; */
   padding: 10px;
   background-color: #f59e0b;
   border-radius: 5px;
@@ -133,22 +133,7 @@
   position: relative;
 }
 
-.profile--modal-btn {
-  color: white;
-  font-size: 1.5rem;
-  background-color: #f59e0b;
-  padding: 10px;
-  margin: 10px 0 10px 0;
-  border-radius: 5px;
-  width: 210px;
-  transition: 80ms background-color linear;
-  box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.26);
-}
 
-.profile--modal-btn:hover {
-  background-color: #cf9c1a;
-  transition: 80ms background-color linear;
-}
 
 .profile--modal-body > h4 {
   padding-bottom: 5px;
