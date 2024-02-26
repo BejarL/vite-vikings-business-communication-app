@@ -14,9 +14,9 @@ export default function DeleteAccountModal({ deleteProfile }) {
   };
 
   return (
-    <div className="m-2 abs">
+    <div>
       <button onClick={() => setOpenModal(true)} 
-      className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-700 text-white hover:bg-red-800 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+      className="py-3 m-2 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-700 text-white hover:bg-red-800 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
         Delete Account
       </button>
       <Modal
@@ -29,10 +29,13 @@ export default function DeleteAccountModal({ deleteProfile }) {
         <Modal.Header className="bg-amber-500"/>
         <Modal.Body className="bg-amber-500 ">
           <div className="text-center ">
-            <h3 className="mb-5 text-lg font-normal text-white dark:text-gray-400">
+            <h3 className="text-lg font-normal text-white dark:text-gray-400">
               Are you sure you want to delete your Account?
             </h3>
-            <div className="flex justify-center gap-4">
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="bg-amber-500">
+          <div className="flex justify-between w-full">
               <button className="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded" onClick={() => deleteAccount}>
                 {"Yes, I'm sure"}
               </button>
@@ -40,8 +43,7 @@ export default function DeleteAccountModal({ deleteProfile }) {
                 No, cancel
               </button>
             </div>
-          </div>
-        </Modal.Body>
+        </Modal.Footer>
       </Modal>
     </div>
   );

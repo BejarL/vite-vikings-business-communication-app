@@ -8,10 +8,13 @@ import {
   collection,
 } from "firebase/firestore";
 import { auth, db } from "../../FirebaseConfig";
+import useFirebaseImage from "./utils/useFirebaseImage";
 
 export default function TextArea({ channel }) {
   const [messages, setMessages] = useState([]);
   const [messageField, setMessageField] = useState("");
+  const backgroundImageUrl = useFirebaseImage("bg-images/emanate-bg.png");
+
   console.log(messages);
 
   useEffect(() => {
@@ -35,7 +38,11 @@ export default function TextArea({ channel }) {
   });
 
   return (
-    <div className="relative dashboard--textbox w-[100%] flex flex-col">
+    <div className="relative dashboard--textbox w-[100%] flex flex-col"
+    style={{
+      backgroundImage: `url(${backgroundImageUrl})`,
+      backgroundSize: "cover"
+    }}>
       <div className="w-100 h-8 mt-3 border-b border-blue-900 m-1">
         <p className="ml-7 text-base">{channel.channelName}</p>
       </div>

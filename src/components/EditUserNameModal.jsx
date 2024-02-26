@@ -56,20 +56,20 @@ function EditUserNameModal({ displayName, updateDisplayName }) {
         className="profile--modal-wrapper"
       >
         <Modal.Header>
-          <Modal.Title>Edit username</Modal.Title>
+          <Modal.Title className="text-white font-bold text-xl mb-1">Edit username</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           <label
             htmlFor="input-label"
-            className="block text-sm font-medium mb-2 dark:text-white"
+            className="block text-white text-sm font-medium mb-2 dark:text-white"
           >
             Username
           </label>
           <input
             type="email"
             id="input-label"
-            className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 mb-4"
+            className="py-3 px-4 block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 mb-4"
             placeholder="New username"
             autoFocus
           ></input>
