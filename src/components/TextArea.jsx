@@ -1,27 +1,59 @@
 import { useState, useEffect } from 'react';
-import { onSnapshot, updateDoc, deleteDoc, doc, arrayRemove, collection } from "firebase/firestore";
+import { onSnapshot, addDoc, collection, Timestamp } from "firebase/firestore";
 import { auth, db } from "../../FirebaseConfig";
 
 
 export default function TextArea({ channel }) {
     const [messages, setMessages] = useState([]);
     const [messageField, setMessageField] = useState("");
-    console.log(messages); 
+
+    const chat = collection(db, `Chats/${channel.channelId}`, "messages");
 
     useEffect(() => {
         if (channel) {
-            const channels = collection(db, `Chats/${channel.channelId}`, "messages");
             
-            const unsubscribe = onSnapshot(channels, (snapshot) => {
+            const unsubscribe = onSnapshot(chat, (snapshot) => {
                 const messagesData = snapshot.docs.map((doc) => doc.data());
                 setMessages(messagesData);
             })
             return unsubscribe;
         }
-    }, [])
+    }, [channel])
 
     const handleMessageField = (e) => {
         setMessageField(e.target.value)
+    }
+
+    const sendMessage = async () => {
+        const newMessage = {
+            authorProfilePic: "",
+            body: messageField,
+            createdAt: new Date(),
+            messageId: crypto.randomUUID(),
+            userId: auth.currentUser.uid
+        }
+
+        console.log(newMessage);
+        // const messagesRef = collection(newChannelRef, "messages");
+        // await addDoc(messagesRef, {
+        //   userId: "System",
+        //   body: "This is the start of the Channel!",
+        //   createdAt: new Date(),
+        //   authorProfilePic: "",
+        //   messageId: crypto.randomUUID()
+        // })
+
+
+
+        await addDoc(chat, newMessage);
+    }
+
+    const updateMessage = () => {
+        
+    }
+
+    const deleteDoc = () => {
+        
     }
 
     const messagesElems = messages.map(msg => {
@@ -39,6 +71,7 @@ export default function TextArea({ channel }) {
 
             <div className="absolute bottom-0 w-[100%] ">
                 <input className="w-[100%]" value={messageField} placeholder="Type your message here" onChange={handleMessageField}/>
+                <button onClick={sendMessage}>Send</button>
             </div>
       </div>
     )
