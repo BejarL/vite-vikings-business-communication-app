@@ -91,10 +91,10 @@ export default function TextArea({ channel }) {
             <p className="ml-7 text-base">{channel.channelName}</p>
         </div>
         <div className="text-area overflow-y-auto">{loading ? "loading" : messagesElems}</div>
-
-                <div className="absolute bottom-0 w-[100%] ">
+                
+                <div className="absolute bottom-0 w-[100%] flex flex-col">
                     <input className="w-[100%]" value={messageField} placeholder="Type your message here" onChange={handleMessageField}/>
-                    <button onClick={sendMessage}>Send</button>
+                    <button className="p-2 bg-blue-500 text-white" onClick={sendMessage}>Send</button>
                 </div>
         </div>
   )
