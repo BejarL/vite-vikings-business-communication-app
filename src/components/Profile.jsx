@@ -121,10 +121,8 @@ function Profile() {
       className="profile--wrapper "
       style={{
         width: "1500%",
-        padding: "20px",
         backgroundImage: `url(${backgroundImageUrl})`,
         backgroundSize: "cover",
-        backgroundPosition: "center",
       }}
     >
       <div className="profile--img-wrapper">

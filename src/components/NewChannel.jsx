@@ -2,10 +2,18 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import { collection, doc, getDocs, query, where, addDoc, updateDoc, arrayUnion, } from "firebase/firestore";
-import { db, storage, auth } from '../../FirebaseConfig'
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
+import { db, storage, auth } from "../../FirebaseConfig";
 import { ref, getDownloadURL } from "firebase/storage";
-
 
 function NewChannel({ currentUser }) {
   const [show, setShow] = useState(false);
@@ -25,19 +33,16 @@ function NewChannel({ currentUser }) {
     });
   };
 
-  const updateTitle = e => {
+  const updateTitle = (e) => {
     setTitle(e.target.value);
-  }
-  const updateRecipient = e => {
+  };
+  const updateRecipient = (e) => {
     setRecipient(e.target.value);
-  }
+  };
 
   //validates that a user with display name exists, and return their data
   const validateUser = async (username) => {
-    const usersCollectionRef = collection(
-      db,
-      "users"
-    );
+    const usersCollectionRef = collection(db, "users");
     const querySnapshot = await getDocs(
       query(usersCollectionRef, where("displayName", "==", username))
     );
@@ -55,7 +60,7 @@ function NewChannel({ currentUser }) {
       return;
     }
 
-    //check if the user was already added 
+    //check if the user was already added
     for (let i in users) {
       if (users[i].displayName === recipient) {
         window.alert("User already added");
@@ -66,15 +71,14 @@ function NewChannel({ currentUser }) {
     const query = await validateUser(recipient);
     //if the result from the query is not a falsey value, then add the data to the users
     if (query) {
-      query.forEach(doc => {
-        setUsers(prev => [...prev, doc.data()]);
-        
-      })
-    // if the result is falsey, need to alert the user that its invalid
+      query.forEach((doc) => {
+        setUsers((prev) => [...prev, doc.data()]);
+      });
+      // if the result is falsey, need to alert the user that its invalid
     } else {
-      window.alert("user doesnt exist")
+      window.alert("user doesnt exist");
     }
-  }
+  };
 
   const createChannel = async () => {
     // create a new channel document inside of
@@ -84,14 +88,14 @@ function NewChannel({ currentUser }) {
       title: title,
       createdBy: auth.currentUser.uid,
       createdAt: new Date(),
-    })
+    });
 
     // add creator as first member of the channel
     const membersRef = collection(newChannelRef, "members");
     await addDoc(membersRef, {
       userId: auth.currentUser.uid,
       role: "creator",
-    })
+    });
 
     // add messages collection to channel
     const messagesRef = collection(newChannelRef, "messages");
@@ -118,42 +122,51 @@ function NewChannel({ currentUser }) {
 
     // close modal after creating the channel
     toggleModal();
-
-  }// end createChannel
+  }; // end createChannel
 
   const addChannelsToUsers = (channelId) => {
     //create the channel obj to save
-    const channelObj = {channelId: channelId, channelName: title};
+    const channelObj = { channelId: channelId, channelName: title };
 
     //add the current user into the array of users being save in state
     const allUsers = users;
     allUsers.push(auth.currentUser);
 
     //iterate through each user and add the new channelObj to their chat array
-    allUsers.forEach(async user => {
-        const userDoc = doc(db, "users", user.uid);
-        await updateDoc(userDoc, {
-          chat: arrayUnion(JSON.stringify(channelObj))
-        })
+    allUsers.forEach(async (user) => {
+      const userDoc = doc(db, "users", user.uid);
+      await updateDoc(userDoc, {
+        chat: arrayUnion(JSON.stringify(channelObj)),
+      });
+    });
+  };
 
-    })
-  }
-  
   //map through the added recipients to render
-  const defaultProfilePic = "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-  const userElems = users.map(user => {
+  const defaultProfilePic =
+    "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  const userElems = users.map((user) => {
     return (
       <div key={user.uid} className="dashboard--recipient-card">
-        <img src={user.profilepic || defaultProfilePic} className="dashboard--recipient-img"></img>
+        <img
+          src={user.profilepic || defaultProfilePic}
+          className="dashboard--recipient-img"
+        ></img>
         <p>{user.displayName}</p>
       </div>
-    )
-  })
+    );
+  });
 
   return (
     <>
-      <button onClick={toggleModal} className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300">
-        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" className="w-6 h-6 stroke-current pe-1"
+      <button
+        onClick={toggleModal}
+        className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1rem"
+          height="1rem"
+          className="w-6 h-6 stroke-current pe-1"
           viewBox="0 0 448 512"
         >
           <path
@@ -172,32 +185,45 @@ function NewChannel({ currentUser }) {
         className="dashboard--modal-wrapper"
       >
         <Modal.Body>
-          <div className="dashboard--modal-form"> 
-            <input 
+          <div className="dashboard--modal-form">
+            <input
               type="input"
               onChange={updateTitle}
               placeholder="Enter Channel Name"
               value={title}
-              className="dashboard--modal-input"
-              />
-              <div>
-              <input 
-                type="input"  
-                placeholder="Add recipients" 
+              className="dashboard--modal-input rounded"
+            />
+            <div>
+              <input
+                type="input"
+                placeholder="Add recipients"
                 onChange={updateRecipient}
-                className="dashboard--modal-input-2"
-                />
-              <button className="dashboard--modal-add-btn" onClick={addRecipient}>Add</button>
-              </div>
-              <div className="dashboard--cards">
-                {userElems}
-              </div>
+                className="dashboard--modal-input-2 rounded"
+              />
+              <button
+                className="dashboard--modal-add-btn rounded"
+                onClick={addRecipient}
+              >
+                Add
+              </button>
+            </div>
+            <div className="dashboard--cards">{userElems}</div>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <div className="dashboard--modal-footer">
-            <Button variant="secondary" onClick={toggleModal}>Cancel</Button>
-            <Button variant="primary" onClick={createChannel}>Create</Button>
+          <div className="flex justify-between w-full">
+            <button
+              onClick={toggleModal}
+              className=" bg-white hover:bg-gray-200 text-black rounded"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={createChannel}
+              className=" bg-amber-600 hover:bg-amber-800 text-white rounded"
+            >
+              Create
+            </button>
           </div>
         </Modal.Footer>
       </Modal>

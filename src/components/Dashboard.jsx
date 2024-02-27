@@ -90,7 +90,7 @@ import Profile from "./Profile";
     <div className="dashboard--wrapper">
       {/* Navbar */}
       <nav className="dashboard--navbar">
-        <div className="flex flex-col items-center w-40 h-full overflow-hidden text-amber-700 bg-orange-300">
+        <div className="flex flex-col items-center w-40 h-full overflow-hidden text-amber-800 bg-amber-500">
           <a className="flex items-center w-full px-3 mt-3" href="#">
             <svg
               className="w-8 h-8 fill-current"
@@ -133,7 +133,7 @@ import Profile from "./Profile";
             <div className="">{channelElems}</div>
           </div>
           <Link
-            className="flex items-center justify-center w-full h-16 mt-auto bg-gray-800 hover:bg-gray-700 hover:text-gray-300"
+            className="flex items-center justify-center w-full h-16 mt-auto text-white bg-amber-800 hover:bg-amber-700 hover:text-gray-300"
             to="/"
             onClick={handleLogout}
           >
