@@ -2,13 +2,17 @@ import { useState, useEffect } from "react";
 import {
   onSnapshot,
   addDoc,
+  deleteDoc,
+  doc,
   collection,
   query,
+  where,
   getDocs,
   orderBy,
 } from "firebase/firestore";
 import { auth, db } from "../../FirebaseConfig";
 import useFirebaseImage from "./utils/useFirebaseImage";
+import  Dropdown  from "./Dropdown";
 
 export default function TextArea({ channel }) {
   const [messages, setMessages] = useState([]);
@@ -68,8 +72,14 @@ export default function TextArea({ channel }) {
         
     }
 
-    const deleteMsg = () => {
-        
+    const deleteMsg = async (msgId) => {
+        const q = query(chat, where("messageId", "==", msgId));
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (msg) => {
+            const docRef = doc(db, `Chats/${channel.channelId}/messages`, msg.id);
+            await deleteDoc(docRef)
+        });
     }
 
     const messagesElems = messages.map(msg => {
@@ -93,6 +103,7 @@ export default function TextArea({ channel }) {
                     <p>{timeStamp}</p>
                 </div>
                 <p>{msg.body}</p>
+                {auth.currentUser.uid === msg.userId ? <Dropdown deleteMsg={deleteMsg} msgId={msg.messageId}/> : null}
             </div>
         )
     })
