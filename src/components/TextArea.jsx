@@ -30,7 +30,7 @@ export default function TextArea({ channel }) {
 
     const sendMessage = async () => {
         const newMessage = {
-            authorProfilePic: "",
+            authorProfilePic: auth.currentUser.photoURL,
             body: messageField,
             createdAt: new Date(),
             messageId: crypto.randomUUID(),
@@ -66,14 +66,20 @@ export default function TextArea({ channel }) {
 
     const messagesElems = messages.map(msg => {
 
-
         let timeStamp = convertDate(msg.createdAt)
 
         return (
             <div key={msg.messageId}>
                 <div>
                     <div>
-                        <img src={msg.profilePic} alt="profile picture"></img>
+                        <img 
+                        style={{
+                            width: '30px', // Adjust the width as needed
+                            height: '30px', // Adjust the height as needed
+                            borderRadius: '50%', // Optional: To make it a circular profile picture
+                        }}                            
+                            src={msg.authorProfilePic} 
+                            alt="profile picture"></img>
                         <p>{msg.userId}</p>
                     </div>
                     <p>{timeStamp}</p>
