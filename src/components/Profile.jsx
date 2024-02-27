@@ -63,7 +63,17 @@ function Profile() {
     );
     uploadBytes(imageRef, file)
       .then(() => getDownloadURL(imageRef))
-      .then(setImg)
+      .then((fileURL) => {
+        // update user profile picture URL in authentication
+        updateProfile(auth.currentUser, {photoURL: fileURL});
+
+        // update user profile picture URL  in firestore document 
+        const userDocRef = doc(db, "users", currentUser.uid);
+        updateDoc(userDocRef, {authorProfilePic: fileURL})
+
+        setImg(fileURL);
+      })
+      // .then(setImg)
       .catch((e) => console.error("Error uploading or retrieving URL", e));
   };
 
@@ -94,7 +104,9 @@ function Profile() {
     }
 
     try {
+      // update user display name in authentication
       await updateProfile(auth.currentUser, { displayName: username });
+      // update user display name in firestore document
       await updateDoc(doc(db, "users", currentUser.uid), {
         displayName: username,
       });
