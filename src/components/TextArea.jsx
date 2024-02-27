@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../../FirebaseConfig";
 import useFirebaseImage from "./utils/useFirebaseImage";
-import  Dropdown  from "./Dropdown";
+import  Dropdown  from "../modals/Dropdown";
 
 export default function TextArea({ channel }) {
   const [messages, setMessages] = useState([]);
@@ -48,7 +48,7 @@ export default function TextArea({ channel }) {
             messageId: crypto.randomUUID(),
             userId: auth.currentUser.uid
         }
-
+    setMessageField("");
     await addDoc(chat, newMessage);
   };
 

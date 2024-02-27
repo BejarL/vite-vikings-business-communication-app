@@ -12,11 +12,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { auth, storage, db } from "../../FirebaseConfig";
-import EditUserNameModal from "./EditUserNameModal";
-import DeleteAccountModal from "./DeleteAccountModal";
+import EditUserNameModal from "../modals/EditUserNameModal";
+import DeleteAccountModal from "../modals/DeleteAccountModal";
 import useFirebaseImage from "./utils/useFirebaseImage";
-import "./Profile.css";
-import ChangePasswordModal from "./ChangePasswordModal";
+import ChangePasswordModal from "../modals/ChangePasswordModal";
 
 function Profile() {
   const [img, setImg] = useState("");
