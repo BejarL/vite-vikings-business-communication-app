@@ -87,15 +87,15 @@ export default function TextArea({ channel }) {
 
     return (
         <div className="relative dashboard--textbox w-[100%] flex flex-col">
-        <div className="w-100 h-8 mt-3 border-b border-blue-900 m-1">
-            <p className="ml-7 text-base">{channel.channelName}</p>
-        </div>
-        <div className="text-area overflow-y-auto">{loading ? "loading" : messagesElems}</div>
-                
-                <div className="absolute bottom-0 w-[100%] flex flex-col">
-                    <input className="w-[100%]" value={messageField} placeholder="Type your message here" onChange={handleMessageField}/>
-                    <button className="p-2 bg-blue-500 text-white" onClick={sendMessage}>Send</button>
-                </div>
+            <div className="w-100 h-8 mt-3 border-b border-blue-900 m-1">
+                <p className="ml-7 text-base">{channel.channelName}</p>
+            </div>
+            <div className="text-area overflow-y-auto">{loading ? "loading" : messagesElems}</div>
+
+            <div className="absolute bottom-0 w-[100%] flex flex-col">
+                <input className="w-[100%]" value={messageField} placeholder="Type your message here" onChange={handleMessageField}/>
+                <button className="p-2 bg-blue-500 text-white" onClick={sendMessage}>Send</button>
+            </div>
         </div>
   )
 }
