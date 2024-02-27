@@ -129,7 +129,7 @@ import Profile from "./Profile";
               <NewChannel currentUser={currentUser.displayName} />
             </div>
           </div>
-          <div className="flex flex-col items-center w-full max-h-[100%] overflow-y-auto mt-3  pe">
+          <div className="flex flex-col items-center w-full overflow-y-auto max-h-[100%] mt-3  pe">
             <div className="">{channelElems}</div>
           </div>
           <Link

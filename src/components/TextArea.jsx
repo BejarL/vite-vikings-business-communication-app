@@ -42,7 +42,7 @@ export default function TextArea({ channel }) {
             body: messageField,
             createdAt: new Date(),
             messageId: crypto.randomUUID(),
-            userId: auth.currentUser.uid
+            // userId: auth.currentUser.uid
         }
 
     await addDoc(chat, newMessage);
@@ -79,18 +79,19 @@ export default function TextArea({ channel }) {
         return (
             <div key={msg.messageId}>
                 <div>
-                    <div>
+                    <div className = 'flex items-center'>
                         <img 
                         style={{
-                            width: '30px', // Adjust the width as needed
-                            height: '30px', // Adjust the height as needed
-                            borderRadius: '50%', // Optional: To make it a circular profile picture
+                            width: '50px', // Adjust the width as needed
+                            height: '50px', // Adjust the height as needed
+                            borderRadius: '15%', // Optional: To make it a circular profile picture
                         }}                            
                             src={msg.authorProfilePic} 
-                            alt="profile picture"></img>
-                        <p>{msg.userId}</p>
-                    </div>
+                            alt="profile picture">
+                          </img>
+                    
                     <p>{timeStamp}</p>
+                    </div>
                 </div>
                 <p>{msg.body}</p>
             </div>
@@ -100,12 +101,42 @@ export default function TextArea({ channel }) {
     
 
   return (
-    <div className="relative dashboard--textbox w-[100%] flex flex-col">
-      <div className="w-100 h-8 mt-3 border-b border-blue-900 m-1">
-        <p className="ml-7 text-base">{channel.channelName}</p>
-      </div>
+    <div className="flex flex-col items-center w-full h-full overflow-hidden text-gray-400 bg-gray-900">
+		<a className="flex items-center w-full px-3 mt-3" href="#">
+			<span className="ml-2 text-sm font-bold p-3">{channel.channelName}</span>
+		</a>
+		<div className="w-full px-2 overflow-y-auto border-blue-900 border-t">
+			<div className="flex flex-col w-full max-h-[100%] mt-3  pe">
+        <div>
+				<div className="flex items-center w-full h-full px-3 mt-2 rounded" href="#">
+          <div>{loading ? "loading" : messagesElems}</div>
+				</div>
+        </div>
+			</div>
+		</div>
+		<div className="flex flex-col bottom-0 items-center justify-center w-[100%] h-16 mt-auto bg-gray-800 hover:bg-gray-700 hover:text-gray-300" href="#">
+      <input
+          className="w-[100%]"
+          value={messageField}
+          placeholder="Type your message here"
+          onChange={handleMessageField}
+        />
+        <button className="w-full p-2 bg-blue-500 text-white" onClick={sendMessage}>
+          Send
+        </button>
+		</div>
+	</div>
+  );
+}
+
+
+
+
+
+{/*<div>
+      <span>{channel.channelName}</span>
       <div className="text-area overflow-y-auto">
-        {loading ? "loading" : messagesElems}
+        <div>{loading ? "loading" : messagesElems}</div>
       </div>
 
       <div className="absolute bottom-0 w-[100%] flex flex-col">
@@ -119,9 +150,7 @@ export default function TextArea({ channel }) {
           Send
         </button>
       </div>
-    </div>
-  );
-}
+  </div> */}
 
 {
   /* <div key={msg.messageId}>
@@ -134,4 +163,4 @@ export default function TextArea({ channel }) {
                 </div>
                 <p>{msg.body}</p>
             </div> */
-}
+};
