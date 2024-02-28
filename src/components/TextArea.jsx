@@ -53,6 +53,7 @@ const sendMessage = async () => {
     //create the message
     const newMessage = {
         authorProfilePic: auth.currentUser.photoURL,
+        displayName: auth.currentUser.displayName,
         body: messageField,
         createdAt: new Date(),
         messageId: crypto.randomUUID(),
@@ -118,7 +119,8 @@ const sendMessage = async () => {
                             src={msg.authorProfilePic} 
                             alt="profile picture">
                           </img>
-                    <p>{timeStamp}</p>
+                      <span>{msg.displayName}</span>
+                      <p>{timeStamp}</p>
                     </div>
                 </div>
                 <p>{msg.body}</p>
