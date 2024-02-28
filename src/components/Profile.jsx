@@ -97,6 +97,7 @@ function Profile() {
   };
 
   const updateDisplayName = async (username) => {
+    console.log(username);
     const isUnique = await validateUser(username);
     if (!isUnique) {
       alert("Username already taken");
