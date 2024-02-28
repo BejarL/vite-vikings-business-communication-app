@@ -16,6 +16,7 @@ import EditUserNameModal from "../modals/EditUserNameModal";
 import DeleteAccountModal from "../modals/DeleteAccountModal";
 import useFirebaseImage from "./utils/useFirebaseImage";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
+import './Profile.css'
 
 function Profile() {
   const [img, setImg] = useState("");

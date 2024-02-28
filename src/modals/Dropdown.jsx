@@ -1,6 +1,7 @@
 import {useState} from 'react'
+import EditMessage from "../modals/EditMessage";
 
-const Dropdown = ({ deleteMsg, msgId }) => {
+const Dropdown = ({ deleteMsg, updateMsg, msgId, messageContent }) => {
   const [isOpen, setIsOpen] = useState(false)
   const toggleDropdown = () => setIsOpen(!isOpen)
 
@@ -36,12 +37,11 @@ const Dropdown = ({ deleteMsg, msgId }) => {
             aria-labelledby="dropdownMenu"
           >
             <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Edit
-              </a>
+              <EditMessage 
+                msgId={msgId}
+                messageContent={messageContent}  
+                updateMsg={updateMsg}
+              />
             </li>
             <li>
               <a
@@ -51,9 +51,7 @@ const Dropdown = ({ deleteMsg, msgId }) => {
               >
                 Delete
               </a>
-            </li>
-            
-            
+            </li>        
           </ul>
           
         </div>
