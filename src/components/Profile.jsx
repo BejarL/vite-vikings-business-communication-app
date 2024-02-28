@@ -111,7 +111,6 @@ function Profile() {
       await updateDoc(doc(db, "users", currentUser.uid), {
         displayName: username,
       });
-      navigate("/profile");
     } catch (error) {
       console.error("Error updating display name:", error);
     }
