@@ -11,7 +11,6 @@ import Dashboard from "./components/Dashboard";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import Protected from "./components/auth/Protected";
-import Profile from "./components/Profile.jsx";
 // import Layout from "./components/Layout.jsx";
 import ForgotPassword from "./components/auth/ForgotPassword.jsx";
 // Create routes using JSX elements
