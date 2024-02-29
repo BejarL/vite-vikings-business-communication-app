@@ -258,18 +258,23 @@ export default function TextArea({ channel }) {
       <div className="flex w-[98%] h-auto mt-auto m-3 rounded bg-gray-800 hover:bg-gray-700 hover:text-gray-300">
         <input
           className="flex-1 pl-2 bg-transparent h-10"
+          style={{marginRight: '5px' }}
           value={messageField}
           placeholder="Type your message here"
           onChange={handleMessageField}
           onKeyDown={handleKeyDown}
         />
-        <button
-          className="h-10 w-32 rounded bg-blue-500 text-white"
+
+        <button type="button" 
+          class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           onClick={sendMessage}
           disabled={loading || !messageField.trim()}
-          aria-label="Send message"
+          aria-label="Send message"        
         >
-          Send
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+          </svg>
+          <span class="sr-only">Icon description</span>
         </button>
       </div>
     </div>
