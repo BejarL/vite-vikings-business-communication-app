@@ -1,6 +1,6 @@
 // Importing necessary dependencies and styles
 import "./Dashboard.css";
-import "./Profile"
+import "./Profile";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { signOut, onAuthStateChanged } from "firebase/auth";
@@ -14,7 +14,7 @@ import TextArea from "./TextArea";
 import exp from "constants";
 import Profile from "./Profile";
 
- function Dashboard() {
+function Dashboard() {
   const [channels, setChannels] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
   const [currentChannel, setCurrentChannel] = useState("");
@@ -55,7 +55,7 @@ import Profile from "./Profile";
     () => navigate("/");
     setIsChannelShown(true);
     setIsProfileShown(false);
-  }
+  };
   //removes the channel from the users array of channels in firebase
 
   // first checking if the current user is the creator
@@ -72,15 +72,15 @@ import Profile from "./Profile";
     setIsChannelShown(true);
   };
 
-  let channelElems = channels.map(item => {
+  let channelElems = channels.map((item) => {
     // Ensured correct mapping and key usage
     const channel = JSON.parse(item);
     return (
       <DeleteChannelModal
-        key={channel.channelId} 
+        key={channel.channelId}
         channel={channel}
         currentUser={currentUser}
-        goToChannel = { goToChannel }
+        goToChannel={goToChannel}
       />
     );
   });
@@ -124,7 +124,6 @@ import Profile from "./Profile";
                   />
                 </svg>
                 <span className="ml-2 text-sm font-medium">Profile</span>
-
               </button>
               <NewChannel currentUser={currentUser.displayName} />
             </div>
@@ -152,9 +151,9 @@ import Profile from "./Profile";
           </Link>
         </div>
       </nav>
-      { isChannelShown && (<TextArea channel={currentChannel} />)}
-      { isProfileShown && (<Profile/>)}
+      {isChannelShown && <TextArea channel={currentChannel} />}
+      {isProfileShown && <Profile />}
     </div>
   );
 }
-export default Dashboard
+export default Dashboard;

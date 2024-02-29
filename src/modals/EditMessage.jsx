@@ -33,12 +33,13 @@ function EditMessage({ msgId, messageContent, updateMsg }) {
   
   return (
     <div>
-      <button
+      <a
+        href="#"
         onClick={() => setOpenModal(true)}
-        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-[100%]"
+        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
       >
         Edit
-      </button>
+      </a>
       <Modal
         show={openModal}
         size="md"

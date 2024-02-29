@@ -62,10 +62,10 @@ export default function TextArea({ channel }) {
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      sendMessage(); 
+      sendMessage();
     }
   };
-  
+
   // Send a new message to Firestore and optimistically update the UI
   const sendMessage = async () => {
     if (!channel || !channel.channelId || !messageField.trim()) return;
@@ -78,7 +78,7 @@ export default function TextArea({ channel }) {
     };
 
     setMessages((prevMessages) => [newMessage, ...prevMessages]);
-    setMessageField(""); 
+    setMessageField("");
 
     try {
       await addDoc(
@@ -96,7 +96,7 @@ export default function TextArea({ channel }) {
 
   // Delete a message by messageId
   const deleteMsg = async (msgId) => {
-    if (!channel || !channel.channelId) return; 
+    if (!channel || !channel.channelId) return;
     const q = query(
       collection(db, `Chats/${channel.channelId}`, "messages"),
       where("messageId", "==", msgId)
@@ -128,7 +128,7 @@ export default function TextArea({ channel }) {
       date = new Date(createdAt);
     } else {
       console.error("Unexpected createdAt type:", typeof createdAt);
-      return createdAt; 
+      return createdAt;
     }
     // Define custom options for the date format
     const options = {
@@ -160,13 +160,13 @@ export default function TextArea({ channel }) {
               src={msg.authorProfilePic}
               alt="Profile picture"
             />
-            <p className="pl-4 text-sm">{timeStamp}</p>
+            <p className="p-4 text-sm">{timeStamp}</p>
+            {auth.currentUser.uid === msg.userId ? (
+              <Dropdown deleteMsg={deleteMsg} msgId={msg.messageId} />
+            ) : null}
           </div>
         </div>
         <p>{msg.body}</p>
-        {auth.currentUser.uid === msg.userId ? (
-          <Dropdown deleteMsg={deleteMsg} msgId={msg.messageId} />
-        ) : null}
       </div>
     );
   });
@@ -185,7 +185,7 @@ export default function TextArea({ channel }) {
               onClick={() => setMessagesLimit((prevLimit) => prevLimit + 10)}
               aria-label="Load more messages"
               className="load-more-btn"
-              style={{ alignSelf: "center", margin: "10px 0" }} 
+              style={{ alignSelf: "center", margin: "10px 0" }}
             >
               Load More
             </button>
