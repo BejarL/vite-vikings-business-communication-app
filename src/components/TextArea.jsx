@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../../FirebaseConfig";
 import Dropdown from "../modals/Dropdown";
+import ChannelSettingsModal from '../modals/ChannelSettingsModal'
 
 export default function TextArea({ channel }) {
   const [messages, setMessages] = useState([]);
@@ -22,10 +23,11 @@ export default function TextArea({ channel }) {
   const [loading, setLoading] = useState(false);
   const [messagesLimit, setMessagesLimit] = useState(10);
   const [users, setUsers] = useState([]);
-
+  
   const messagesEndRef = useRef(null); // keep track messages for auto-scrolling
-  const chatRef = collection(db, `Chats/${channel.channelId}`, "messages");
-
+  const chatRef = channel ? collection(db, `Chats/${channel.channelId}`, "messages") : "";
+  const membersRef = channel ? collection(db, `Chats/${channel.channelId}`, "members") : "";
+  
   // Auto-scroll to the latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -59,7 +61,7 @@ export default function TextArea({ channel }) {
   }, [channel, messagesLimit]);
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && channel) {
       getUsers();
     }
   }, [loading])
@@ -67,16 +69,19 @@ export default function TextArea({ channel }) {
   const getUsers = async() => {
     const usersData = [];
     //get the collection of users in the channel
-    const usersQuery = query(chatRef)
+    const usersQuery = query(membersRef)
     const querySnapshot = await getDocs(usersQuery);
     const dataArray = querySnapshot.docs;
+    
     for (let i in dataArray) {
       const userSnap = await getDoc(doc(db, "users", dataArray[i].data().userId))
+      
       if (userSnap.exists()) {
-        usersData.push({uid: userSnap.data().uid, displayName: userSnap.data().displayName})
+          usersData.push({uid: userSnap.data().uid, displayName: userSnap.data().displayName})
       }
       
     }
+    console.log(usersData)
     setUsers(usersData);
   }
 
@@ -222,9 +227,13 @@ export default function TextArea({ channel }) {
   return (
     <div className="flex flex-col items-center w-full h-full overflow-hidden text-gray-400 bg-gray-900">
       <h1 className="flex items-center w-full px-3 mt-3">
-        <span className="ml-2 text-lg font-bold p-3">
+        <span className="ml-2 text-lg font-bold p-3 mr-auto">
           {channel.channelName}
         </span>
+        { channel ?
+          <ChannelSettingsModal channel={channel} users={users}/>
+          : null
+        }
       </h1>
       <div className="w-full px-2 overflow-y-auto border-blue-900 border-t">
         <div className="flex flex-col w-full max-h-[100%] pl-4 mt-3">
