@@ -11,12 +11,8 @@ import Dashboard from "./components/Dashboard";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import Protected from "./components/auth/Protected";
-import Profile from "./components/Profile.jsx";
-import Layout from "./components/Layout.jsx";
+// import Layout from "./components/Layout.jsx";
 import ForgotPassword from "./components/auth/ForgotPassword.jsx";
-import UpdatePassword from "./components/auth/UpdatePassword.jsx";
-import Footer from './components/Footer.jsx'
-
 // Create routes using JSX elements
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,10 +22,7 @@ const router = createBrowserRouter(
         <Route path="login" element={<Login />}/>
         <Route path="forgotpassword" element={<ForgotPassword />} />
         <Route path="/" element={<Protected />}>
-          <Route path="/" element={<Layout />}>
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-          <Route path="updatepassword" element={<UpdatePassword />} />
+          <Route path="/" element={<Dashboard />} />
         </Route>
       </Route>
     </>

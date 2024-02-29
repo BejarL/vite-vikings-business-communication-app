@@ -1,29 +1,31 @@
 // Importing necessary dependencies and styles
 import "./Dashboard.css";
-import { IconContext } from "react-icons";
+import "./Profile";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../FirebaseConfig";
 import { useNavigate } from "react-router-dom";
-import NewChannel from "./NewChannel";
+import NewChannel from "../modals/NewChannel";
 import { doc, onSnapshot } from "firebase/firestore";
-import DeleteChannelModal from "./DeleteChannelModal";
-import { Modal } from "flowbite-react";
-import { updateDoc, deleteDoc, arrayRemove } from "firebase/firestore";
+import DeleteChannelModal from "../modals/DeleteChannelModal";
+// import { updateDoc, deleteDoc, arrayRemove } from "firebase/firestore";
 import TextArea from "./TextArea";
+import exp from "constants";
+import Profile from "./Profile";
 
 function Dashboard() {
   const [channels, setChannels] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
   const [currentChannel, setCurrentChannel] = useState("");
   const navigate = useNavigate();
+  const [isChannelShown, setIsChannelShown] = useState(true);
+  const [isProfileShown, setIsProfileShown] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setCurrentUser(currentUser);
     });
-
     if (currentUser.uid) {
       const unsubscribe = onSnapshot(
         doc(db, "users", currentUser.uid),
@@ -35,11 +37,6 @@ function Dashboard() {
     }
   }, [currentUser]);
 
-  // Function to toggle the visibility of the channel or direct menu
-  const chevron = (set) => {
-    set((prev) => !prev);
-  };
-
   // Function to handle user logout
   const handleLogout = async () => {
     await signOut(auth);
@@ -48,6 +45,17 @@ function Dashboard() {
     navigate("/login");
   };
 
+  const profileView = () => {
+    () => navigate("/profile");
+    setIsChannelShown(false);
+    setIsProfileShown(true);
+  };
+
+  const homeView = () => {
+    () => navigate("/");
+    setIsChannelShown(true);
+    setIsProfileShown(false);
+  };
   //removes the channel from the users array of channels in firebase
 
   // first checking if the current user is the creator
@@ -60,16 +68,19 @@ function Dashboard() {
   };
   const goToChannel = (channel) => {
     setCurrentChannel(channel);
+    setIsProfileShown(false);
+    setIsChannelShown(true);
   };
 
-  let channelElems = channels.map((item, index) => {
+  let channelElems = channels.map((item) => {
     // Ensured correct mapping and key usage
     const channel = JSON.parse(item);
     return (
       <DeleteChannelModal
-        key={index} // Ideally, use a unique id from the channel object if available
+        key={channel.channelId}
         channel={channel}
         currentUser={currentUser}
+        goToChannel={goToChannel}
       />
     );
   });
@@ -79,14 +90,14 @@ function Dashboard() {
     <div className="dashboard--wrapper">
       {/* Navbar */}
       <nav className="dashboard--navbar">
-        <div className="flex flex-col items-center w-40 h-full overflow-hidden text-amber-700 bg-orange-300">
+        <div className="flex flex-col items-center w-40 h-full overflow-hidden text-amber-800 bg-amber-500">
           <a className="flex items-center w-full px-3 mt-3" href="#">
             <svg
               className="w-8 h-8 fill-current"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              onClick={() => navigate("/")}
+              onClick={homeView}
             >
               <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
             </svg>
@@ -94,9 +105,9 @@ function Dashboard() {
           </a>
           <div className="w-full px-2">
             <div className="flex flex-col items-center w-full mt-3 border-t border-b border-blue-900">
-              <Link
+              <button
                 className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
-                to="/profile"
+                onClick={profileView}
               >
                 <svg
                   className="w-6 h-6 stroke-current"
@@ -113,15 +124,15 @@ function Dashboard() {
                   />
                 </svg>
                 <span className="ml-2 text-sm font-medium">Profile</span>
-              </Link>
+              </button>
               <NewChannel currentUser={currentUser.displayName} />
             </div>
           </div>
-          <div className="flex flex-col items-center w-full max-h-[100%] overflow-y-auto mt-3  pe">
+          <div className="flex flex-col items-center w-full overflow-y-auto max-h-[100%] mt-3  pe">
             <div className="">{channelElems}</div>
           </div>
           <Link
-            className="flex items-center justify-center w-full h-16 mt-auto bg-gray-800 hover:bg-gray-700 hover:text-gray-300"
+            className="flex items-center justify-center w-full h-16 mt-auto text-white bg-amber-800 hover:bg-amber-700 hover:text-gray-300"
             to="/"
             onClick={handleLogout}
           >
@@ -140,7 +151,9 @@ function Dashboard() {
           </Link>
         </div>
       </nav>
-          <TextArea channel={currentChannel} />
+      {isChannelShown && <TextArea channel={currentChannel} />}
+      {isProfileShown && <Profile />}
     </div>
   );
 }
+export default Dashboard;
