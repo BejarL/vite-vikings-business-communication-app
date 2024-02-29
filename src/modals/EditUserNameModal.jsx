@@ -72,6 +72,7 @@ function EditUserNameModal({ displayName, updateDisplayName }) {
             className="py-3 px-4 block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 mb-4"
             placeholder="New username"
             autoFocus
+            onChange={handleUsername}
           ></input>
         </Modal.Body>
         <Modal.Footer>

@@ -16,7 +16,7 @@ import EditUserNameModal from "../modals/EditUserNameModal";
 import DeleteAccountModal from "../modals/DeleteAccountModal";
 import useFirebaseImage from "./utils/useFirebaseImage";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
-import "./Profile.css"
+import './Profile.css'
 
 function Profile() {
   const [img, setImg] = useState("");
@@ -97,6 +97,7 @@ function Profile() {
   };
 
   const updateDisplayName = async (username) => {
+    console.log(username);
     const isUnique = await validateUser(username);
     if (!isUnique) {
       alert("Username already taken");
@@ -110,7 +111,6 @@ function Profile() {
       await updateDoc(doc(db, "users", currentUser.uid), {
         displayName: username,
       });
-      navigate("/profile");
     } catch (error) {
       console.error("Error updating display name:", error);
     }
