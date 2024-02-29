@@ -5,6 +5,7 @@ import {
   getDoc,
   getDocs,
   deleteDoc,
+  updateDoc,
   doc,
   collection,
   query,
@@ -20,8 +21,10 @@ export default function TextArea({ channel }) {
   const [messageField, setMessageField] = useState("");
   const [loading, setLoading] = useState(false);
   const [messagesLimit, setMessagesLimit] = useState(10);
+  const [users, setUsers] = useState([]);
 
   const messagesEndRef = useRef(null); // keep track messages for auto-scrolling
+  const chatRef = collection(db, `Chats/${channel.channelId}`, "messages");
 
   // Auto-scroll to the latest message
   useEffect(() => {
@@ -32,9 +35,8 @@ export default function TextArea({ channel }) {
   useEffect(() => {
     if (channel && channel.channelId) {
       setLoading(true);
-      const chat = collection(db, `Chats/${channel.channelId}`, "messages");
       const messageQuery = query(
-        chat,
+        chatRef,
         orderBy("createdAt", "desc"),
         limit(messagesLimit)
       );
@@ -56,6 +58,28 @@ export default function TextArea({ channel }) {
     }
   }, [channel, messagesLimit]);
 
+  useEffect(() => {
+    if (!loading) {
+      getUsers();
+    }
+  }, [loading])
+
+  const getUsers = async() => {
+    const usersData = [];
+    //get the collection of users in the channel
+    const usersQuery = query(chatRef)
+    const querySnapshot = await getDocs(usersQuery);
+    const dataArray = querySnapshot.docs;
+    for (let i in dataArray) {
+      const userSnap = await getDoc(doc(db, "users", dataArray[i].data().userId))
+      if (userSnap.exists()) {
+        usersData.push({uid: userSnap.data().uid, displayName: userSnap.data().displayName})
+      }
+      
+    }
+    setUsers(usersData);
+  }
+
   const handleMessageField = (e) => {
     setMessageField(e.target.value);
   };
@@ -76,30 +100,39 @@ export default function TextArea({ channel }) {
       createdAt: new Date(),
       messageId: crypto.randomUUID(),
       userId: auth.currentUser.uid,
+      displayName: auth.currentUser.displayName
     };
 
-    setMessages((prevMessages) => [newMessage, ...prevMessages]);
     setMessageField("");
 
     try {
       await addDoc(
-        collection(db, `Chats/${channel.channelId}`, "messages"),
+        chatRef,
         newMessage
       );
     } catch (error) {
-      console.error("Error sending message:", error);
-      setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg.messageId !== newMessage.messageId)
-      );
+      console.log("Error sending message:", error);
       alert("Failed to send message. Please try again.");
     }
   };
 
+  const updateMsg = async (msgId, msgContent) => {
+    //query to find the correct message based off its msgId we are saving.
+    const q = query(chatRef, where("messageId", "==", msgId));
+    const querySnapshot = await getDocs(q);
+    //go through each doc (should only be one with that ID) and update it with the msgContent
+    querySnapshot.forEach(async (msg) => {
+        const docRef = doc(db, `Chats/${channel.channelId}/messages`, msg.id);
+        await updateDoc(docRef, {
+            "body": msgContent
+        })
+    });
+}
+
   // Delete a message by messageId
   const deleteMsg = async (msgId) => {
-    if (!channel || !channel.channelId) return;
     const q = query(
-      collection(db, `Chats/${channel.channelId}`, "messages"),
+      chatRef,
       where("messageId", "==", msgId)
     );
 
@@ -148,6 +181,14 @@ export default function TextArea({ channel }) {
   const messagesElems = messages.map((msg) => {
     let timeStamp = convertDate(msg.createdAt);
 
+    //set it to the name be one in the msg by default
+    let displayName = msg.displayName;
+    //check the users array for the updated one.
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].uid === msg.userId) {
+        displayName = users[i].displayName;
+      }
+    }
     return (
       <div key={msg.messageId}>
         <div>
@@ -161,9 +202,15 @@ export default function TextArea({ channel }) {
               src={msg.authorProfilePic}
               alt="Profile picture"
             />
+            <p className="ps-2 text-orange-400">{displayName}</p>
             <p className="p-4 text-sm">{timeStamp}</p>
             {auth.currentUser.uid === msg.userId ? (
-              <Dropdown deleteMsg={deleteMsg} msgId={msg.messageId} />
+              <Dropdown 
+              deleteMsg={deleteMsg} 
+              updateMsg={updateMsg}
+              msgId={msg.messageId}
+              messageContent={msg.body}
+              /> 
             ) : null}
           </div>
         </div>
