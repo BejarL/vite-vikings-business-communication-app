@@ -214,13 +214,13 @@ function NewChannel({ currentUser }) {
           <div className="flex justify-between w-full">
             <button
               onClick={toggleModal}
-              className=" bg-white hover:bg-gray-200 text-black rounded"
+              className=" bg-transparent hover:text-gray-200 text-black rounded"
             >
               Cancel
             </button>
             <button
               onClick={createChannel}
-              className=" bg-amber-600 hover:bg-amber-800 text-white rounded"
+              className=" bg-transparent hover:text-amber-800 text-white rounded"
             >
               Create
             </button>
