@@ -160,7 +160,7 @@ function NewChannel({ currentUser }) {
     <>
       <button
         onClick={toggleModal}
-        className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
+        className="flex items-center mb-2 w-full h-12 px-3 mt-2 rounded hover:bg-amber-700 hover:text-gray-300"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

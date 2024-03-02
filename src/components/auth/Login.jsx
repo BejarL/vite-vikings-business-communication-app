@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { auth } from "../../../FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import useFirebaseImage  from "../utils/useFirebaseImage"
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 
@@ -14,8 +13,6 @@ function Login() {
   const [password, setPassword] = useState(""); // To store the user's password
   const navigate = useNavigate(); // Hook for programmatically navigating
 
-  // Fetch background image URL from Firebase Storage
-  const backgroundImageUrl = useFirebaseImage('bg-images/chatting.png');
 
   // useEffect hook to clear error message after 3 seconds
   useEffect(() => {
@@ -56,7 +53,7 @@ function Login() {
       <div
         className="h-screen md:flex "
         style={{
-          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fchatting.png?alt=media&token=1e6cc3a8-9dee-441c-a3d7-9164bb2104f5)`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
