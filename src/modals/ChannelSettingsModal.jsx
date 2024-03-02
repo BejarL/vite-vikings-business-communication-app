@@ -1,57 +1,142 @@
 import { Button, Modal, Tabs } from "flowbite-react";
-import { HiAdjustments, HiClipboardList, HiUserCircle } from 'react-icons/hi';
+import { HiAdjustments, HiClipboardList, HiOutlineLogout, HiOutlineTrash } from 'react-icons/hi';
 import { MdDashboard } from 'react-icons/md';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
+  addDoc,
   updateDoc,
   deleteDoc,
   doc,
   arrayRemove,
   getDocs,
+  arrayUnion,
   collection,
   query,
   where,
 } from "firebase/firestore";
-import { db } from "../../FirebaseConfig";
+import { auth, db } from "../../FirebaseConfig";
+import '../CustomScroll.css'
 
-function ChannelSettingsModal({ channel, currentUser, users }) {
+function ChannelSettingsModal({ channel, users }) {
   const [openModal, setOpenModal] = useState(false);
+  const [role, setRole] = useState("member");
+  const [newUser, setNewUser] = useState("");
+  const currentUser = auth.currentUser;
+  const membersRef = collection(db, `Chats/${channel.channelId}/members`);
+  
+  useEffect(() => {
+    getRole(channel);
+  }, [])
 
-  const removeChannel = async (channelObj) => {
-    const membersRef = collection(db, `Chats/${channelObj.channelId}/members`);
+  const updateNewUser = (e) => {
+    setNewUser(e.target.value)
+  }
+
+  //gets the role of the signed in user and if they are the creator update the state
+  const getRole = async () => {
     const q = query(membersRef, where("userId", "==", currentUser.uid));
     const querySnap = await getDocs(q);
 
-    if (querySnap.docs[0].role === "creator") {
-      //need to iterate through the members and remove it from their chats
-      const allMembers = await getDocs(
-        collection(db, `Chats/${channelObj.channelId}/members`)
-      );
+    const usersRole = querySnap.docs[0].data().role
 
+    if (role !== usersRole) {
+      setRole(usersRole);
+    }
+  }
+
+  const removeChannel = async () => {
+    //check the role of the user (saved in state)
+    if (role === "creator") {
+      //need to iterate through the members and remove it from their chats
+      //first get the docs for each member of the chat
+      const allMembers = await getDocs(
+        collection(db, `Chats/${channel.channelId}/members`)
+      );
+      
+      //gp through each doc and delete it from that users array of chats
       allMembers.forEach(async (member) => {
         //create a reference, then delete the
-        const userRef = doc(db, "users", member.userId);
+        const userRef = doc(db, "users", member.data().userId);
         await updateDoc(userRef, {
-          chat: arrayRemove(JSON.stringify(channelObj)),
+          chat: arrayRemove(JSON.stringify(channel)),
         });
       });
+      //then delete the chat entirely (doesnt delete the subcollections, firebase wont let you from the front end)
+      await deleteDoc(doc(db, "Chats", channel.channelId));
 
-      //then delete the chat entirely
-      await deleteDoc(doc(db, "Chats", channelObj.channelId));
+    //if the user is not the creator, do the following
     } else {
       //remove the chat from just the current users array
       const userRef = doc(db, "users", currentUser.uid);
       await updateDoc(userRef, {
-        chat: arrayRemove(JSON.stringify(channelObj)),
+        chat: arrayRemove(JSON.stringify(channel)),
       });
       //then remove them from the member collection
-      await deleteDoc(doc(db, "Chats", channelObj.channelId));
+      //first need to query which doc is theres, then delete it
+      const q = query(membersRef, where("userId", "==", currentUser.uid));
+      const querySnapshot = await getDocs(q);
+      // querySnapshot should return one doc, but in the event theres multiple we want to delete them to be safe.
+      querySnapshot.forEach(async memberDoc => {
+        await deleteDoc(doc(db, `Chats/${channel.channelId}/members`, memberDoc.id));
+      })
     }
+    //lastly, close the modal
+    setOpenModal(false);
+  };
+
+  //checks if the user exists, and if so return the uid
+  const validateUser = async (username) => {
+    const usersCollectionRef = collection(db, "users");
+    const querySnapshot = await getDocs(
+      query(usersCollectionRef, where("displayName", "==", username))
+    );
+    
+    if (querySnapshot.empty) {
+      return false;
+    } else {
+      return querySnapshot.docs[0].data().uid;
+    }
+  };
+
+  const addUserTochannel = async () => {
+    //create the channel obj to save
+    const channelObj = { channelId: channel.channelId, channelName: channel.channelName };    
+    
+    //iterate through the users already added to the channel to prevent being added twice
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].displayName === newUser) {
+        window.alert("User already added")
+        return;
+      }
+    }
+    
+    //make sure the user exists
+    const uid = await validateUser(newUser);
+    if (!uid) {
+      window.alert("Failed to add user: Invalid username");
+      return;
+    }
+
+    //add the user to the members collection of that chat
+    const membersRef = collection(db, `Chats/${channel.channelId}/`, "members");
+    await addDoc(membersRef, {
+      userId: uid,
+      role: "member",
+    });
+
+    //create a doc to add to the users array
+    const userDoc = doc(db, "users", uid);
+    await updateDoc(userDoc, {
+      chat: arrayUnion(JSON.stringify(channelObj))
+    });
   };
 
   const usersElems = users.map(user => {
     return (
-      <div>{user.displayName}</div>
+      <div className="m-2 flex items-center" key={user.uid}>
+        <img  className="rounded-full w-[50px] h-[50px] me-2" src={user.profilePic}></img>
+        {user.displayName}
+      </div>
     )
   })
 
@@ -76,21 +161,46 @@ function ChannelSettingsModal({ channel, currentUser, users }) {
       >
         
         <Tabs aria-label="Tabs with underline" style="underline">
-        
-          <Tabs.Item active title="Profile" icon={HiUserCircle}>
-          {usersElems}
-          <Button color="gray" onClick={() => setOpenModal(false)}>
-            No, cancel
-          </Button>
+          <Tabs.Item active title="Users" icon={HiClipboardList}>
+          <div id="custom-scroll" className="h-[150px] ms-[5px] me-[5px] flex items-start flex-wrap">
+            {usersElems}
+          </div>
+          { role === "creator" ?
+            <>
+            <input 
+              className="border ms-2 p-1"
+              placeholder="Add a user"
+              value={newUser}
+              onChange={updateNewUser}
+              ></input>
+            <button className="border" onClick={addUserTochannel}>Add</button>
+            </>
+            : null
+          }
         </Tabs.Item>
-      <Tabs.Item title="Settings" icon={HiAdjustments}>
-        This is <span className="font-medium text-gray-800 dark:text-white">Settings tab's associated content</span>.
-        Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to
-        control the content visibility and styling.
-        <Button color="gray" onClick={() => setOpenModal(false)}>
-        No, cancel
-      </Button>
-      </Tabs.Item>
+        { role === "creator" ? <Tabs.Item title="Channel Name" icon={HiAdjustments}>
+          This is <span className="font-medium text-gray-800 dark:text-white">Settings tab's associated content</span>.
+          Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to
+          control the content visibility and styling.
+        </Tabs.Item> 
+          : null
+        }
+        <Tabs.Item active title={role === "creator" ? "Delete Channel" : "Leave Channel"} 
+                  icon={role === "creator" ? HiOutlineTrash : HiOutlineLogout}>
+          <div className="flex flex-col items-center">
+            <p className="w-[100%] text-center">
+              { role === "creator" ?
+                "Are you sure? This action cannot be undone"
+                : "Are you sure you want to leave this channel?"
+              }
+            </p>
+            <button 
+              className="border"
+              onClick={() => removeChannel(channel)}>
+                {role === "creator" ? "Delete Channel" : "Leave Channel"}
+              </button>
+          </div>
+        </Tabs.Item>
     </Tabs>
 
       </Modal>
@@ -99,20 +209,3 @@ function ChannelSettingsModal({ channel, currentUser, users }) {
 }
 
 export default ChannelSettingsModal;
-
-{/* <Modal.Header />
-<Modal.Body>
-  <div className="text-center">
-    <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-      Are you sure you want to delete your Channel?
-    </h3>
-    <div className="flex justify-center gap-4">
-      <Button color="failure" onClick={() => removeChannel(channel)}>
-        {"Yes, I'm sure"}
-      </Button>
-      <Button color="gray" onClick={() => setOpenModal(false)}>
-        No, cancel
-      </Button>
-    </div>
-  </div>
-</Modal.Body> */}
