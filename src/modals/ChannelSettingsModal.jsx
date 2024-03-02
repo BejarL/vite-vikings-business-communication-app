@@ -21,6 +21,7 @@ function ChannelSettingsModal({ channel, users }) {
   const [openModal, setOpenModal] = useState(false);
   const [role, setRole] = useState("member");
   const [newUser, setNewUser] = useState("");
+  const [newName, setNewName] = useState(channel.channelName)
   const currentUser = auth.currentUser;
   const membersRef = collection(db, `Chats/${channel.channelId}/members`);
   
@@ -30,6 +31,10 @@ function ChannelSettingsModal({ channel, users }) {
 
   const updateNewUser = (e) => {
     setNewUser(e.target.value)
+  }
+
+  const updateNewName = (e) => {
+    setNewName(e.target.value);
   }
 
   //gets the role of the signed in user and if they are the creator update the state
@@ -131,6 +136,33 @@ function ChannelSettingsModal({ channel, users }) {
     });
   };
 
+  const updateChannelName = async () => {
+    //need to update the name in the channel doc, and in each members doc
+    //firs update the channels doc
+    const channelRef = doc(db, "Chats", channel.channelId);
+    await updateDoc(channelRef, {
+      title: newName
+    });
+    //now update each users doc.
+    const membersQuery = query(
+      membersRef
+    );
+
+    const querySnapshot = await getDocs(membersQuery);
+    querySnapshot.forEach(async user => {
+      const docRef = doc(db, "users", user.data().userId)
+      
+      //need to remove initial instance from the user array.
+      await updateDoc(docRef, {
+        chat: arrayRemove(JSON.stringify(channel))
+      })
+      //now need to add the new one
+      await updateDoc(docRef, {
+        chat: arrayUnion(JSON.stringify({channelId: channel.channelId, channelName: newName}))
+      })
+    })
+  }
+
   const usersElems = users.map(user => {
     return (
       <div className="m-2 flex items-center" key={user.uid}>
@@ -179,9 +211,12 @@ function ChannelSettingsModal({ channel, users }) {
           }
         </Tabs.Item>
         { role === "creator" ? <Tabs.Item title="Channel Name" icon={HiAdjustments}>
-          This is <span className="font-medium text-gray-800 dark:text-white">Settings tab's associated content</span>.
-          Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to
-          control the content visibility and styling.
+          <input
+            onChange={updateNewName}
+            value={newName}
+            placeholder="Edit Channel Name"
+          ></input>
+          <button onClick={updateChannelName}>Save</button>
         </Tabs.Item> 
           : null
         }
