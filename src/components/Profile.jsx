@@ -119,7 +119,7 @@ function Profile() {
       className="profile--wrapper "
       style={{
         width: "1500%",
-        backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Femanate-bg.png?alt=media&token=d0cc4604-e1b8-4247-b378-41d7e0c2c1ca)`,
+        backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2F2.png?alt=media&token=2f448da1-0a03-4d93-9660-9cdbdb4327e2)`,
         backgroundSize: "cover",
       }}
     >
@@ -138,7 +138,7 @@ function Profile() {
       </div>
       <div className="profile--settings-wrapper">
         <div className="profile--user-wrapper">
-          <p className="profile--user-name bg-amber-500">
+          <p className="profile--user-name bg-teal-900">
             {currentUser?.displayName || ""}
           </p>
           <EditUserNameModal
@@ -148,7 +148,7 @@ function Profile() {
         </div>
         <div className="profile--edit-password-wrapper">
           <button
-            className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-amber-500 text-white hover:bg-amber-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            className="py-3 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-teal-900 text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
             onClick={toggleModal}
           >
             Change Password

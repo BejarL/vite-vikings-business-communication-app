@@ -4,46 +4,6 @@
   display: flex;
 }
 
-.dashboard--modal-wrapper {
-  position: absolute;
-  top: 0px;
-  width: 500px;
-  height: 300px;
-  left: calc(50% - 250px);
-  top: calc(50% - 150px);
-  padding: 10px;
-  background-color: #f59e0b;
-  border-radius: 5px;
-}
-
-.dashboard--modal-form {
-  height: 260px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.dashboard--modal-input {
-  width: 400px;
-  margin-top: 10px;
-  font-size: 1.5rem;
-  padding-left: 1rem;
-}
-.dashboard--modal-input-2 {
-  font-size: 1.5rem;
-  width: 340px;
-  margin-top: 10px;
-  padding-left: 1rem;
-}
-
-.dashboard--modal-add-btn {
-  color: white;
-  background-color: rgb(5, 148, 5);
-  width: 50px;
-  margin-left: 10px;
-  font-size: 1.5rem;
-}
-
 .dashboard--cards {
   width: 90%;
   display: flex;

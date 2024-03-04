@@ -221,7 +221,7 @@ export default function TextArea({ channel }) {
   });
 
   return (
-    <div className="flex flex-col items-center w-full h-full overflow-hidden text-gray-400 bg-gray-900">
+    <div className="flex flex-col items-center w-full h-full overflow-hidden text-teal-400 bg-slate-900">
       <h1 className="flex items-center w-full px-3 mt-3">
         <span className="ml-2 text-lg font-bold p-3 mr-auto">
           {channel.channelName}
@@ -231,7 +231,7 @@ export default function TextArea({ channel }) {
           : null
         }
       </h1>
-      <div className="w-full h-full px-2 overflow-y-auto border-blue-900 border-t">
+      <div className="w-full h-full px-2 overflow-y-auto  border-teal-900 border-t">
         <div className="flex flex-col w-full max-h-[100%] pl-4 mt-3">
           {messages.length > 0 && messages.length >= messagesLimit && (
             <button
@@ -260,7 +260,7 @@ export default function TextArea({ channel }) {
           </div>
         </div>
       </div>
-      <div className="flex w-[98%] h-auto mt-auto m-3 rounded bg-gray-800 hover:bg-gray-700 hover:text-gray-300">
+      <div className="flex w-[96%] h-auto mt-auto m-3 rounded bg-gray-800 hover:bg-gray-700 hover:text-gray-300">
         <input
           className="flex-1 pl-2 bg-transparent h-10"
           style={{ marginRight: "5px" }}
@@ -271,7 +271,7 @@ export default function TextArea({ channel }) {
         />
 
         <button type="button" 
-          className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="px-4 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           onClick={sendMessage}
           disabled={loading || !messageField.trim()}
           aria-label="Send message"

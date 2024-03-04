@@ -1,11 +1,9 @@
 .profile--wrapper {
   flex-direction: column;
   height: 100vh;
-  width: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #d97706;
   margin: 0px;
   padding: 0px;
   position: relative;
@@ -13,7 +11,7 @@
 
 .profile--img {
   border-radius: 50%;
-  border: solid 2px #f59e0b;
+  border: solid 3px #134e4a;
   width: 300px;
   height: 300px;
   margin: 20px;
@@ -62,7 +60,7 @@
 }
 
 .profile--edit-name-btn:hover {
-  color: #cf9c1a;
+  color: #475569;
   transition: 80ms color linear;
 }
 
@@ -72,7 +70,7 @@
 }
 
 .profile--edit-btn:hover {
-  color: #d97706;
+  color: #475569;
 }
 
 .profile--modal-wrapper {
@@ -82,9 +80,8 @@
   width: 300px;
   left: calc(50% - 15px);
   top: calc(50% - 100px);
-  /* z-index: 10; */
   padding: 10px;
-  background-color: #f59e0b;
+  background-color: #334155;
   border-radius: 5px;
 }
 
@@ -115,7 +112,7 @@
 
 .profile--modal-footer > Button {
   padding: 5px;
-  background-color: #d97706;
+  background-color: #475569;
   color: white;
   border-radius: 5px;
 }
@@ -132,8 +129,6 @@
 .profile--invalid-username {
   position: relative;
 }
-
-
 
 .profile--modal-body > h4 {
   padding-bottom: 5px;

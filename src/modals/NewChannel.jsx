@@ -89,7 +89,6 @@ function NewChannel({ currentUser }) {
       createdBy: auth.currentUser.uid,
       createdAt: new Date(),
     });
-
     // add creator as first member of the channel
     const membersRef = collection(newChannelRef, "members");
     await addDoc(membersRef, {
@@ -104,8 +103,8 @@ function NewChannel({ currentUser }) {
       body: "This is the start of the Channel!",
       createdAt: new Date(),
       authorProfilePic: "",
-      messageId: crypto.randomUUID()
-    })
+      messageId: crypto.randomUUID(),
+    });
 
     // add other recipients
     if (users) {
@@ -160,7 +159,7 @@ function NewChannel({ currentUser }) {
     <>
       <button
         onClick={toggleModal}
-        className="flex items-center mb-2 w-full h-12 px-3 mt-2 rounded hover:bg-amber-700 hover:text-gray-300"
+        className="flex items-center mb-2 w-full h-12 px-3 mt-2 rounded hover:bg-slate-700 hover:text-gray-300"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -182,45 +181,56 @@ function NewChannel({ currentUser }) {
         onHide={toggleModal}
         backdrop="static"
         keyboard={false}
-        className="dashboard--modal-wrapper"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-500 h-300 p-2.5 bg-amber-500 rounded-md"
       >
         <Modal.Body>
-          <div className="dashboard--modal-form">
+          <div className="h-260 m-3 flex flex-col text-white items-center overflow-y-auto">
             <input
               type="input"
               onChange={updateTitle}
               placeholder="Enter Channel Name"
               value={title}
-              className="dashboard--modal-input rounded"
+              className="w-340 p-1 text-2xl pl-4 placeholder-gray-300 outline-0 bg-amber-600 -ml-10 rounded"
             />
-            <div>
+            <div className="flex items-center">
               <input
                 type="input"
                 placeholder="Add recipients"
                 onChange={updateRecipient}
-                className="dashboard--modal-input-2 rounded"
+                className="w-340 p-1 mt-2.5 bg-amber-600 placeholder-gray-300 text-2xl outline-0 pl-4 ml-1 rounded"
               />
               <button
-                className="dashboard--modal-add-btn rounded"
+                className="text-white mt-3 bg-amber-700 hover:bg-amber-600 p-1 w-30 ml-2 text-lg rounded"
                 onClick={addRecipient}
               >
-                Add
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1rem"
+                  height="1rem"
+                  className="w-6 h-6 stroke-current"
+                  viewBox="0 0 448 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z"
+                  />
+                </svg>
               </button>
             </div>
             <div className="dashboard--cards">{userElems}</div>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <div className="flex justify-between w-full">
+          <div className="flex justify-between mt-10 w-full">
             <button
               onClick={toggleModal}
-              className=" bg-transparent hover:text-gray-200 text-black rounded"
+              className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
               Cancel
             </button>
             <button
               onClick={createChannel}
-              className=" bg-transparent hover:text-amber-800 text-white rounded"
+              className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
               Create
             </button>

@@ -87,21 +87,21 @@ function Dashboard() {
 
   // JSX structure
   return (
-    <div className="dashboard--wrapper">
+    <div className="dashboard--wrapper border-8 border-radio border-slate-700">
       {/* Navbar */}
-      <nav className="dashboard--navbar">
-        <div className="flex flex-col items-center w-40 h-full overflow-hidden text-amber-800 bg-amber-500">
+      <nav className="dashboard--navbar border-r-8 border-slate-700">
+        <div className="flex flex-col items-center w-52 h-full overflow-hidden text-teal-400 bg-slate-900 ">
           <a className="flex items-center w-full px-3 mt-3" href="#">
-            <img src="https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2FEm-logo.png?alt=media&token=2a597c85-2b02-43b8-8167-ad7e46472aba" 
+            <img src="https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fblue-logo.png?alt=media&token=c0b3ae42-ebfc-43d3-bc49-e614b221c4c5" 
             className="h-10 w-10 m-0"
             onClick={homeView}
             />
             <span className="ml-3 text-lg font-bold">Emanate</span>
           </a>
           <div className="w-full px-2">
-            <div className="flex flex-col items-center w-full mt-3 border-t border-b border-red-900">
+            <div className="flex flex-col items-center w-full mt-3 border-t border-b border-teal-900">
               <button
-                className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-amber-700 hover:text-gray-300"
+                className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-slate-700 hover:text-gray-300"
                 onClick={profileView}
               >
                 <svg
@@ -123,11 +123,11 @@ function Dashboard() {
               <NewChannel currentUser={currentUser.displayName} />
             </div>
           </div>
-          <div className="flex flex-col items-center w-full overflow-y-auto max-h-[100%] mt-3  pe">
+          <div className="flex flex-col items-center w-full overflow-y-auto max-h-[100%] mt-3">
             <div className="">{channelElems}</div>
           </div>
           <Link
-            className="flex items-center justify-center w-full h-16 mt-auto text-white bg-amber-800 hover:bg-amber-700 hover:text-gray-300"
+            className="flex items-center justify-center w-full h-16 mt-auto text-white bg-slate-800 hover:bg-slate-700 hover:text-gray-300"
             to="/"
             onClick={handleLogout}
           >

@@ -77,7 +77,7 @@ function EditUserNameModal({ displayName, updateDisplayName }) {
         </Modal.Body>
         <Modal.Footer>
           <button onClick={updateName}
-          className="w-full bg-amber-600 hover:bg-amber-800 text-white font-bold py-2 px-4 rounded">
+          className="w-full bg-slate-800 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded">
             Save Changes
           </button>
           <button onClick={toggleModal}
