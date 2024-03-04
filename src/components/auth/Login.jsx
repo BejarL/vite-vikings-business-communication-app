@@ -57,11 +57,15 @@ function Login() {
           backgroundPosition: "center",
         }}
       >
-        <img
-          src="https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fblue-logo.png?alt=media&token=c0b3ae42-ebfc-43d3-bc49-e614b221c4c5"
-          className="h-10 w-10 mr-2 mt-4"
-        />
-        <h1 className="text-teal-900 font-bold text-3xl mt-4 absolute left-1/2 transform -translate-x-1/2">Emanate</h1>
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-4">
+          <h1 className="text-teal-100 font-bold text-3xl flex items-center">
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fblue-logo.png?alt=media&token=c0b3ae42-ebfc-43d3-bc49-e614b221c4c5"
+              className="h-10 w-10 mr-2"
+            />
+            Emanate
+          </h1>
+        </div>
         <div className="flex md:w-1/2 justify-center py-10 items-center">
           {/* Login form */}
           <form

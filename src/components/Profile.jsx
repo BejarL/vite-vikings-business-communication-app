@@ -15,7 +15,7 @@ import { auth, storage, db } from "../../FirebaseConfig";
 import EditUserNameModal from "../modals/EditUserNameModal";
 import DeleteAccountModal from "../modals/DeleteAccountModal";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
-import "./Profile.css"
+import "./Profile.css";
 
 function Profile() {
   const [img, setImg] = useState("");
@@ -63,11 +63,11 @@ function Profile() {
       .then(() => getDownloadURL(imageRef))
       .then((fileURL) => {
         // update user profile picture URL in authentication
-        updateProfile(auth.currentUser, {photoURL: fileURL});
+        updateProfile(auth.currentUser, { photoURL: fileURL });
 
-        // update user profile picture URL  in firestore document 
+        // update user profile picture URL  in firestore document
         const userDocRef = doc(db, "users", currentUser.uid);
-        updateDoc(userDocRef, {authorProfilePic: fileURL})
+        updateDoc(userDocRef, { authorProfilePic: fileURL });
 
         setImg(fileURL);
       })
@@ -115,14 +115,7 @@ function Profile() {
   };
 
   return (
-    <div
-      className="profile--wrapper "
-      style={{
-        width: "1500%",
-        backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2F2.png?alt=media&token=2f448da1-0a03-4d93-9660-9cdbdb4327e2)`,
-        backgroundSize: "cover",
-      }}
-    >
+    <div className="profile--wrapper w-full bg-slate-800 ">
       <div className="profile--img-wrapper">
         <input
           className="profile--file-upload"
@@ -138,7 +131,7 @@ function Profile() {
       </div>
       <div className="profile--settings-wrapper">
         <div className="profile--user-wrapper">
-          <p className="profile--user-name bg-teal-900">
+          <p className="profile--user-name rounded-lg bg-teal-900">
             {currentUser?.displayName || ""}
           </p>
           <EditUserNameModal
@@ -148,7 +141,7 @@ function Profile() {
         </div>
         <div className="profile--edit-password-wrapper">
           <button
-            className="py-3 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-teal-900 text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            className="py-3 px-5 inline-flex items-center  text-md font-semibold rounded-lg border border-transparent bg-teal-900 text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
             onClick={toggleModal}
           >
             Change Password

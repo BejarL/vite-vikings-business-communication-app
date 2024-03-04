@@ -1,33 +1,30 @@
-.Card{
-display:flex;
-width: 100vw;
-  height: 100vh;
+.Card {
+  display: flex;
+  width: 100vw;
   justify-content: center;
   align-items: center;
-  background-color: #d97706;
+  background-color: #334155;
   margin: 0px;
   padding: 0px;
   position: relative;
 }
 
-.Card-1{
+.Card-1 {
   height: 400px;
   width: 500px;
   margin-right: 40px;
 }
 
-.Card-2{
+.Card-2 {
   height: 400px;
   width: 500px;
   margin-left: 10px;
 }
 
-
-
-.img{
+.img {
   height: 230px;
 }
 
-.img2{
+.img2 {
   height: 230px;
 }

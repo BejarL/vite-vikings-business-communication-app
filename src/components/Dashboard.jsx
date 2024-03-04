@@ -66,10 +66,6 @@ function Dashboard() {
   // if they arent, just delete the channel from their chats and remove them from the members list of the chat
   // if they are, need to remove the channel from their chat and every other member in the chat, then delete the channel
 
-  // const click = (obj) => {
-  //   console.log("clicked");
-  //   removeChannel(obj);
-  // };
   const goToChannel = (channel) => {
     setCurrentChannel(channel);
     setIsProfileShown(false);
@@ -92,10 +88,10 @@ function Dashboard() {
 
   // JSX structure
   return (
-    <div className="dashboard--wrapper border-8 border-radio border-slate-700">
+    <div className="dashboard--wrapper border-2 border-radio border-teal-800">
       {/* Navbar */}
-      <nav className="dashboard--navbar border-r-8 border-slate-700">
-        <div className="flex flex-col items-center w-52 h-full overflow-hidden text-teal-400 bg-slate-900 ">
+      <nav className="dashboard--navbar border-r-2 border-teal-800">
+        <div className="flex flex-col items-center w-52 h-full overflow-hidden text-teal-400 bg-slate-800 ">
           <a className="flex items-center w-full px-3 mt-3" href="#">
             <img src="https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fblue-logo.png?alt=media&token=c0b3ae42-ebfc-43d3-bc49-e614b221c4c5" 
             className="h-10 w-10 m-0"
@@ -132,7 +128,7 @@ function Dashboard() {
             <div className="">{channelElems}</div>
           </div>
           <Link
-            className="flex items-center justify-center w-full h-16 mt-auto text-white bg-slate-800 hover:bg-slate-700 hover:text-gray-300"
+            className="flex items-center justify-center w-full h-16 mt-auto text-white  hover:bg-slate-700 hover:text-gray-300"
             to="/"
             onClick={handleLogout}
           >
@@ -154,8 +150,6 @@ function Dashboard() {
       { isHomeShown && (<HomePage />)}
       { isChannelShown && (<TextArea channel={currentChannel} />)}
       { isProfileShown && (<Profile/>)}
-      {isChannelShown && <TextArea channel={currentChannel} />}
-      {isProfileShown && <Profile />}
     </div>
   );
 }
