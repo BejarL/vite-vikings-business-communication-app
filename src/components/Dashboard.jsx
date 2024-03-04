@@ -55,7 +55,7 @@ function Dashboard() {
   };
 
   const homeView = () => {
-    () => navigate("/");
+    () => navigate("/homePage");
     setIsChannelShown(false);
     setIsProfileShown(false);
     setIsHomeShown(true)
@@ -151,9 +151,7 @@ function Dashboard() {
           </Link>
         </div>
       </nav>
-      { isHomeShown && (<HomePage />)}
-      { isChannelShown && (<TextArea channel={currentChannel} />)}
-      { isProfileShown && (<Profile/>)}
+      { isHomeShown && (<HomePage currentUser={currentUser}/>)}
       {isChannelShown && <TextArea channel={currentChannel} />}
       {isProfileShown && <Profile />}
     </div>
