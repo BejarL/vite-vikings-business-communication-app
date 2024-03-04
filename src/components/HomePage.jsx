@@ -2,23 +2,14 @@
 import "./HomePage.css";
 import { Card } from 'flowbite-react';
 import NewChannel from "../modals/NewChannel";
-import useFirebaseImage  from "./utils/useFirebaseImage"
+import useFirebaseImage  from "./utils/useFirebaseImage";
+import img from '../images/coworkers.jpg';
+import img2 from '../images/teammate.jpg';
 
 
 function HomePage(){
 
     const backgroundImageUrl = useFirebaseImage('bg-images/chatting.png');
-
-
-
-
-
-
-
-
-
-
-
 
 
     return (
@@ -29,6 +20,7 @@ function HomePage(){
           backgroundPosition: "center",
         }}>
     <Card className="Card-1"> 
+    <img  className= "img" src={img} />
         <div>
         Want to make a new channel? Chat with your coworkers or friends.
         </div>
@@ -36,6 +28,7 @@ function HomePage(){
         {/* <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="-0.5 -0.5 24 24" ><path fill="currentColor" d="m21.289.98l.59.59c.813.814.69 2.257-.277 3.223L9.435 16.96l-3.942 1.442c-.495.182-.977-.054-1.075-.525a.928.928 0 0 1 .045-.51l1.47-3.976L18.066 1.257c.967-.966 2.41-1.09 3.223-.276zM8.904 2.19a1 1 0 1 1 0 2h-4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4a1 1 0 0 1 2 0v4a4 4 0 0 1-4 4h-12a4 4 0 0 1-4-4v-12a4 4 0 0 1 4-4z"></path></svg> */}
     </Card> 
     <Card className="Card-2">
+    <img  className= "img2" src={img2} />
     <div>
        <p> Want to add a coworker or friend? Use Phone number, email, or their name to find them.</p>
     </div>
@@ -47,15 +40,7 @@ function HomePage(){
           backgroundPosition: "center",
         
         }} >
-        <svg
-              
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              width="4em" height="4em"
-            >
-              <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
-            </svg></div>
+       </div>
 </div>
       </>      
     );
