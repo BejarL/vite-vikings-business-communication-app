@@ -17,12 +17,14 @@ import { auth, db } from "../../FirebaseConfig";
 import Dropdown from "../modals/Dropdown";
 import ChannelSettingsModal from "../modals/ChannelSettingsModal";
 
-export default function TextArea({ channel }) {
+export default function TextArea({ channel, homeView }) {
   const [messages, setMessages] = useState([]);
   const [messageField, setMessageField] = useState("");
   const [loading, setLoading] = useState(false);
   const [messagesLimit, setMessagesLimit] = useState(10);
   const [users, setUsers] = useState([]);
+  const [channelObj, setChannelObj] = useState(channel)
+
 
   const messagesEndRef = useRef(null); // keep track messages for auto-scrolling
   const chatRef = channel
@@ -59,7 +61,7 @@ export default function TextArea({ channel }) {
         setMessages(messagesData);
         setLoading(false);
       });
-
+      setChannelObj(channel)
       return () => unsubscribe();
     }
   }, [channel, messagesLimit]);
@@ -224,10 +226,10 @@ export default function TextArea({ channel }) {
     <div className="flex flex-col items-center w-full h-full overflow-hidden text-teal-400 bg-slate-800">
       <h1 className="flex items-center w-full px-3 mt-3">
         <span className="ml-2 text-lg font-bold p-3 mr-auto">
-          {channel.channelName}
+          {channelObj.channelName}
         </span>
         { channel ?
-          <ChannelSettingsModal channel={channel} users={users} />
+          <ChannelSettingsModal channel={channelObj} users={users} homeView={homeView} setChannelObj={setChannelObj}/>
           : null
         }
       </h1>
