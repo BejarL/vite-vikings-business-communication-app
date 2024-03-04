@@ -1,17 +1,16 @@
-import {useState} from 'react'
+import { useState } from "react";
+import EditMessage from "../modals/EditMessage";
 
-const Dropdown = ({ deleteMsg, msgId }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const toggleDropdown = () => setIsOpen(!isOpen)
-
-  
+const Dropdown = ({ deleteMsg, updateMsg, msgId, messageContent }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <>
-    <button
+    <div className="relative">
+      <button
         id="dropdownMenu"
         data-dropdown-toggle="dropdownDotsHorizontal"
-        className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-200 bg-transparent hover:bg-gray-700 rounded"
         type="button"
         onClick={toggleDropdown}
       >
@@ -29,19 +28,18 @@ const Dropdown = ({ deleteMsg, msgId }) => {
       {isOpen && (
         <div
           id="dropdownDotsHorizontal"
-          className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          className="absolute z-10 w-48 rounded-md shadow-lg mt-2 bg-white divide-y divide-gray-100  dark:bg-gray-700 dark:divide-gray-600"
         >
           <ul
             className="py-2 text-sm text-gray-700 dark:text-gray-200"
             aria-labelledby="dropdownMenu"
           >
             <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Edit
-              </a>
+              <EditMessage
+                msgId={msgId}
+                messageContent={messageContent}
+                updateMsg={updateMsg}
+              />
             </li>
             <li>
               <a
@@ -52,14 +50,11 @@ const Dropdown = ({ deleteMsg, msgId }) => {
                 Delete
               </a>
             </li>
-            
-            
           </ul>
-          
         </div>
       )}
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default Dropdown
+export default Dropdown;

@@ -22,7 +22,8 @@ function ForgotPassword() {
         <div
           className="flex md:w-full justify-center py-10 items-center"
           style={{
-            backgroundImage: 'url("/src/images/chatting.png")',
+            backgroundImage:
+              "url(https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fchatting.png?alt=media&token=1e6cc3a8-9dee-441c-a3d7-9164bb2104f5)",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}

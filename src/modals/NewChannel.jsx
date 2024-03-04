@@ -160,7 +160,7 @@ function NewChannel({ currentUser }) {
     <>
       <button
         onClick={toggleModal}
-        className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
+        className="flex items-center mb-2 w-full h-12 px-3 mt-2 rounded hover:bg-amber-700 hover:text-gray-300"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -214,13 +214,13 @@ function NewChannel({ currentUser }) {
           <div className="flex justify-between w-full">
             <button
               onClick={toggleModal}
-              className=" bg-white hover:bg-gray-200 text-black rounded"
+              className=" bg-transparent hover:text-gray-200 text-black rounded"
             >
               Cancel
             </button>
             <button
               onClick={createChannel}
-              className=" bg-amber-600 hover:bg-amber-800 text-white rounded"
+              className=" bg-transparent hover:text-amber-800 text-white rounded"
             >
               Create
             </button>

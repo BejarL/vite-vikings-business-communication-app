@@ -14,15 +14,17 @@ import {
 import { auth, storage, db } from "../../FirebaseConfig";
 import EditUserNameModal from "../modals/EditUserNameModal";
 import DeleteAccountModal from "../modals/DeleteAccountModal";
-import useFirebaseImage from "./utils/useFirebaseImage";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
+<<<<<<< HEAD
 import "./Profile.css"
+=======
+import './Profile.css'
+>>>>>>> 5c9744d684278fd6883a206f63381e868c9152ec
 
 function Profile() {
   const [img, setImg] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
-  const backgroundImageUrl = useFirebaseImage("bg-images/emanate-bg.png");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -97,6 +99,7 @@ function Profile() {
   };
 
   const updateDisplayName = async (username) => {
+    console.log(username);
     const isUnique = await validateUser(username);
     if (!isUnique) {
       alert("Username already taken");
@@ -110,7 +113,6 @@ function Profile() {
       await updateDoc(doc(db, "users", currentUser.uid), {
         displayName: username,
       });
-      navigate("/profile");
     } catch (error) {
       console.error("Error updating display name:", error);
     }
@@ -121,7 +123,7 @@ function Profile() {
       className="profile--wrapper "
       style={{
         width: "1500%",
-        backgroundImage: `url(${backgroundImageUrl})`,
+        backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Femanate-bg.png?alt=media&token=d0cc4604-e1b8-4247-b378-41d7e0c2c1ca)`,
         backgroundSize: "cover",
       }}
     >
