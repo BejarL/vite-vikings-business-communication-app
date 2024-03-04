@@ -13,14 +13,16 @@ import DeleteChannelModal from "../modals/DeleteChannelModal";
 import TextArea from "./TextArea";
 // import exp from "constants";
 import Profile from "./Profile";
+import HomePage from "./HomePage";
 
 function Dashboard() {
   const [channels, setChannels] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
   const [currentChannel, setCurrentChannel] = useState("");
   const navigate = useNavigate();
-  const [isChannelShown, setIsChannelShown] = useState(true);
+  const [isChannelShown, setIsChannelShown] = useState(false);
   const [isProfileShown, setIsProfileShown] = useState(false);
+  const [isHomeShown, setIsHomeShown] = useState(true);
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -49,13 +51,15 @@ function Dashboard() {
     () => navigate("/profile");
     setIsChannelShown(false);
     setIsProfileShown(true);
+    setIsHomeShown(false);
   };
 
   const homeView = () => {
     () => navigate("/");
-    setIsChannelShown(true);
+    setIsChannelShown(false);
     setIsProfileShown(false);
-  };
+    setIsHomeShown(true)
+  }
   //removes the channel from the users array of channels in firebase
 
   // first checking if the current user is the creator
@@ -70,6 +74,7 @@ function Dashboard() {
     setCurrentChannel(channel);
     setIsProfileShown(false);
     setIsChannelShown(true);
+    setIsHomeShown(false);
   };
 
   let channelElems = channels.map((item) => {
@@ -120,7 +125,7 @@ function Dashboard() {
                 </svg>
                 <span className="ml-2 text-md font-medium">Profile</span>
               </button>
-              <NewChannel currentUser={currentUser.displayName} />
+               <NewChannel currentUser={currentUser.displayName} />
             </div>
           </div>
           <div className="flex flex-col items-center w-full overflow-y-auto max-h-[100%] mt-3">
@@ -146,6 +151,9 @@ function Dashboard() {
           </Link>
         </div>
       </nav>
+      { isHomeShown && (<HomePage />)}
+      { isChannelShown && (<TextArea channel={currentChannel} />)}
+      { isProfileShown && (<Profile/>)}
       {isChannelShown && <TextArea channel={currentChannel} />}
       {isProfileShown && <Profile />}
     </div>
