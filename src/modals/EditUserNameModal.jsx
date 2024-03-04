@@ -56,7 +56,9 @@ function EditUserNameModal({ displayName, updateDisplayName }) {
         className="profile--modal-wrapper"
       >
         <Modal.Header>
-          <Modal.Title className="text-white font-bold text-xl mb-1">Edit username</Modal.Title>
+          <Modal.Title className="text-white font-bold text-xl mb-1">
+            Edit username
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
@@ -76,12 +78,16 @@ function EditUserNameModal({ displayName, updateDisplayName }) {
           ></input>
         </Modal.Body>
         <Modal.Footer>
-          <button onClick={updateName}
-          className="w-full bg-amber-600 hover:bg-amber-800 text-white font-bold py-2 px-4 rounded">
+          <button
+            onClick={updateName}
+            className="w-full bg-slate-800 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded"
+          >
             Save Changes
           </button>
-          <button onClick={toggleModal}
-          className="w-full mt-2 bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded">
+          <button
+            onClick={toggleModal}
+            className="w-full mt-2 bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded"
+          >
             Close
           </button>
         </Modal.Footer>

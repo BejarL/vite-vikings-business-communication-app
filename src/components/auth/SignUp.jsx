@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { auth, db } from "../../../FirebaseConfig";
-import useFirebaseImage  from "../utils/useFirebaseImage"
 import {
   createUserWithEmailAndPassword,
   updateProfile,
@@ -26,9 +25,6 @@ function SignUp() {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
   const navigate = useNavigate();
-
-    // Fetch background image URL from Firebase Storage
-    const backgroundImageUrl = useFirebaseImage('bg-images/chatting.png');
 
   // Constants for password complexity requirements
   const MIN_PASSWORD_LENGTH = 8;
@@ -111,28 +107,34 @@ function SignUp() {
     <>
       {/* Display error message if there is any */}
       {error && (
-        <div className="error-message text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">
+        <div className="error-message text-center font-bold bg-teal-500 text-white px-4 py-3 rounded relative fade-in transition-opacity duration-1000 ease-in-out fade-out">
           {error}
         </div>
       )}
 
       {/* Main layout for the signup page */}
       <div
-        className="signup-container h-screen md:flex relative"
+        className="h-screen md:flex "
         style={{
-          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2F1.png?alt=media&token=6d769590-a1c1-491e-bf00-da8bbafb66b6)`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <h1 className="text-white font-bold text-3xl text-center sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2">
-          Emanate
-        </h1>
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-4">
+          <h1 className="text-teal-100 font-bold text-3xl flex items-center">
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fblue-logo.png?alt=media&token=c0b3ae42-ebfc-43d3-bc49-e614b221c4c5"
+              className="h-10 w-10 mr-2"
+            />
+            Emanate
+          </h1>
+        </div>
         <div className="signup-form flex md:w-1/2 justify-center py-10 items-center">
           {/* Form */}
           <form
             onSubmit={signUp}
-            className="bg-amber-800 md:w-96 p-8 shadow-lg backdrop-blur-md bg-opacity-50 rounded-lg"
+            className="bg-slate-900 md:w-96 p-8 shadow-lg backdrop-blur-md bg-opacity-50 rounded-lg"
           >
             {/* Form header */}
             <p className="text-lg font-bold text-white mb-2">Create Account</p>
@@ -147,7 +149,7 @@ function SignUp() {
             <label htmlFor="username" className="text-white pl-2">
               Username
             </label>
-            <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl">
+            <div className="flex items-center bg-teal-100 py-2 px-3 rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -156,7 +158,7 @@ function SignUp() {
                 stroke="currentColor"
               ></svg>
               <input
-                className="pl-2 bg-amber-400 placeholder-white outline-none border-none"
+                className="pl-2 bg-teal-100 placeholder-black outline-none border-none"
                 type="text"
                 placeholder="Enter username"
                 value={username}
@@ -167,7 +169,7 @@ function SignUp() {
               {" "}
               Email
             </label>
-            <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl ">
+            <div className="flex items-center bg-teal-100 py-2 px-3 rounded-2xl ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -176,7 +178,7 @@ function SignUp() {
                 stroke="currentColor"
               ></svg>
               <input
-                className="pl-2 bg-amber-400 placeholder-white outline-none border-none"
+                className="pl-2 bg-teal-100 placeholder-black outline-none border-none"
                 type="email"
                 placeholder="Enter your email"
                 value={email}
@@ -186,7 +188,7 @@ function SignUp() {
             <label htmlFor="password" className="text-white pl-2">
               Password
             </label>
-            <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl">
+            <div className="flex items-center bg-teal-100 py-2 px-3 rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -195,7 +197,7 @@ function SignUp() {
                 stroke="currentColor"
               ></svg>
               <input
-                className="pl-2 bg-amber-400 placeholder-white outline-none border-none"
+                className="pl-2 bg-teal-100 placeholder-black outline-none border-none"
                 type="password"
                 placeholder="Enter your password"
                 value={password}
@@ -205,7 +207,7 @@ function SignUp() {
             <label htmlFor="password" className="text-white pl-2">
               Confirm Password
             </label>
-            <div className="flex items-center bg-amber-400 py-2 px-3 rounded-2xl">
+            <div className="flex items-center bg-teal-100 py-2 px-3 rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -213,7 +215,7 @@ function SignUp() {
                 fill="currentColor"
               ></svg>
               <input
-                className="pl-2 bg-amber-400 placeholder-white outline-none border-none"
+                className="pl-2 bg-teal-100 placeholder-black outline-none border-none"
                 type="password"
                 placeholder="Confirm password"
                 value={passwordConfirmation}
@@ -222,7 +224,7 @@ function SignUp() {
             </div>
             <button
               type="submit"
-              className="block w-full bg-white hover:bg-amber-600 hover:text-white text-amber-600 mt-6 py-2 rounded-2xl font-bold mb-2"
+              className="block w-full bg-white hover:bg-slate-900 hover:text-white text-teal-600 mt-6 py-2 rounded-2xl font-bold mb-2"
             >
               Sign up
             </button>
@@ -241,7 +243,7 @@ function SignUp() {
             <Link to="/login">
               <button
                 type="submit"
-                className="block w-28 bg-white hover:bg-amber-600 hover:text-white text-amber-600 mt-4 py-2 rounded-2xl font-bold mb-2"
+                className="block w-28 bg-white hover:bg-slate-900 hover:text-white text-teal-600 mt-4 py-2 rounded-2xl font-bold mb-2"
               >
                 Log in
               </button>

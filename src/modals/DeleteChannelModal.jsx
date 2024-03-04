@@ -15,15 +15,6 @@ import { db } from "../../FirebaseConfig";
 function DeleteChannelModal({ channel, currentUser, goToChannel }) {
   const [openModal, setOpenModal] = useState(false);
 
-  // const updateConfirm = (e) => {
-  //   setConfirm(e.target.value);
-  // };
-
-  //   const removeChannel = () => {
-  //     setOpenModal(false)
-  //     removeChannel();
-  // };
-
   const removeChannel = async (channelObj) => {
     const membersRef = collection(db, `Chats/${channelObj.channelId}/members`);
     const q = query(membersRef, where("userId", "==", currentUser.uid));
@@ -56,8 +47,6 @@ function DeleteChannelModal({ channel, currentUser, goToChannel }) {
     }
   };
 
-  
-
   return (
     <div>
       <button
@@ -66,7 +55,7 @@ function DeleteChannelModal({ channel, currentUser, goToChannel }) {
           e.preventDefault();
           setOpenModal(true);
         }}
-        className="flex flex-col items-center w-40 h-full overflow-hidden text-amber-700 bg-orange-300 mb-5 hover:bg-gray-700 hover:text-gray-300"
+        className="flex items-center  text-md font-semibold mb-2 w-full h-12 px-5 mt-1 rounded hover:bg-slate-700 hover:text-gray-300"
       >
         {channel.channelName}
       </button>
@@ -75,24 +64,26 @@ function DeleteChannelModal({ channel, currentUser, goToChannel }) {
         size="md"
         onClose={() => setOpenModal(false)}
         popup
-        className="md:ps-[280px]"
+        className="md:ps-[280px] bg-black"
       >
-        <Modal.Header />
-        <Modal.Body>
+        <Modal.Header className="bg-slate-700" />
+        <Modal.Body className="bg-slate-700">
           <div className="text-center">
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            <h3 className="mb-5 text-lg font-normal text-white dark:text-gray-400">
               Are you sure you want to delete your Channel?
             </h3>
-            <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => removeChannel(channel)}>
-                {"Yes, I'm sure"}
-              </Button>
-              <Button color="gray" onClick={() => setOpenModal(false)}>
-                No, cancel
-              </Button>
-            </div>
           </div>
         </Modal.Body>
+        <Modal.Footer className=" bg-slate-700">
+          <div className="flex justify-between w-full ">
+            <Button color="failure" onClick={() => removeChannel(channel)}>
+              {"Yes, I'm sure"}
+            </Button>
+            <Button color="gray" onClick={() => setOpenModal(false)}>
+              No, cancel
+            </Button>
+          </div>
+        </Modal.Footer>
       </Modal>
     </div>
   );
