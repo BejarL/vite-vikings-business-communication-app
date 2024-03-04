@@ -58,12 +58,8 @@ function Dashboard() {
     () => navigate("/");
     setIsChannelShown(false);
     setIsProfileShown(false);
-<<<<<<< HEAD
     setIsHomeShown(true)
   }
-=======
-  };
->>>>>>> 5c9744d684278fd6883a206f63381e868c9152ec
   //removes the channel from the users array of channels in firebase
 
   // first checking if the current user is the creator
@@ -155,14 +151,11 @@ function Dashboard() {
           </Link>
         </div>
       </nav>
-<<<<<<< HEAD
       { isHomeShown && (<HomePage />)}
       { isChannelShown && (<TextArea channel={currentChannel} />)}
       { isProfileShown && (<Profile/>)}
-=======
       {isChannelShown && <TextArea channel={currentChannel} />}
       {isProfileShown && <Profile />}
->>>>>>> 5c9744d684278fd6883a206f63381e868c9152ec
     </div>
   );
 }

@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
+
 import "./HomePage.css";
 import { Card } from 'flowbite-react';
 import NewChannel from "../modals/NewChannel";
 import useFirebaseImage  from "./utils/useFirebaseImage"
-import { auth, db } from "../../FirebaseConfig";
-import Dashboard from "./Dashboard";
-import { doc, onSnapshot } from "firebase/firestore";
+
 
 function HomePage(){
 
