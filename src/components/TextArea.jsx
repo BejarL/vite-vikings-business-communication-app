@@ -17,7 +17,7 @@ import { auth, db } from "../../FirebaseConfig";
 import Dropdown from "../modals/Dropdown";
 import ChannelSettingsModal from "../modals/ChannelSettingsModal";
 
-export default function TextArea({ channel }) {
+export default function TextArea({ channel, homeView }) {
   const [messages, setMessages] = useState([]);
   const [messageField, setMessageField] = useState("");
   const [loading, setLoading] = useState(false);
@@ -227,7 +227,7 @@ export default function TextArea({ channel }) {
           {channel.channelName}
         </span>
         { channel ?
-          <ChannelSettingsModal channel={channel} users={users} />
+          <ChannelSettingsModal channel={channel} users={users} homeView={homeView}/>
           : null
         }
       </h1>

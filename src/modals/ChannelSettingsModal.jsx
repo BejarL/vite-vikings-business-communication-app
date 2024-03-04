@@ -17,7 +17,7 @@ import {
 import { auth, db } from "../../FirebaseConfig";
 import '../CustomScroll.css'
 
-function ChannelSettingsModal({ channel, users }) {
+function ChannelSettingsModal({ channel, users, homeView }) {
   const [openModal, setOpenModal] = useState(false);
   const [role, setRole] = useState("member");
   const [newUser, setNewUser] = useState("");
@@ -87,6 +87,7 @@ function ChannelSettingsModal({ channel, users }) {
     }
     //lastly, close the modal
     setOpenModal(false);
+    homeView();
   };
 
   //checks if the user exists, and if so return the uid
