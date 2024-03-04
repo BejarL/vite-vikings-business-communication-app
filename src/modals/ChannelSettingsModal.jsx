@@ -17,17 +17,18 @@ import {
 import { auth, db } from "../../FirebaseConfig";
 import '../CustomScroll.css'
 
-function ChannelSettingsModal({ channel, users, homeView }) {
+function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
   const [openModal, setOpenModal] = useState(false);
   const [role, setRole] = useState("member");
   const [newUser, setNewUser] = useState("");
-  const [newName, setNewName] = useState(channel.channelName)
+  const [newName, setNewName] = useState(channel.channelName);
   const currentUser = auth.currentUser;
   const membersRef = collection(db, `Chats/${channel.channelId}/members`);
-  
+   
   useEffect(() => {
     getRole(channel);
-  }, [])
+    setNewName(channel.channelName)
+  }, [channel])
 
   const updateNewUser = (e) => {
     setNewUser(e.target.value)
@@ -154,14 +155,16 @@ function ChannelSettingsModal({ channel, users, homeView }) {
       const docRef = doc(db, "users", user.data().userId)
       
       //need to remove initial instance from the user array.
-      await updateDoc(docRef, {
-        chat: arrayRemove(JSON.stringify(channel))
+        await updateDoc(docRef, {
+          chat: arrayRemove(JSON.stringify(channel))
+        })
+        //now need to add the new one
+        await updateDoc(docRef, {
+          chat: arrayUnion(JSON.stringify({channelId: channel.channelId, channelName: newName}))
+        })
       })
-      //now need to add the new one
-      await updateDoc(docRef, {
-        chat: arrayUnion(JSON.stringify({channelId: channel.channelId, channelName: newName}))
-      })
-    })
+    
+    setChannelObj({channelId: channel.channelId, channelName: newName})
   }
 
   const usersElems = users.map(user => {
