@@ -148,7 +148,7 @@ function Dashboard() {
         </div>
       </nav>
       { isHomeShown && (<HomePage currentUser={currentUser}/>)}
-      {isChannelShown && <TextArea channel={currentChannel} />}
+      {isChannelShown && <TextArea channel={currentChannel} homeView={homeView}/>}
       {isProfileShown && <Profile />}
     </div>
   );
