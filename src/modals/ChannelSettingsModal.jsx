@@ -1,4 +1,4 @@
-import { Button, Modal, Tabs, Flowbite } from "flowbite-react";
+import { Button, Modal, Tabs} from "flowbite-react";
 import { HiAdjustments, HiClipboardList, HiOutlineLogout, HiOutlineTrash } from 'react-icons/hi';
 import { MdDashboard } from 'react-icons/md';
 import { useState, useEffect } from "react";
@@ -187,7 +187,7 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
 
 
   return (
-    <Flowbite theme={{ theme: customTheme }}>
+    <>
       <button
         onClick={() => setOpenModal(true)}
         onContextMenu={(e) => {
@@ -272,7 +272,7 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
     </Tabs>
 
       </Modal>
-    </Flowbite>
+    </>
   );
 }
 
