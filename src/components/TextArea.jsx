@@ -25,7 +25,6 @@ export default function TextArea({ channel, homeView }) {
   const [users, setUsers] = useState([]);
   const [channelObj, setChannelObj] = useState(channel)
 
-
   const messagesEndRef = useRef(null); // keep track messages for auto-scrolling
   const chatRef = channel
     ? collection(db, `Chats/${channel.channelId}`, "messages")

@@ -76,11 +76,14 @@ function Profile() {
   };
 
   const deleteProfile = async () => {
-    if (!currentUser) return;
+    console.log("here")
+    if (!currentUser) {
+      return;
+    }
 
     try {
-      await deleteDoc(doc(db, "users", currentUser.uid));
       await deleteUser(currentUser);
+      await deleteDoc(doc(db, "users", currentUser.uid));
       navigate("/login");
     } catch (error) {
       console.error("Error deleting user:", error);

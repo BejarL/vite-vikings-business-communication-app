@@ -31,8 +31,8 @@ function Dashboard() {
     if (currentUser.uid) {
       const unsubscribe = onSnapshot(
         doc(db, "users", currentUser.uid),
-        function (doc) {
-          setChannels(doc.data().chat);
+        function (item) {
+          setChannels(item.data().chat);
         }
       );
       return unsubscribe;
@@ -151,8 +151,8 @@ function Dashboard() {
           </Link>
         </div>
       </nav>
-      {isHomeShown && <HomePage currentUser={currentUser} />}
-      {isChannelShown && <TextArea channel={currentChannel} />}
+      { isHomeShown && (<HomePage currentUser={currentUser}/>)}
+      {isChannelShown && <TextArea channel={currentChannel} homeView={homeView}/>}
       {isProfileShown && <Profile />}
     </div>
   );
