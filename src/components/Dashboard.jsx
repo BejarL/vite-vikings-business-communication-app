@@ -11,16 +11,18 @@ import { doc, onSnapshot } from "firebase/firestore";
 import DeleteChannelModal from "../modals/DeleteChannelModal";
 // import { updateDoc, deleteDoc, arrayRemove } from "firebase/firestore";
 import TextArea from "./TextArea";
-import exp from "constants";
+// import exp from "constants";
 import Profile from "./Profile";
+import HomePage from "./HomePage";
 
 function Dashboard() {
   const [channels, setChannels] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
   const [currentChannel, setCurrentChannel] = useState("");
   const navigate = useNavigate();
-  const [isChannelShown, setIsChannelShown] = useState(true);
+  const [isChannelShown, setIsChannelShown] = useState(false);
   const [isProfileShown, setIsProfileShown] = useState(false);
+  const [isHomeShown, setIsHomeShown] = useState(true);
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -49,12 +51,14 @@ function Dashboard() {
     () => navigate("/profile");
     setIsChannelShown(false);
     setIsProfileShown(true);
+    setIsHomeShown(false);
   };
 
   const homeView = () => {
-    () => navigate("/");
-    setIsChannelShown(true);
+    () => navigate("/homePage");
+    setIsChannelShown(false);
     setIsProfileShown(false);
+    setIsHomeShown(true);
   };
   //removes the channel from the users array of channels in firebase
 
@@ -62,14 +66,11 @@ function Dashboard() {
   // if they arent, just delete the channel from their chats and remove them from the members list of the chat
   // if they are, need to remove the channel from their chat and every other member in the chat, then delete the channel
 
-  const click = (obj) => {
-    console.log("clicked");
-    removeChannel(obj);
-  };
   const goToChannel = (channel) => {
     setCurrentChannel(channel);
     setIsProfileShown(false);
     setIsChannelShown(true);
+    setIsHomeShown(false);
   };
 
   let channelElems = channels.map((item) => {
@@ -87,26 +88,25 @@ function Dashboard() {
 
   // JSX structure
   return (
-    <div className="dashboard--wrapper">
+    <div className="dashboard--wrapper border-2 border-radio border-teal-800">
       {/* Navbar */}
-      <nav className="dashboard--navbar">
-        <div className="flex flex-col items-center w-40 h-full overflow-hidden text-amber-800 bg-amber-500">
-          <a className="flex items-center w-full px-3 mt-3" href="#">
-            <svg
-              className="w-8 h-8 fill-current"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              onClick={homeView}
-            >
-              <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
-            </svg>
-            <span className="ml-7 text-sm font-bold">Emanate</span>
+      <nav className="dashboard--navbar border-r-2 border-teal-800">
+        <div className="flex flex-col items-center w-52 h-full overflow-hidden text-teal-400 bg-slate-800 ">
+          <a
+            className="flex items-center w-full px-3 mt-3"
+            onClick={homeView}
+            href="#"
+          >
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fblue-logo.png?alt=media&token=c0b3ae42-ebfc-43d3-bc49-e614b221c4c5"
+              className="h-10 w-10 m-0"
+            />
+            <span className="ml-3 text-lg font-bold">Emanate</span>
           </a>
           <div className="w-full px-2">
-            <div className="flex flex-col items-center w-full mt-3 border-t border-b border-blue-900">
+            <div className="flex flex-col items-center w-full mt-3 border-t border-b border-teal-900">
               <button
-                className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
+                className="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-slate-700 hover:text-gray-300"
                 onClick={profileView}
               >
                 <svg
@@ -123,16 +123,16 @@ function Dashboard() {
                     d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span className="ml-2 text-sm font-medium">Profile</span>
+                <span className="ml-2 text-md font-medium">Profile</span>
               </button>
               <NewChannel currentUser={currentUser.displayName} />
             </div>
           </div>
-          <div className="flex flex-col items-center w-full overflow-y-auto max-h-[100%] mt-3  pe">
+          <div className="flex flex-col items-center w-full overflow-y-auto max-h-[100%] mt-3">
             <div className="">{channelElems}</div>
           </div>
           <Link
-            className="flex items-center justify-center w-full h-16 mt-auto text-white bg-amber-800 hover:bg-amber-700 hover:text-gray-300"
+            className="flex items-center justify-center w-full h-16 mt-auto text-white  hover:bg-slate-700 hover:text-gray-300"
             to="/"
             onClick={handleLogout}
           >
@@ -151,6 +151,7 @@ function Dashboard() {
           </Link>
         </div>
       </nav>
+      {isHomeShown && <HomePage currentUser={currentUser} />}
       {isChannelShown && <TextArea channel={currentChannel} />}
       {isProfileShown && <Profile />}
     </div>

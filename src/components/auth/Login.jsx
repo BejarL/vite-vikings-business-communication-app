@@ -2,20 +2,15 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { auth } from "../../../FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import useFirebaseImage  from "../utils/useFirebaseImage"
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 
-// Define the Login functional component
 function Login() {
   // State hooks for managing user inputs and error messages
   const [error, setError] = useState(null); // To store error messages
   const [email, setEmail] = useState(""); // To store the user's email
   const [password, setPassword] = useState(""); // To store the user's password
   const navigate = useNavigate(); // Hook for programmatically navigating
-
-  // Fetch background image URL from Firebase Storage
-  const backgroundImageUrl = useFirebaseImage('bg-images/chatting.png');
 
   // useEffect hook to clear error message after 3 seconds
   useEffect(() => {
@@ -48,7 +43,7 @@ function Login() {
     <>
       {/* Display error message if there is any */}
       {error && (
-        <div className="text-center font-bold bg-orange-500 text-white px-4 py-3 rounded relative transition-opacity duration-1000 ease-in-out">
+        <div className="text-center font-bold bg-teal-500 text-white px-4 py-3 rounded relative transition-opacity duration-1000 ease-in-out">
           {error}
         </div>
       )}
@@ -56,19 +51,25 @@ function Login() {
       <div
         className="h-screen md:flex "
         style={{
-          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2F1.png?alt=media&token=6d769590-a1c1-491e-bf00-da8bbafb66b6)`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <h1 className="text-white font-bold text-3xl absolute left-1/2 transform -translate-x-1/2">
-          Emanate
-        </h1>
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-4">
+          <h1 className="text-teal-100 font-bold text-3xl flex items-center">
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fblue-logo.png?alt=media&token=c0b3ae42-ebfc-43d3-bc49-e614b221c4c5"
+              className="h-10 w-10 mr-2"
+            />
+            Emanate
+          </h1>
+        </div>
         <div className="flex md:w-1/2 justify-center py-10 items-center">
           {/* Login form */}
           <form
             onSubmit={logIn}
-            className="bg-amber-800 md:w-96 p-8 shadow-lg backdrop-blur-md bg-opacity-50 rounded-lg"
+            className="bg-slate-900 md:w-96 p-8 shadow-lg backdrop-blur-md bg-opacity-50 rounded-lg"
           >
             {/* Form header */}
             <p className="text-lg font-bold text-white mb-7">
@@ -79,7 +80,7 @@ function Login() {
               {" "}
               Email
             </label>
-            <div className="flex bg-amber-400 items-center py-2 px-3 rounded-2xl">
+            <div className="flex bg-teal-100 items-center py-2 px-3 rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -88,7 +89,7 @@ function Login() {
                 stroke="currentColor"
               ></svg>
               <input
-                className="pl-2 bg-amber-400 placeholder-white outline-none border-none"
+                className="pl-2 bg-teal-100 placeholder-black outline-0 border-none"
                 type="email"
                 placeholder="Enter your email"
                 value={email}
@@ -100,7 +101,7 @@ function Login() {
               Password
             </label>
 
-            <div className="flex bg-amber-400 items-center py-2 px-3 rounded-2xl">
+            <div className="flex bg-teal-100 items-center py-2 px-3 rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -108,7 +109,7 @@ function Login() {
                 fill="currentColor"
               ></svg>
               <input
-                className="pl-2 outline-none placeholder-white bg-amber-400 border-none"
+                className="pl-2 outline-none placeholder-black bg-teal-100 border-none"
                 type="password"
                 placeholder="Enter your password"
                 value={password}
@@ -117,7 +118,7 @@ function Login() {
             </div>
             <button
               type="submit"
-              className="block w-full bg-white hover:bg-amber-600 mt-4 py-2 rounded-2xl hover:text-white text-amber-600 font-bold mb-2"
+              className="block w-full bg-white hover:bg-slate-900 mt-4 py-2 rounded-2xl hover:text-white text-teal-600 font-bold mb-2"
             >
               Log in
             </button>
@@ -142,7 +143,7 @@ function Login() {
             <Link to="/signup">
               <button
                 type="button"
-                className="block w-28 bg-white hover:bg-amber-600 hover:text-white text-amber-600 mt-4 py-2 rounded-2xl font-bold mb-2"
+                className="block w-28 bg-white hover:bg-slate-900 hover:text-white text-teal-600 mt-4 py-2 rounded-2xl font-bold mb-2"
               >
                 Sign Up
               </button>

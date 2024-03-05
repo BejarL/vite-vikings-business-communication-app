@@ -1,36 +1,25 @@
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
-import {
-  updateDoc,
-  deleteDoc,
-  doc,
-  arrayRemove,
-  getDocs,
-  collection,
-  query,
-  where,
-} from "firebase/firestore";
-import { db } from "../../FirebaseConfig";
 
 function EditMessage({ msgId, messageContent, updateMsg }) {
   const [openModal, setOpenModal] = useState(false);
   const [messageField, setMessageField] = useState(messageContent);
 
   const updateMessageField = (e) => {
-    setMessageField(e.target.value)
-  }
+    setMessageField(e.target.value);
+  };
 
   const resetModal = () => {
     setOpenModal(false);
     setMessageField(messageContent);
-  }
+  };
 
   //handler function for updating the message
   const handleUpdate = () => {
     updateMsg(msgId, messageField);
     resetModal();
-  }
-  
+  };
+
   return (
     <div>
       <a
@@ -47,27 +36,29 @@ function EditMessage({ msgId, messageContent, updateMsg }) {
         popup
         className="md:ps-[280px]"
       >
-        <Modal.Header />
-        <Modal.Body>
+        <Modal.Header className="bg-slate-700" />
+        <Modal.Body className="bg-slate-700">
           <div className="text-center">
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              <textarea 
+            <h3 className="text-lg font-normal text-black dark:text-gray-400">
+              <textarea
                 value={messageField}
                 placeholder="Enter the message here"
                 onChange={updateMessageField}
-                className="w-[90%] min-h-[100px] max-h-[500px]"
+                className="w-[90%] min-h-[100px] max-h-[500px] bg-gray-200 rounded placeholder-gray-500"
               ></textarea>
             </h3>
-            <div className="flex justify-center gap-4">
-              <Button color="gray" onClick={resetModal}>
-                Cancel
-              </Button>
-              <Button color="success" onClick={handleUpdate}>
-                Save
-              </Button>
-            </div>
           </div>
         </Modal.Body>
+        <Modal.Footer className="bg-slate-700">
+          <div className="flex justify-between w-full ">
+            <Button color="gray" onClick={resetModal}>
+              Cancel
+            </Button>
+            <Button className="bg-slate-900" onClick={handleUpdate}>
+              Save
+            </Button>
+          </div>
+        </Modal.Footer>
       </Modal>
     </div>
   );

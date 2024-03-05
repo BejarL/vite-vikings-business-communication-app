@@ -51,11 +51,11 @@ function ChangePasswordModal({ isOpen, onClose }) {
           </p>
         )}
         {errorMessage && (
-          <p className="text-center font-bold bg-red-500 text-white px-4 py-3 rounded">
+          <p className="text-center font-bold bg-teal-500 text-white px-4 py-3 rounded">
             {errorMessage}
           </p>
         )}
-        <div className="bg-amber-500 p-5 rounded">
+        <div className="bg-slate-700 p-5 rounded">
           <h2 className="text-white font-bold text-xl mb-1">Update Your Password</h2>
           <p className="text-sm font-normal text-white mb-4">Please enter your old and new password below.</p>
           <input
@@ -74,7 +74,7 @@ function ChangePasswordModal({ isOpen, onClose }) {
           />
           <button
             onClick={handleUpdatePassword}
-            className="w-full bg-amber-600 hover:bg-amber-800 text-white font-bold py-2 px-4 rounded"
+            className="w-full bg-slate-800 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded"
           >
             Update Password
           </button>

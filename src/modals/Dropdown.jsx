@@ -6,7 +6,7 @@ const Dropdown = ({ deleteMsg, updateMsg, msgId, messageContent }) => {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <>
+    <div className="relative">
       <button
         id="dropdownMenu"
         data-dropdown-toggle="dropdownDotsHorizontal"
@@ -28,7 +28,7 @@ const Dropdown = ({ deleteMsg, updateMsg, msgId, messageContent }) => {
       {isOpen && (
         <div
           id="dropdownDotsHorizontal"
-          className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          className="absolute z-10 w-48 rounded-md shadow-lg mt-2 bg-white divide-y divide-gray-100  dark:bg-gray-700 dark:divide-gray-600"
         >
           <ul
             className="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -53,7 +53,7 @@ const Dropdown = ({ deleteMsg, updateMsg, msgId, messageContent }) => {
           </ul>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
