@@ -25,6 +25,8 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
   const currentUser = auth.currentUser;
   const membersRef = collection(db, `Chats/${channel.channelId}/members`);
 
+  console.log(users)
+
   useEffect(() => {
     getRole(channel);
     setNewName(channel.channelName);
@@ -177,7 +179,7 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
       <div className="m-2 flex items-center" key={user.uid}>
         <img
           className="rounded-full w-[50px] h-[50px] me-2"
-          src={user.profilePic}
+          src={user.authorProfilePic}
         ></img>
         {user.displayName}
       </div>

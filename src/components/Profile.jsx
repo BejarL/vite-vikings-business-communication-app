@@ -46,7 +46,7 @@ function Profile() {
       .then(setImg)
       .catch((e) =>
         setImg(
-          "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?..."
+          "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?"
         )
       );
   };
