@@ -201,12 +201,12 @@ export default function TextArea({ channel, homeView }) {
         <div>
           <div className="flex items-center">
             <img
-              className="w-10 h-10 rounded-full"
+              className="w-10 h-10 rounded-full mt-2"
               src={msg.authorProfilePic}
               alt="Profile picture"
             />
             <p className="ml-2 text-orange-400 text-lg">{displayName}</p>
-            <p className="px-4 text-sm ">{timeStamp}</p>
+            <p className="px-4 text-sm">{timeStamp}</p>
               {auth.currentUser.uid === msg.userId ? (
                 <Dropdown
                   deleteMsg={deleteMsg}
@@ -223,7 +223,7 @@ export default function TextArea({ channel, homeView }) {
   });
 
   return (
-    <div className="flex flex-col items-center w-full h-full overflow-hidden text-teal-400 bg-slate-900">
+    <div className="flex flex-col items-center w-full h-full overflow-hidden text-teal-400 bg-slate-800">
       <h1 className="flex items-center w-full px-3 mt-3">
         <span className="ml-2 text-lg font-bold p-3 mr-auto">
           {channelObj.channelName}
@@ -262,7 +262,7 @@ export default function TextArea({ channel, homeView }) {
           </div>
         </div>
       </div>
-      <div className="flex w-[96%] h-auto mt-auto m-3 rounded bg-gray-800 hover:bg-gray-700 hover:text-gray-300">
+      <div className="flex w-[96%] h-auto mt-auto m-3 rounded bg-gray-900 hover:bg-gray-700 hover:text-gray-300">
         <input
           className="flex-1 pl-2 bg-transparent h-10"
           style={{ marginRight: "5px" }}
@@ -271,9 +271,8 @@ export default function TextArea({ channel, homeView }) {
           onChange={handleMessageField}
           onKeyDown={handleKeyDown}
         />
-
         <button type="button" 
-          className="px-4 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="px-4 py-2 text-xs font-medium text-center text-white bg-teal-900 rounded-lg hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           onClick={sendMessage}
           disabled={loading || !messageField.trim()}
           aria-label="Send message"

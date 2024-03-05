@@ -1,10 +1,9 @@
-
 import "./HomePage.css";
-import { Card } from 'flowbite-react';
+import { Card } from "flowbite-react";
 import NewChannel from "../modals/NewChannel";
-import useFirebaseImage  from "./utils/useFirebaseImage";
-import img from '../images/coworkers.jpg';
-import img2 from '../images/teammate.jpg';
+import useFirebaseImage from "./utils/useFirebaseImage";
+import img from "../images/coworkers.jpg";
+import img2 from "../images/teammate.jpg";
 
 
 function HomePage(currentUser){
@@ -46,5 +45,4 @@ function HomePage(currentUser){
     );
 }
 
-
-export default HomePage
+export default HomePage;

@@ -1,7 +1,5 @@
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
 import {
   collection,
   doc,
@@ -12,8 +10,7 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
-import { db, storage, auth } from "../../FirebaseConfig";
-import { ref, getDownloadURL } from "firebase/storage";
+import { db, auth } from "../../FirebaseConfig";
 
 function NewChannel({ currentUser }) {
   const [show, setShow] = useState(false);
@@ -181,26 +178,26 @@ function NewChannel({ currentUser }) {
         onHide={toggleModal}
         backdrop="static"
         keyboard={false}
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-500 h-300 p-2.5 bg-amber-500 rounded-md"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-500 h-300 p-2.5 bg-slate-700 rounded-md"
       >
         <Modal.Body>
-          <div className="h-260 m-3 flex flex-col text-white items-center overflow-y-auto">
+          <div className="h-260 m-3 flex flex-col text-black items-center overflow-y-auto">
             <input
               type="input"
               onChange={updateTitle}
               placeholder="Enter Channel Name"
               value={title}
-              className="w-340 p-1 text-2xl pl-4 placeholder-gray-300 outline-0 bg-amber-600 -ml-10 rounded"
+              className="w-340 p-1 text-2xl pl-4 placeholder-gray-400 outline-0 bg-white -ml-10 rounded"
             />
             <div className="flex items-center">
               <input
                 type="input"
                 placeholder="Add recipients"
                 onChange={updateRecipient}
-                className="w-340 p-1 mt-2.5 bg-amber-600 placeholder-gray-300 text-2xl outline-0 pl-4 ml-1 rounded"
+                className="w-340 p-1 mt-2.5 bg-white placeholder-gray-400 text-2xl outline-0 pl-4 ml-1 rounded"
               />
               <button
-                className="text-white mt-3 bg-amber-700 hover:bg-amber-600 p-1 w-30 ml-2 text-lg rounded"
+                className="text-white mt-3 bg-slate-900 hover:bg-slate-600 p-1 w-30 ml-2 text-lg rounded"
                 onClick={addRecipient}
               >
                 <svg
@@ -224,13 +221,13 @@ function NewChannel({ currentUser }) {
           <div className="flex justify-between mt-10 w-full">
             <button
               onClick={toggleModal}
-              className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              className="px-4 py-2 text-white font-bold bg-red-600 rounded hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
               Cancel
             </button>
             <button
               onClick={createChannel}
-              className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              className="px-4 py-2 text-black hover:text-white bg-white font-bold rounded hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
               Create
             </button>
