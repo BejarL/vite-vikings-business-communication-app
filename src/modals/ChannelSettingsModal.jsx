@@ -188,7 +188,6 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
 
   return (
     <>
-    <>
       <button
         onClick={() => setOpenModal(true)}
         onContextMenu={(e) => {
