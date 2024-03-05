@@ -29,11 +29,11 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
   const [newName, setNewName] = useState(channel.channelName);
   const currentUser = auth.currentUser;
   const membersRef = collection(db, `Chats/${channel.channelId}/members`);
-   
+
   useEffect(() => {
     getRole(channel);
-    setNewName(channel.channelName)
-  }, [channel])
+    setNewName(channel.channelName);
+  }, [channel]);
 
   const updateNewUser = (e) => {
     setNewUser(e.target.value);
@@ -163,17 +163,19 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
       const docRef = doc(db, "users", user.data().userId);
 
       //need to remove initial instance from the user array.
-        await updateDoc(docRef, {
-          chat: arrayRemove(JSON.stringify(channel))
-        })
-        //now need to add the new one
-        await updateDoc(docRef, {
-          chat: arrayUnion(JSON.stringify({channelId: channel.channelId, channelName: newName}))
-        })
-      })
-    
-    setChannelObj({channelId: channel.channelId, channelName: newName})
-  }
+      await updateDoc(docRef, {
+        chat: arrayRemove(JSON.stringify(channel)),
+      });
+      //now need to add the new one
+      await updateDoc(docRef, {
+        chat: arrayUnion(
+          JSON.stringify({ channelId: channel.channelId, channelName: newName })
+        ),
+      });
+    });
+
+    setChannelObj({ channelId: channel.channelId, channelName: newName });
+  };
 
   const usersElems = users.map((user) => {
     return (
@@ -218,7 +220,7 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
         className="md:ps-[280px]"
       >
         <Tabs aria-label="Tabs with underline" style="underline">
-          <Tabs.Item active title="Users" icon={HiClipboardList} >
+          <Tabs.Item active title="Users" icon={HiClipboardList}>
             <div
               id="custom-scroll"
               className="h-[150px] ms-[5px] me-[5px] flex items-start flex-wrap "
@@ -231,9 +233,12 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
                   placeholder="Add a user"
                   value={newUser}
                   onChange={updateNewUser}
-                  className="bg-blue-100 m-3 p-3 rounded-lg"
+                  className="bg-blue-100 m-3 p-3 pr-20 rounded-lg"
                 ></input>
-                <button className="bg-slate-700 text-white p-3 rounded-lg" onClick={addUserTochannel}>
+                <button
+                  className="bg-slate-700 text-white p-3 hover:bg-slate-800 rounded-lg"
+                  onClick={addUserTochannel}
+                >
                   Add
                 </button>
               </>
@@ -245,9 +250,14 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
                 onChange={updateNewName}
                 value={newName}
                 placeholder="Edit Channel Name"
-                className="bg-blue-100 m-3 p-3 rounded-lg"
+                className="bg-blue-100 m-3 p-3 pr-20 rounded-lg"
               ></input>
-              <button className="bg-slate-700 text-white p-3 rounded-lg" onClick={updateChannelName}>Save</button>
+              <button
+                className="bg-slate-700 text-white p-3 hover:bg-slate-800 rounded-lg"
+                onClick={updateChannelName}
+              >
+                Save
+              </button>
             </Tabs.Item>
           ) : null}
           <Tabs.Item
@@ -261,7 +271,10 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
                   ? "Are you sure? This action cannot be undone"
                   : "Are you sure you want to leave this channel?"}
               </p>
-              <button className="bg-slate-700 mt-3 text-white p-3 rounded-lg" onClick={() => removeChannel(channel)}>
+              <button
+                className="bg-slate-700 mt-3 text-white p-3 rounded-lg"
+                onClick={() => removeChannel(channel)}
+              >
                 {role === "creator" ? "Delete Channel" : "Leave Channel"}
               </button>
             </div>

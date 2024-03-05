@@ -58,8 +58,8 @@ function Dashboard() {
     () => navigate("/homePage");
     setIsChannelShown(false);
     setIsProfileShown(false);
-    setIsHomeShown(true)
-  }
+    setIsHomeShown(true);
+  };
   //removes the channel from the users array of channels in firebase
 
   // first checking if the current user is the creator
@@ -92,10 +92,14 @@ function Dashboard() {
       {/* Navbar */}
       <nav className="dashboard--navbar border-r-2 border-teal-800">
         <div className="flex flex-col items-center w-52 h-full overflow-hidden text-teal-400 bg-slate-800 ">
-          <a className="flex items-center w-full px-3 mt-3" href="#">
-            <img src="https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fblue-logo.png?alt=media&token=c0b3ae42-ebfc-43d3-bc49-e614b221c4c5" 
-            className="h-10 w-10 m-0"
+          <a
+            className="flex items-center w-full px-3 mt-3"
             onClick={homeView}
+            href="#"
+          >
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fblue-logo.png?alt=media&token=c0b3ae42-ebfc-43d3-bc49-e614b221c4c5"
+              className="h-10 w-10 m-0"
             />
             <span className="ml-3 text-lg font-bold">Emanate</span>
           </a>
@@ -121,7 +125,7 @@ function Dashboard() {
                 </svg>
                 <span className="ml-2 text-md font-medium">Profile</span>
               </button>
-               <NewChannel currentUser={currentUser.displayName} />
+              <NewChannel currentUser={currentUser.displayName} />
             </div>
           </div>
           <div className="flex flex-col items-center w-full overflow-y-auto max-h-[100%] mt-3">
@@ -147,7 +151,7 @@ function Dashboard() {
           </Link>
         </div>
       </nav>
-      { isHomeShown && (<HomePage currentUser={currentUser}/>)}
+      {isHomeShown && <HomePage currentUser={currentUser} />}
       {isChannelShown && <TextArea channel={currentChannel} />}
       {isProfileShown && <Profile />}
     </div>
