@@ -1,11 +1,6 @@
-import { Button, Modal, Tabs } from "flowbite-react";
-import {
-  HiAdjustments,
-  HiClipboardList,
-  HiOutlineLogout,
-  HiOutlineTrash,
-} from "react-icons/hi";
-import { MdDashboard } from "react-icons/md";
+import { Button, Modal, Tabs, Flowbite } from "flowbite-react";
+import { HiAdjustments, HiClipboardList, HiOutlineLogout, HiOutlineTrash } from 'react-icons/hi';
+import { MdDashboard } from 'react-icons/md';
 import { useState, useEffect } from "react";
 import {
   addDoc,
@@ -20,7 +15,7 @@ import {
   where,
 } from "firebase/firestore";
 import { auth, db } from "../../FirebaseConfig";
-import "../CustomScroll.css";
+import '../CustomScroll.css';
 
 function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
   const [openModal, setOpenModal] = useState(false);
@@ -186,11 +181,13 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
         ></img>
         {user.displayName}
       </div>
-    );
-  });
+    )
+  })
+  
+
 
   return (
-    <div>
+    <Flowbite theme={{ theme: customTheme }}>
       <button
         onClick={() => setOpenModal(true)}
         onContextMenu={(e) => {
@@ -217,71 +214,65 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
         size="md"
         onClose={() => setOpenModal(false)}
         popup
-        className="md:ps-[280px]"
       >
-        <Tabs aria-label="Tabs with underline" style="underline">
-          <Tabs.Item active title="Users" icon={HiClipboardList}>
-            <div
-              id="custom-scroll"
-              className="h-[150px] ms-[5px] me-[5px] flex items-start flex-wrap "
-            >
-              {usersElems}
-            </div>
-            {role === "creator" ? (
-              <>
-                <input
-                  placeholder="Add a user"
-                  value={newUser}
-                  onChange={updateNewUser}
-                  className="bg-blue-100 m-3 p-3 pr-20 rounded-lg"
-                ></input>
-                <button
-                  className="bg-slate-700 text-white p-3 hover:bg-slate-800 rounded-lg"
-                  onClick={addUserTochannel}
-                >
-                  Add
-                </button>
-              </>
-            ) : null}
-          </Tabs.Item>
-          {role === "creator" ? (
-            <Tabs.Item title="Channel Name" icon={HiAdjustments}>
-              <input
-                onChange={updateNewName}
-                value={newName}
-                placeholder="Edit Channel Name"
-                className="bg-blue-100 m-3 p-3 pr-20 rounded-lg"
+        <Tabs aria-label="Tabs with underline" style="underline" className="bg-modalblue rounded text-white" >
+          <Tabs.Item active title="Users" icon={HiClipboardList} className="h-[150px]" >
+          <div id="custom-scroll" className="h-[150px] ms-[5px] me-[5px] flex items-start flex-wrap">
+            {usersElems}
+          </div>
+          { role === "creator" ?
+            <div className="w-[100%] ps-3 pe-3 flex justify-evenly">
+            <input 
+              className="border p-1 text-black"
+              placeholder="Add a user"
+              value={newUser}
+              onChange={updateNewUser}
               ></input>
-              <button
-                className="bg-slate-700 text-white p-3 hover:bg-slate-800 rounded-lg"
-                onClick={updateChannelName}
-              >
-                Save
-              </button>
-            </Tabs.Item>
-          ) : null}
-          <Tabs.Item
-            active
-            title={role === "creator" ? "Delete Channel" : "Leave Channel"}
-            icon={role === "creator" ? HiOutlineTrash : HiOutlineLogout}
-          >
-            <div className="flex flex-col items-center">
-              <p className="w-[100%] text-center">
-                {role === "creator"
-                  ? "Are you sure? This action cannot be undone"
-                  : "Are you sure you want to leave this channel?"}
-              </p>
-              <button
-                className="bg-slate-700 mt-3 text-white p-3 rounded-lg"
-                onClick={() => removeChannel(channel)}
-              >
-                {role === "creator" ? "Delete Channel" : "Leave Channel"}
-              </button>
+            <button 
+              className="text-xl ps-1 pe-1 bg-cyan-700 rounded hover:bg-cyan-800"
+              onClick={addUserTochannel}
+            >Add</button>
             </div>
-          </Tabs.Item>
-        </Tabs>
+            : null
+          }
+        </Tabs.Item>
+        { role === "creator" ? <Tabs.Item title="Channel Name" icon={HiAdjustments}>
+          <div className="flex flex-col justify-evenly items-center h-[100px]">
+            <p className="m-1">Change the channel name here</p>
+          <input
+            onChange={updateNewName}
+            value={newName}
+            placeholder="Edit Channel Name"
+            className="text-black p-1 mb-2"
+            ></input>
+          <button 
+            onClick={updateChannelName}
+            className="text-xl ps-1 pe-1 bg-cyan-700 rounded hover:bg-cyan-800"
+          >Save</button>
+          </div>
+        </Tabs.Item> 
+          : null
+        }
+        <Tabs.Item active title={role === "creator" ? "Delete Channel" : "Leave Channel"} 
+                  icon={role === "creator" ? HiOutlineTrash : HiOutlineLogout}>
+          <div className="flex flex-col items-center h-[100px] justify-evenly">
+            <p>
+              { role === "creator" ?
+                "Are you sure? This action cannot be undone"
+                : "Are you sure you want to leave this channel?"
+              }
+            </p>
+            <button 
+              className="text-xl ps-1 pe-1 bg-red-700 hover:bg-red-900 rounded"
+              onClick={() => removeChannel(channel)}>
+                {role === "creator" ? "Delete Channel" : "Leave Channel"}
+            </button>
+          </div>
+        </Tabs.Item>
+    </Tabs>
+
       </Modal>
-    </div>
+    </Flowbite>
   );
 }
 
