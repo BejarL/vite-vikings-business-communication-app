@@ -50,7 +50,7 @@ function DeleteChannelModal({ channel, currentUser, goToChannel }) {
   return (
     <div>
       <button
-        onClick={() => goToChannel(channel)}
+        onClick={() => goToChannel(channel)}  
         onContextMenu={(e) => {
           e.preventDefault();
           setOpenModal(true);

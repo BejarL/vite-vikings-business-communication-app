@@ -1,4 +1,4 @@
-import { Button, Modal, Tabs, Flowbite } from "flowbite-react";
+import { Button, Modal, Tabs } from "flowbite-react";
 import { HiAdjustments, HiClipboardList, HiOutlineLogout, HiOutlineTrash } from 'react-icons/hi';
 import { MdDashboard } from 'react-icons/md';
 import { useState, useEffect } from "react";
@@ -24,11 +24,11 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
   const [newName, setNewName] = useState(channel.channelName);
   const currentUser = auth.currentUser;
   const membersRef = collection(db, `Chats/${channel.channelId}/members`);
-   
+
   useEffect(() => {
     getRole(channel);
-    setNewName(channel.channelName)
-  }, [channel])
+    setNewName(channel.channelName);
+  }, [channel]);
 
   const updateNewUser = (e) => {
     setNewUser(e.target.value);
@@ -158,17 +158,19 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
       const docRef = doc(db, "users", user.data().userId);
 
       //need to remove initial instance from the user array.
-        await updateDoc(docRef, {
-          chat: arrayRemove(JSON.stringify(channel))
-        })
-        //now need to add the new one
-        await updateDoc(docRef, {
-          chat: arrayUnion(JSON.stringify({channelId: channel.channelId, channelName: newName}))
-        })
-      })
-    
-    setChannelObj({channelId: channel.channelId, channelName: newName})
-  }
+      await updateDoc(docRef, {
+        chat: arrayRemove(JSON.stringify(channel)),
+      });
+      //now need to add the new one
+      await updateDoc(docRef, {
+        chat: arrayUnion(
+          JSON.stringify({ channelId: channel.channelId, channelName: newName })
+        ),
+      });
+    });
+
+    setChannelObj({ channelId: channel.channelId, channelName: newName });
+  };
 
   const usersElems = users.map((user) => {
     return (
@@ -185,6 +187,7 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
 
 
   return (
+    <>
     <>
       <button
         onClick={() => setOpenModal(true)}
@@ -270,8 +273,7 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
     </Tabs>
 
       </Modal>
-    
-  </>
+    </>
   );
 }
 

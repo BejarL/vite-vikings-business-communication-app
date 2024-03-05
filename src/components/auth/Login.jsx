@@ -5,7 +5,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 
-// Define the Login functional component
 function Login() {
   // State hooks for managing user inputs and error messages
   const [error, setError] = useState(null); // To store error messages
