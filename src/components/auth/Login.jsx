@@ -5,7 +5,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 
-// Define the Login functional component
 function Login() {
   // State hooks for managing user inputs and error messages
   const [error, setError] = useState(null); // To store error messages
@@ -125,7 +124,7 @@ function Login() {
             </button>
             {/* Link to the forgot password page */}
             <Link to="/forgotpassword">
-              <span className="text-sm ml-2 hover:text-blue-800 cursor-pointer">
+              <span className="text-sm ml-2 hover:text-white cursor-pointer">
                 Forgot Password?
               </span>
             </Link>

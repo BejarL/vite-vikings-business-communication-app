@@ -79,7 +79,7 @@ function SignUp() {
         password
       );
       const user = userCredential.user;
-      await updateProfile(user, { displayName: username });
+      await updateProfile(user, { displayName: username, photoURL: "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0" });
       await sendEmailVerification(user);
 
       // Save user information to Firestore "users" collection

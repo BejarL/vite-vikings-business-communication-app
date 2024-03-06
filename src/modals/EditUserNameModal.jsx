@@ -61,7 +61,7 @@ function EditUserNameModal({ displayName, updateDisplayName }) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          {errorMessage && <div className="error-message text-cyan-400">{errorMessage}</div>}
           <label
             htmlFor="input-label"
             className="block text-white text-sm font-medium mb-2 dark:text-white"

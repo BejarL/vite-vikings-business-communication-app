@@ -1,11 +1,5 @@
-import { Button, Modal, Tabs } from "flowbite-react";
-import {
-  HiAdjustments,
-  HiClipboardList,
-  HiOutlineLogout,
-  HiOutlineTrash,
-} from "react-icons/hi";
-import { MdDashboard } from "react-icons/md";
+import { Modal, Tabs } from "flowbite-react";
+import { HiAdjustments, HiClipboardList, HiOutlineLogout, HiOutlineTrash } from 'react-icons/hi';
 import { useState, useEffect } from "react";
 import {
   addDoc,
@@ -20,7 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import { auth, db } from "../../FirebaseConfig";
-import "../CustomScroll.css";
+import '../CustomScroll.css';
 
 function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
   const [openModal, setOpenModal] = useState(false);
@@ -29,11 +23,13 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
   const [newName, setNewName] = useState(channel.channelName);
   const currentUser = auth.currentUser;
   const membersRef = collection(db, `Chats/${channel.channelId}/members`);
-   
+
+  console.log(users)
+
   useEffect(() => {
     getRole(channel);
-    setNewName(channel.channelName)
-  }, [channel])
+    setNewName(channel.channelName);
+  }, [channel]);
 
   const updateNewUser = (e) => {
     setNewUser(e.target.value);
@@ -163,50 +159,54 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
       const docRef = doc(db, "users", user.data().userId);
 
       //need to remove initial instance from the user array.
-        await updateDoc(docRef, {
-          chat: arrayRemove(JSON.stringify(channel))
-        })
-        //now need to add the new one
-        await updateDoc(docRef, {
-          chat: arrayUnion(JSON.stringify({channelId: channel.channelId, channelName: newName}))
-        })
-      })
-    
-    setChannelObj({channelId: channel.channelId, channelName: newName})
-  }
+      await updateDoc(docRef, {
+        chat: arrayRemove(JSON.stringify(channel)),
+      });
+      //now need to add the new one
+      await updateDoc(docRef, {
+        chat: arrayUnion(
+          JSON.stringify({ channelId: channel.channelId, channelName: newName })
+        ),
+      });
+    });
+
+    setChannelObj({ channelId: channel.channelId, channelName: newName });
+  };
 
   const usersElems = users.map((user) => {
     return (
       <div className="m-2 flex items-center" key={user.uid}>
         <img
           className="rounded-full w-[50px] h-[50px] me-2"
-          src={user.profilePic}
+          src={user.authorProfilePic}
         ></img>
         {user.displayName}
       </div>
-    );
-  });
+    )
+  })
+  
+
 
   return (
-    <div>
+    <>
       <button
         onClick={() => setOpenModal(true)}
         onContextMenu={(e) => {
           e.preventDefault();
           setOpenModal(true);
         }}
-      >
+        >
         <svg
           className="text-teal-500"
           xmlns="http://www.w3.org/2000/svg"
           width="3em"
           height="3em"
           viewBox="0 0 24 24"
-        >
+          >
           <path
             fill="currentColor"
             d="M12.012 2.25c.734.008 1.465.093 2.182.253a.75.75 0 0 1 .582.649l.17 1.527a1.384 1.384 0 0 0 1.927 1.116l1.4-.615a.75.75 0 0 1 .85.174a9.793 9.793 0 0 1 2.205 3.792a.75.75 0 0 1-.272.825l-1.241.916a1.38 1.38 0 0 0 0 2.226l1.243.915a.75.75 0 0 1 .272.826a9.798 9.798 0 0 1-2.204 3.792a.75.75 0 0 1-.849.175l-1.406-.617a1.38 1.38 0 0 0-1.926 1.114l-.17 1.526a.75.75 0 0 1-.571.647a9.518 9.518 0 0 1-4.406 0a.75.75 0 0 1-.572-.647l-.169-1.524a1.382 1.382 0 0 0-1.925-1.11l-1.406.616a.75.75 0 0 1-.85-.175a9.798 9.798 0 0 1-2.203-3.796a.75.75 0 0 1 .272-.826l1.243-.916a1.38 1.38 0 0 0 0-2.226l-1.243-.914a.75.75 0 0 1-.272-.826a9.793 9.793 0 0 1 2.205-3.792a.75.75 0 0 1 .85-.174l1.4.615a1.387 1.387 0 0 0 1.93-1.118l.17-1.526a.75.75 0 0 1 .583-.65a10.72 10.72 0 0 1 2.201-.252M12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6"
-          />
+            />
         </svg>
       </button>
       <Modal
@@ -215,60 +215,65 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
         size="md"
         onClose={() => setOpenModal(false)}
         popup
-        className="md:ps-[280px]"
-      >
-        <Tabs aria-label="Tabs with underline" style="underline">
-          <Tabs.Item active title="Users" icon={HiClipboardList} >
-            <div
-              id="custom-scroll"
-              className="h-[150px] ms-[5px] me-[5px] flex items-start flex-wrap "
-            >
-              {usersElems}
-            </div>
-            {role === "creator" ? (
-              <>
-                <input
-                  placeholder="Add a user"
-                  value={newUser}
-                  onChange={updateNewUser}
-                  className="bg-blue-100 m-3 p-3 rounded-lg"
-                ></input>
-                <button className="bg-slate-700 text-white p-3 rounded-lg" onClick={addUserTochannel}>
-                  Add
-                </button>
-              </>
-            ) : null}
-          </Tabs.Item>
-          {role === "creator" ? (
-            <Tabs.Item title="Channel Name" icon={HiAdjustments}>
-              <input
-                onChange={updateNewName}
-                value={newName}
-                placeholder="Edit Channel Name"
-                className="bg-blue-100 m-3 p-3 rounded-lg"
+        >
+        <Tabs aria-label="Tabs with underline" style="underline" className="bg-modalblue rounded text-white" >
+          <Tabs.Item active title="Users" icon={HiClipboardList} className="h-[150px]" >
+          <div id="custom-scroll" className="h-[150px] ms-[5px] me-[5px] flex items-start flex-wrap">
+            {usersElems}
+          </div>
+          { role === "creator" ?
+            <div className="w-[100%] ps-3 pe-3 flex justify-evenly">
+            <input 
+              className="border p-1 text-black rounded"
+              placeholder="Add a user"
+              value={newUser}
+              onChange={updateNewUser}
               ></input>
-              <button className="bg-slate-700 text-white p-3 rounded-lg" onClick={updateChannelName}>Save</button>
-            </Tabs.Item>
-          ) : null}
-          <Tabs.Item
-            active
-            title={role === "creator" ? "Delete Channel" : "Leave Channel"}
-            icon={role === "creator" ? HiOutlineTrash : HiOutlineLogout}
-          >
-            <div className="flex flex-col items-center">
-              <p className="w-[100%] text-center">
-                {role === "creator"
-                  ? "Are you sure? This action cannot be undone"
-                  : "Are you sure you want to leave this channel?"}
-              </p>
-              <button className="bg-slate-700 mt-3 text-white p-3 rounded-lg" onClick={() => removeChannel(channel)}>
-                {role === "creator" ? "Delete Channel" : "Leave Channel"}
-              </button>
+            <button 
+              className="text-xl ps-1 pe-1 bg-cyan-700 rounded hover:bg-cyan-800"
+              onClick={addUserTochannel}
+              >Add</button>
             </div>
-          </Tabs.Item>
-        </Tabs>
+            : null
+          }
+        </Tabs.Item>
+        { role === "creator" ? <Tabs.Item title="Channel Name" icon={HiAdjustments}>
+          <div className="flex flex-col justify-evenly items-center h-[100px]">
+            <p className="m-1 mb-2">Change the channel name here</p>
+          <input
+            onChange={updateNewName}
+            value={newName}
+            placeholder="Edit Channel Name"
+            className="text-black rounded p-1 mb-2"
+            ></input>
+          <button 
+            onClick={updateChannelName}
+            className="text-xl ps-1 pe-1  bg-cyan-700 rounded hover:bg-cyan-800"
+            >Save</button>
+          </div>
+        </Tabs.Item> 
+          : null
+        }
+        <Tabs.Item active title={role === "creator" ? "Delete Channel" : "Leave Channel"} 
+                  icon={role === "creator" ? HiOutlineTrash : HiOutlineLogout}>
+          <div className="flex flex-col items-center h-[100px] justify-evenly">
+            <p>
+              { role === "creator" ?
+                "Are you sure? This action cannot be undone"
+                : "Are you sure you want to leave this channel?"
+              }
+            </p>
+            <button 
+              className="text-xl ps-1 pe-1 bg-red-700 hover:bg-red-900 rounded"
+              onClick={() => removeChannel(channel)}>
+                {role === "creator" ? "Delete Channel" : "Leave Channel"}
+            </button>
+          </div>
+        </Tabs.Item>
+    </Tabs>
+
       </Modal>
-    </div>
+    </>
   );
 }
 

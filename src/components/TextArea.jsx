@@ -25,7 +25,6 @@ export default function TextArea({ channel, homeView }) {
   const [users, setUsers] = useState([]);
   const [channelObj, setChannelObj] = useState(channel)
 
-
   const messagesEndRef = useRef(null); // keep track messages for auto-scrolling
   const chatRef = channel
     ? collection(db, `Chats/${channel.channelId}`, "messages")
@@ -82,7 +81,7 @@ export default function TextArea({ channel, homeView }) {
           if (userSnap.exists()) {
               usersData.push({uid: userSnap.data().uid, 
                               displayName: userSnap.data().displayName,  
-                              profilePic: userSnap.data().authorProfilePic
+                              authorProfilePic: userSnap.data().authorProfilePic
                             })
           }
         }
@@ -184,16 +183,19 @@ export default function TextArea({ channel, homeView }) {
     // Return the formatted date string
     return new Intl.DateTimeFormat("default", options).format(date);
   };
-
+  // console.log(messages);
+  console.log(users);
   const messagesElems = messages.map((msg) => {
     let timeStamp = convertDate(msg.createdAt);
 
     //set it to the name be one in the msg by default
     let displayName = msg.displayName;
+    let profilePic = msg.authorProfilePic;
     //check the users array for the updated one.
     for (let i = 0; i < users.length; i++) {
       if (users[i].uid === msg.userId) {
         displayName = users[i].displayName;
+        profilePic = users[i].authorProfilePic;
       }
     }
     return (
@@ -202,7 +204,7 @@ export default function TextArea({ channel, homeView }) {
           <div className="flex items-center">
             <img
               className="w-10 h-10 rounded-full mt-2"
-              src={msg.authorProfilePic}
+              src={profilePic}
               alt="Profile picture"
             />
             <p className="ml-2 text-orange-400 text-lg">{displayName}</p>

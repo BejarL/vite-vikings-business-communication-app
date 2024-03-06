@@ -4,10 +4,6 @@ import { useState } from "react";
 export default function DeleteAccountModal({ deleteProfile }) {
   const [openModal, setOpenModal] = useState(false);
 
-  const updateConfirm = (e) => {
-    setConfirm(e.target.value);
-  };
-
   const deleteAccount = () => {
     setOpenModal(false);
     deleteProfile();
@@ -17,7 +13,7 @@ export default function DeleteAccountModal({ deleteProfile }) {
     <div>
       <button
         onClick={() => setOpenModal(true)}
-        className="py-3 px-7 mt-3 inline-flex items-center text-md font-semibold rounded-lg border border-transparent bg-teal-900 text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+        className="py-3 px-7 mt-3 inline-flex shadow-lg items-center text-md font-semibold rounded-lg border border-transparent bg-teal-900 text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
       >
         Delete Account
       </button>
@@ -26,7 +22,7 @@ export default function DeleteAccountModal({ deleteProfile }) {
         size="md"
         onClose={() => setOpenModal(false)}
         popup
-        className="md:ps-[280px]"
+        className="md:ps-[200px]"
       >
         <Modal.Header className="bg-slate-700" />
         <Modal.Body className="bg-slate-700 ">
@@ -40,7 +36,7 @@ export default function DeleteAccountModal({ deleteProfile }) {
           <div className="flex justify-between w-full">
             <button
               className="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded"
-              onClick={() => deleteAccount}
+              onClick={deleteAccount}
             >
               {"Yes, I'm sure"}
             </button>

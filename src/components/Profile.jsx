@@ -46,7 +46,7 @@ function Profile() {
       .then(setImg)
       .catch((e) =>
         setImg(
-          "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?..."
+          "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0?"
         )
       );
   };
@@ -76,11 +76,14 @@ function Profile() {
   };
 
   const deleteProfile = async () => {
-    if (!currentUser) return;
+    console.log("here")
+    if (!currentUser) {
+      return;
+    }
 
     try {
-      await deleteDoc(doc(db, "users", currentUser.uid));
       await deleteUser(currentUser);
+      await deleteDoc(doc(db, "users", currentUser.uid));
       navigate("/login");
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -141,7 +144,7 @@ function Profile() {
         </div>
         <div className="profile--edit-password-wrapper">
           <button
-            className="py-3 px-5 inline-flex items-center  text-md font-semibold rounded-lg border border-transparent bg-teal-900 text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            className="py-3 px-5 inline-flex items-center shadow-lg text-md font-semibold rounded-lg border border-transparent bg-teal-900 text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
             onClick={toggleModal}
           >
             Change Password

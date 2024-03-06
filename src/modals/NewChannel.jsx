@@ -99,7 +99,7 @@ function NewChannel({ currentUser }) {
       userId: "System",
       body: "This is the start of the Channel!",
       createdAt: new Date(),
-      authorProfilePic: "",
+      authorProfilePic: "https://firebasestorage.googleapis.com/v0/b/emanate-demo.appspot.com/o/bg-images%2Fblue-logo.png?alt=media&token=c0b3ae42-ebfc-43d3-bc49-e614b221c4c5",
       messageId: crypto.randomUUID(),
     });
 

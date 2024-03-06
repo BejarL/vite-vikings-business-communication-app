@@ -11,18 +11,19 @@ import Dashboard from "./components/Dashboard";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import Protected from "./components/auth/Protected";
-// import Layout from "./components/Layout.jsx";
 import ForgotPassword from "./components/auth/ForgotPassword.jsx";
-// Create routes using JSX elements
+import Profile from "./components/Profile.jsx";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<App />}>
-        <Route path="signup" element={<SignUp />}/>
-        <Route path="login" element={<Login />}/>
+        <Route path="signup" element={<SignUp />} />
+        <Route path="login" element={<Login />} />
         <Route path="forgotpassword" element={<ForgotPassword />} />
         <Route path="/" element={<Protected />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>
     </>

@@ -4,11 +4,10 @@ import { auth } from "../../../FirebaseConfig";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Footer from "../Footer";
 
-// Define the ForgotPassword component
 function ForgotPassword() {
   const [email, setEmail] = useState("");
 
-  // Asynchronous function to handle sending the password reset email
+  // Function to handle sending the password reset email
   const resetEmail = async () => {
     await sendPasswordResetEmail(auth, email);
     console.log("Password reset email sent");
