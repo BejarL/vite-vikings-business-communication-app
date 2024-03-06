@@ -13,7 +13,7 @@ export default function DeleteAccountModal({ deleteProfile }) {
     <div>
       <button
         onClick={() => setOpenModal(true)}
-        className="py-3 px-7 mt-3 inline-flex items-center text-md font-semibold rounded-lg border border-transparent bg-teal-900 text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+        className="py-3 px-7 mt-3 inline-flex shadow-lg items-center text-md font-semibold rounded-lg border border-transparent bg-teal-900 text-white hover:bg-teal-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
       >
         Delete Account
       </button>

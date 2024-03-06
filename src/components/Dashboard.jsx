@@ -9,9 +9,7 @@ import { useNavigate } from "react-router-dom";
 import NewChannel from "../modals/NewChannel";
 import { doc, onSnapshot } from "firebase/firestore";
 import DeleteChannelModal from "../modals/DeleteChannelModal";
-// import { updateDoc, deleteDoc, arrayRemove } from "firebase/firestore";
 import TextArea from "./TextArea";
-// import exp from "constants";
 import Profile from "./Profile";
 import HomePage from "./HomePage";
 

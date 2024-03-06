@@ -1,6 +1,5 @@
-import { Button, Modal, Tabs } from "flowbite-react";
+import { Modal, Tabs } from "flowbite-react";
 import { HiAdjustments, HiClipboardList, HiOutlineLogout, HiOutlineTrash } from 'react-icons/hi';
-import { MdDashboard } from 'react-icons/md';
 import { useState, useEffect } from "react";
 import {
   addDoc,
@@ -225,7 +224,7 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
           { role === "creator" ?
             <div className="w-[100%] ps-3 pe-3 flex justify-evenly">
             <input 
-              className="border p-1 text-black"
+              className="border p-1 text-black rounded"
               placeholder="Add a user"
               value={newUser}
               onChange={updateNewUser}
@@ -240,16 +239,16 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
         </Tabs.Item>
         { role === "creator" ? <Tabs.Item title="Channel Name" icon={HiAdjustments}>
           <div className="flex flex-col justify-evenly items-center h-[100px]">
-            <p className="m-1">Change the channel name here</p>
+            <p className="m-1 mb-2">Change the channel name here</p>
           <input
             onChange={updateNewName}
             value={newName}
             placeholder="Edit Channel Name"
-            className="text-black p-1 mb-2"
+            className="text-black rounded p-1 mb-2"
             ></input>
           <button 
             onClick={updateChannelName}
-            className="text-xl ps-1 pe-1 bg-cyan-700 rounded hover:bg-cyan-800"
+            className="text-xl ps-1 pe-1  bg-cyan-700 rounded hover:bg-cyan-800"
             >Save</button>
           </div>
         </Tabs.Item> 
