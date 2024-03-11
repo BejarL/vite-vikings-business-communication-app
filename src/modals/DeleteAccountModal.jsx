@@ -17,6 +17,7 @@ export default function DeleteAccountModal({ deleteProfile }) {
       >
         Delete Account
       </button>
+      
       <Modal
         show={openModal}
         size="md"

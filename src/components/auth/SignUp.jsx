@@ -88,6 +88,7 @@ function SignUp() {
         email: user.email,
         displayName: username,
         chat: [],
+        authorProfilePic: "https://images.unsplash.com/photo-1706795140056-2f9ce0ce8cb0"
       });
 
       // Redirect to login page and set signup success status
