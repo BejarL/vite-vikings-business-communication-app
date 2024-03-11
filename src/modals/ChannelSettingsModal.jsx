@@ -185,8 +185,6 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
     )
   })
   
-
-
   return (
     <>
       <button
@@ -209,6 +207,7 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
             />
         </svg>
       </button>
+      
       <Modal
         dismissible
         show={openModal}

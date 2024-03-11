@@ -184,7 +184,7 @@ export default function TextArea({ channel, homeView }) {
     return new Intl.DateTimeFormat("default", options).format(date);
   };
   // console.log(messages);
-  console.log(users);
+  
   const messagesElems = messages.map((msg) => {
     let timeStamp = convertDate(msg.createdAt);
 
