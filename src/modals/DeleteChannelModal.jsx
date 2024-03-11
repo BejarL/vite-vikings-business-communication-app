@@ -55,7 +55,7 @@ function DeleteChannelModal({ channel, currentUser, goToChannel }) {
           e.preventDefault();
           setOpenModal(true);
         }}
-        className="flex items-center  text-md font-semibold mb-2 w-full h-12 px-5 mt-1 rounded hover:bg-slate-700 hover:text-gray-300"
+        className="flex items-center shadow-lg text-md font-semibold mb-2 w-full h-12 px-5 mt-1 rounded hover:bg-slate-700 hover:text-gray-300"
       >
         {channel.channelName}
       </button>
