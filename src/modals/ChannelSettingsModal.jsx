@@ -24,8 +24,6 @@ function ChannelSettingsModal({ channel, users, homeView, setChannelObj }) {
   const currentUser = auth.currentUser;
   const membersRef = collection(db, `Chats/${channel.channelId}/members`);
 
-  console.log(users)
-
   useEffect(() => {
     getRole(channel);
     setNewName(channel.channelName);
